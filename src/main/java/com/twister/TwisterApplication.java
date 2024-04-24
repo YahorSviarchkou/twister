@@ -12,27 +12,29 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 @SpringBootApplication
 public class TwisterApplication extends Application {
 
-    public static String[] args;
+    private static final String SPRING_BOOT_THREAD = "SPRING_BOOT_THREAD";
+    private static String[] args;
 
     public static void main(String[] args) {
-        TwisterApplication.args = args;
-        Application.launch(TwisterApplication.class, args);
+        SqlLitePet.args = args;
+        Application.launch(SqlLitePet.class, args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        Image loadingAnimation = new Image(getClass().getResourceAsStream("/images/loading.gif"));
+    public void start(Stage primaryStage) throws Exception {
+        Image loadingAnimation = new Image(getClass().getResourceAsStream("/images/loader.gif"));
         ImageView imageView = new ImageView();
         imageView.setImage(loadingAnimation);
         Group root = new Group(imageView);
         Scene scene = new Scene(root, 800, 600);
-        stage.setScene(scene);
-        stage.setTitle("JavaFX with Spring Demo");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("JavaFX with Spring Demo");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
 
         new Thread(() -> {
-            new SpringApplicationBuilder(TwisterApplication.class).run(args);
-        }, "Spring Thread").start();
+            new SpringApplicationBuilder(SqlLitePet.class).run(args);
+        }, SPRING_BOOT_THREAD).start();
     }
 }
