@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.twister'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "17"
+    modules = ['javafx.controls', 'javafx.fxml']
+    configuration = "compileOnly"
+}
+
+ext {
+    postgresqlVersion = '42.6.0'
+    flywaydbVersion = '9.6.0'
+    lombokVersion = '1.18.30'
+    mapstructVersion = '1.5.5.Final'
+    logstashLogbackVersion = '7.4'
+    javafxVersion = '22'
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    implementation "org.openjfx:javafx-controls:${javafxVersion}"
+    implementation "org.openjfx:javafx-fxml:${javafxVersion}"
+
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "org.flywaydb:flyway-core:${flywaydbVersion}"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:twister_db}?useUnicode=true&charSet=UTF8
+    username: ${DB_USERNAME:admin_twister}
+    password: ${DB_PASSWORD:admin_twister}
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        default_schema: twister
+        format_sql: true
+  flyway:
+    enabled: true
+    schemas: twister
+
+logging:
+  level:
+    com.twister: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: ERROR
