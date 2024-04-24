@@ -1,71 +1,69 @@
-CREATE SCHEMA IF NOT EXISTS twister;
-SET search_path TO twister;
-
-CREATE TYPE status_type AS ENUM ('DRAFT', 'IN PROGRESS', 'BLOCKED', 'DONE');
-
 CREATE TABLE users (
-    id serial PRIMARY KEY NOT NULL,
-    login varchar(50) NOT NULL UNIQUE,
-    password varchar NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR NOT NULL
 );
 
 CREATE TABLE clients (
-    id serial PRIMARY KEY NOT NULL,
-    name varchar,
-    surname varchar,
-    patronymic varchar,
-    phone varchar NOT NULL UNIQUE
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR,
+    surname VARCHAR,
+    patronymic VARCHAR,
+    phone VARCHAR NOT NULL UNIQUE
 );
 
 CREATE TABLE transport_types (
-    id serial PRIMARY KEY NOT NULL,
-    title varchar NOT NULL UNIQUE
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR NOT NULL UNIQUE
 );
 
 CREATE TABLE transports (
-    id serial PRIMARY KEY NOT NULL,
-    title varchar NOT NULL UNIQUE,
-    type_id bigint REFERENCES transport_types(id) NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR NOT NULL UNIQUE,
+    type_id INTEGER NOT NULL,
+    FOREIGN KEY(type_id) REFERENCES transport_types(id)
 );
 
 CREATE TABLE spares (
-    id serial PRIMARY KEY NOT NULL,
-    title varchar NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR NOT NULL UNIQUE,
     cost NUMERIC(20, 2) CHECK (cost >= 0)
 );
 
-CREATE TABLE services (
-    id serial PRIMARY KEY NOT NULL,
-    title varchar NOT NULL UNIQUE,
+CREATE TABLE operations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR NOT NULL UNIQUE,
     cost NUMERIC(20, 2) CHECK (cost >= 0)
 );
 
-CREATE TABLE spare_services (
-    spare_id bigint REFERENCES spares(id) NOT NULL,
-    service_id bigint REFERENCES services(id) NOT NULL
+CREATE TABLE spare_operations (
+    spare_id INTEGER NOT NULL,
+    operation_id INTEGER NOT NULL,
+    FOREIGN KEY(spare_id) REFERENCES spares(id),
+    FOREIGN KEY(operation_id) REFERENCES operations(id),
+    CONSTRAINT unq__spare_operations UNIQUE(spare_id, operation_id)
 );
 
 CREATE TABLE tasks (
-    id serial PRIMARY KEY NOT NULL,
-    title varchar NOT NULL,
-    client_id bigint REFERENCES clients(id) NOT NULL,
-    transport_id bigint REFERENCES transports(id) NOT NULL,
-    status status_type,
-    created timestamp NOT NULL,
-    updated timestamp,
-    completed timestamp,
-    total_cost NUMERIC(20, 2) CHECK (total_cost >= 0)
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR NOT NULL,
+    client_id INTEGER NOT NULL,
+    transport_id INTEGER NOT NULL,
+    status VARCHAR NOT NULL,
+    created TEXT NOT NULL,
+    updated TEXT,
+    completed TEXT,
+    total_cost NUMERIC(20, 2) CHECK (total_cost >= 0),
+    FOREIGN KEY(client_id) REFERENCES clients(id),
+    FOREIGN KEY(transport_id) REFERENCES transports(id)
 );
 
-CREATE TABLE task_services (
-    id serial PRIMARY KEY NOT NULL,
-    task_id bigint REFERENCES tasks(id) NOT NULL,
-    service_id bigint REFERENCES services(id) NOT NULL,
-    status status_type
+CREATE TABLE task_operations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_id INTEGER NOT NULL,
+    operation_id INTEGER NOT NULL,
+    status VARCHAR NOT NULL,
+    FOREIGN KEY(task_id) REFERENCES tasks(id),
+    FOREIGN KEY(operation_id) REFERENCES operations(id),
+    CONSTRAINT unq__task_operations UNIQUE(task_id, operation_id)
 );
-
-ALTER TABLE task_services
-ADD CONSTRAINT unq__task_services UNIQUE(task_id, service_id);
-
-ALTER TABLE spare_services
-ADD CONSTRAINT unq__spare_services UNIQUE(spare_id, service_id);

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlite:sample_pet.db
+    url: jdbc:sqlite:twister.db
     driver-class-name: org.sqlite.JDBC
     username:
     password:
@@ -10,6 +10,6 @@ hibernate:
   show_sql: true
 logging:
   level:
-    com.twister: DEBUG
-    org.springframework.web: INFO
+    com.twister: INFO
+    org.springframework: INFO
     org.hibernate: ERROR

@@ -6,7 +6,7 @@ plugins {
 }
 apply(plugin = "io.spring.dependency-management")
 
-group = "org.sqllitepet"
+group = "com.twister"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -42,5 +42,5 @@ javafx {
 }
 
 application {
-    mainClass.set("org.sqllitepet.SqlLitePet")
+    mainClass.set("com.twister.TwisterApplication")
 }
