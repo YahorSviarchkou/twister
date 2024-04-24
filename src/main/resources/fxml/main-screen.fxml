@@ -3,11 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.twister.ui.screen.MainScreen">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0">
          <left>
-            <VBox prefHeight="400.0" prefWidth="137.0" styleClass="vbox-background" stylesheets="@../styles/main-screen.css" BorderPane.alignment="CENTER" />
+            <VBox prefHeight="400.0" prefWidth="137.0" styleClass="vbox-background" stylesheets="@../styles/main-screen.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btn" mnemonicParsing="false" onAction="#click" text="Button" />
+               </children></VBox>
          </left>
          <center>
             <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">

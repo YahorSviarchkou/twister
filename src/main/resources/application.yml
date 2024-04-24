@@ -10,6 +10,6 @@ hibernate:
   show_sql: true
 logging:
   level:
-    com.twister: INFO
+    com.twister: DEBUG
     org.springframework: INFO
     org.hibernate: ERROR
