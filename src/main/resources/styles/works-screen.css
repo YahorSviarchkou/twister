@@ -1,0 +1,6 @@
+.vbox-container {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 50px;
+
+    -fx-border-radius: 30px;
+}

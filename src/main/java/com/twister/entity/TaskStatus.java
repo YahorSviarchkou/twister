@@ -10,7 +10,6 @@ public enum TaskStatus {
     NEW("Новая"),
     IN_PROGRESS("В работе"),
     DONE("Завершена"),
-    BLOCKED("Заблокирована"),
     DEFERRED("Отложена");
 
     private final String name;

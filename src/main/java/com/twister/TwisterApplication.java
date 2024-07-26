@@ -1,5 +1,6 @@
 package com.twister;
 
+import com.twister.configuration.TwisterProperties;
 import com.twister.handler.ApplicationEventHandler;
 import com.twister.handler.GlobalExceptionHandler;
 import com.twister.ui.LoaderBuilder;
@@ -8,10 +9,12 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import static com.twister.ui.UiUtils.showErrorDialog;
 
 @SpringBootApplication
+@EnableConfigurationProperties(TwisterProperties.class)
 public class TwisterApplication extends Application {
 
     private static final String SPRING_BOOT_THREAD = "SPRING_BOOT";

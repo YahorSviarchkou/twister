@@ -1,3 +1,7 @@
 .vbox-background {
-    -fx-background-color: #c7d8f7;
+    -fx-background-color: #ebe8f9;
+}
+
+.button-background{
+    -fx-background-color: #ebe8f9;
 }

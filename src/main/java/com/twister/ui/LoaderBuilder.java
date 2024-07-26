@@ -1,18 +1,17 @@
 package com.twister.ui;
 
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.Optional;
+
+import static com.twister.ui.UiUtils.SCREEN_BOUNDS;
 
 public final class LoaderBuilder {
 
     private static final double WIDTH = 0.25;
     private static final double HEIGHT = 0.25;
     private static final StageStyle STAGE_STYLE = StageStyle.UNDECORATED;
-    private static final Rectangle2D SCREEN_BOUNDS = Screen.getPrimary().getVisualBounds();
 
     private Stage primaryStage;
 

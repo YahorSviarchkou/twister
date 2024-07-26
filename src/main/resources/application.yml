@@ -8,6 +8,11 @@ spring:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
 hibernate:
   show_sql: true
+
+twister:
+  app-name: Twister
+  app-version: 0.0.1
+
 logging:
   level:
     com.twister: DEBUG

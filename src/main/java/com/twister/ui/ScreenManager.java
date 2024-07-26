@@ -1,5 +1,6 @@
 package com.twister.ui;
 
+import com.twister.configuration.TwisterProperties;
 import com.twister.ui.screen.ScreenController;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -17,14 +18,16 @@ import org.springframework.stereotype.Component;
 public class ScreenManager {
 
     ApplicationContext context;
+    TwisterProperties twisterProperties;
 
     public <T extends ScreenController> void showScreen(Class<T> controllerClass, Stage stage) {
         Platform.runLater(() -> {
             var controller = context.getBean(controllerClass);
             var root = controller.loadFXMLAndGetParent();
 
-            stage.setTitle("Hello World");
-            stage.setScene(new Scene(root, 300, 275));
+            stage.setTitle(twisterProperties.getAppName());
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
             stage.show();
         });
     }

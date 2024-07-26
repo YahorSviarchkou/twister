@@ -1,37 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.twister.ui.screen.MainScreen">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.twister.ui.screen.MainScreen">
    <children>
-      <BorderPane prefHeight="400.0" prefWidth="600.0">
-         <left>
-            <VBox prefHeight="400.0" prefWidth="137.0" styleClass="vbox-background" stylesheets="@../styles/main-screen.css" BorderPane.alignment="CENTER">
+      <HBox layoutX="204.0" layoutY="66.4" prefHeight="266.0" prefWidth="311.0" style="-fx-background-color: FBFBFD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="1080.0" prefWidth="300.0" style="-fx-background-color: FFFFFF;">
                <children>
-                  <Button fx:id="btn" mnemonicParsing="false" onAction="#click" text="Button" />
-               </children></VBox>
-         </left>
-         <center>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <top>
-                  <MenuButton mnemonicParsing="false" text="MenuButton" BorderPane.alignment="CENTER">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
-               </top>
-               <center>
-                  <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
-               </center>
-            </BorderPane>
-         </center>
-      </BorderPane>
+                  <ImageView fitHeight="112.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="50.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../images/menu/bicycle.png" />
+                     </image>
+                  </ImageView>
+                  <Line endX="240.0" stroke="#f3f4f6">
+                     <VBox.margin>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </VBox.margin>
+                  </Line>
+                  <VBox prefHeight="647.0" prefWidth="242.0" spacing="5.0">
+                     <VBox.margin>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#clickWorks" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/works.png" />
+                                 </image></ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Работы">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#clickClients" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/clients.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Клиенты">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/operations.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Сервис">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/spares.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Запчасти">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/works.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Транспорт">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <VBox.margin>
+                        <Insets bottom="50.0" left="30.0" right="30.0" top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="242.0" spacing="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/menu/logout.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Выход">
+                                 <font>
+                                    <Font name="Formular-Medium" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <Text fx:id="appVersion" fill="#73757d" strokeType="OUTSIDE" strokeWidth="0.0" text="twister v1.0">
+                           <font>
+                              <Font name="Formular" size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <StackPane fx:id="contentPane" prefHeight="1080.0" prefWidth="1620.0" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

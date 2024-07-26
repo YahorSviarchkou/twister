@@ -15,22 +15,22 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity
-@Table(name = "task_operations")
+@Table(name = "work_tasks")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TaskOperations {
+public class WorkTasks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    Task task;
-
-    @ManyToOne
-    @JoinColumn(name = "operation_id")
-    Operation operation;
-
-    @Enumerated(EnumType.STRING)
-    TaskStatus status;
+//    @ManyToOne
+//    @JoinColumn(name = "work_id")
+//    Work work;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "task_id")
+//    Task task;
+//
+//    @Enumerated(EnumType.STRING)
+//    TaskStatus type;
 }

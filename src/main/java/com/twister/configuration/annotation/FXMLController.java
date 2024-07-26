@@ -1,4 +1,4 @@
-package com.twister.configuration;
+package com.twister.configuration.annotation;
 
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Component
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ControllerFXML {
+public @interface FXMLController {
 
     String fxml();
 }

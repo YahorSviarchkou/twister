@@ -4,9 +4,7 @@ import com.twister.event.ApplicationStartEvent;
 import com.twister.ui.ScreenManager;
 import com.twister.ui.screen.MainScreen;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +17,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
@@ -32,7 +29,7 @@ public class ApplicationEventHandler implements ApplicationStartEvent, Applicati
     @Override
     public void onApplicationStartEvent() {
         log.info("Handling ApplicationStartEvent...");
-        Image loadingAnimation = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/bicycle.gif")));
+        Image loadingAnimation = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/loader/bicycle.gif")));
 
         ImageView imageView = new ImageView();
         imageView.setImage(loadingAnimation);
