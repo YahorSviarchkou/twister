@@ -4,6 +4,7 @@ import com.twister.configuration.TwisterProperties;
 import com.twister.configuration.annotation.FXMLController;
 import com.twister.entity.Client;
 import com.twister.repository.ClientRepository;
+import com.twister.ui.ScreenManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,10 +27,11 @@ public class MainScreen extends ScreenController {
 
     @FXML
     private Text appVersion;
-
     @FXML
     private StackPane contentPane;
 
+    @Autowired
+    private ScreenManager screenManager;
     @Autowired
     private TwisterProperties twisterProperties;
     @Autowired
@@ -42,7 +43,7 @@ public class MainScreen extends ScreenController {
     void clickClients(MouseEvent event) {
         if(Objects.isNull(currentTab) || ClientsScreen.class != currentTab) {
             currentTab = ClientsScreen.class;
-            setChildFXML(contentPane, ClientsScreen.class);
+            screenManager.loadChildFxml(contentPane, ClientsScreen.class);
         }
     }
 
@@ -50,7 +51,7 @@ public class MainScreen extends ScreenController {
     void clickWorks(MouseEvent event) {
         if(Objects.isNull(currentTab) || WorksScreen.class != currentTab) {
             currentTab = WorksScreen.class;
-            setChildFXML(contentPane, WorksScreen.class);
+            screenManager.loadChildFxml(contentPane, WorksScreen.class);
         }
     }
 

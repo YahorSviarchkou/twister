@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class JavaFxConfiguration {
     ApplicationContext applicationContext;
 
     @Bean
+    @Scope("prototype")
     public FXMLLoader fxmlLoader() {
         FXMLLoader loader = new FXMLLoader();
         loader.setControllerFactory(applicationContext::getBean);
