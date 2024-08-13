@@ -5,18 +5,26 @@ import com.twister.configuration.annotation.FXMLController;
 import com.twister.entity.Client;
 import com.twister.repository.ClientRepository;
 import com.twister.ui.ScreenManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -31,6 +39,8 @@ public class MainScreen extends ScreenController {
     private StackPane contentPane;
 
     @Autowired
+    private ApplicationContext context;
+    @Autowired
     private ScreenManager screenManager;
     @Autowired
     private TwisterProperties twisterProperties;
@@ -41,18 +51,48 @@ public class MainScreen extends ScreenController {
 
     @FXML
     void clickClients(MouseEvent event) {
-        if(Objects.isNull(currentTab) || ClientsScreen.class != currentTab) {
-            currentTab = ClientsScreen.class;
-            screenManager.loadChildFxml(contentPane, ClientsScreen.class);
-        }
+        showTab(ClientsScreen.class);
     }
 
     @FXML
     void clickWorks(MouseEvent event) {
-        if(Objects.isNull(currentTab) || WorksScreen.class != currentTab) {
-            currentTab = WorksScreen.class;
-            screenManager.loadChildFxml(contentPane, WorksScreen.class);
-        }
+        showTab(WorksScreen.class);
+    }
+
+    @FXML
+    void clickOperations(MouseEvent mouseEvent) {
+        showTab(OperationsScreen.class);
+    }
+
+    @FXML
+    void clickTransport(MouseEvent mouseEvent) {
+        showTab(TransportsScreen.class);
+    }
+
+    @FXML
+    void clickSpares(MouseEvent mouseEvent) {
+        showTab(SparesScreen.class);
+    }
+
+    @FXML
+    void clickExit(MouseEvent mouseEvent) {
+        showCloseDialog();
+    }
+
+    @FXML
+    void createUser(ActionEvent event) {
+//        var dbUser = clientRepository.save(user);
+//        table.getItems().add(dbUser);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        appVersion.setText(twisterProperties.getFullVersion());
+//        tf.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        ts.setCellValueFactory(new PropertyValueFactory<>("login"));
+//        tt.setCellValueFactory(new PropertyValueFactory<>("password"));
+//
+//        table.setItems(initialData());
     }
 
     private ObservableList<Client> initialData() {
@@ -69,22 +109,25 @@ public class MainScreen extends ScreenController {
         return FXCollections.observableArrayList(clientRepository.findAll());
     }
 
-    @FXML
-    void createUser(ActionEvent event) {
-//        var user = new User();
-//        user.setLogin(f1.getText() + ": " + f2.getText());
-//        user.setPassword(f3.getText());
-//        var dbUser = clientRepository.save(user);
-//        table.getItems().add(dbUser);
+    private void showCloseDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Подтверждение закрытия");
+        dialog.setHeaderText("Вы действительно хотите закрыть это окно?");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.CLOSE, ButtonType.CANCEL);
+        dialogPane.setContent(new Label("Нажмите OK для закрытия или Cancel для отмены."));
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.CLOSE) {
+            Platform.exit();;
+        }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        appVersion.setText(twisterProperties.getFullVersion());
-//        tf.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        ts.setCellValueFactory(new PropertyValueFactory<>("login"));
-//        tt.setCellValueFactory(new PropertyValueFactory<>("password"));
-//
-//        table.setItems(initialData());
+    private void showTab(Class<? extends ScreenController> tabClass) {
+        if(Objects.isNull(currentTab) || tabClass != currentTab) {
+            currentTab = tabClass;
+            screenManager.loadChildFxml(contentPane, tabClass);
+        }
     }
 }

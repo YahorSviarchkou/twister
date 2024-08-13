@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 @Slf4j
 @FXMLController(fxml = ClientsScreen.FXML_PATH)
-public class ClientsScreen extends ScreenController{
+public class ClientsScreen extends ScreenController {
 
     public static final String FXML_PATH = "/fxml/clients-screen.fxml";
 
@@ -29,7 +29,7 @@ public class ClientsScreen extends ScreenController{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         log.info("ClientsScreen was init");
-        clientService.findAllClients(0, 1, Sort.unsorted());
+//        clientService.findAllClients(0, 1, Sort.unsorted());
 //        clientService.findAllClients()
     }
 }
