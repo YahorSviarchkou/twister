@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Slf4j
-@FXMLController(fxml = TransportsScreen.FXML_PATH)
+@FXMLController(fxml = SparesScreen.FXML_PATH)
 public class SparesScreen extends ScreenController {
 
     public static final String FXML_PATH = "/fxml/spares-screen.fxml";

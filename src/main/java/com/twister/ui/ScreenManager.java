@@ -59,15 +59,21 @@ public class ScreenManager {
         var fxmlPath = controllerClass.getAnnotation(FXMLController.class).fxml();
         log.info("FXML file location: {}", fxmlPath);
 
-        var fxmlLoader = getFxmlLoader();
-        fxmlLoader.setLocation(Objects.requireNonNull(controllerClass.getResource(fxmlPath)));
-
         try {
+            var fxmlLoader = getFxmlLoader();
+            fxmlLoader.setLocation(Objects.requireNonNull(controllerClass.getResource(fxmlPath)));
+
             return fxmlLoader.load();
-        } catch (IOException e) {
+        } catch (NullPointerException npe) {
+            var errorMessage = "Not found FXML '%s' for controller: %s".formatted(
+                    fxmlPath, controllerClass.getSimpleName()
+            );
+            log.error(errorMessage);
+            throw new RuntimeException(errorMessage);
+        } catch (IOException ioe) {
             var errorMessage = "Error loading FXML for controller: " + controllerClass.getSimpleName();
             log.error(errorMessage);
-            throw new RuntimeException(errorMessage, e);
+            throw new RuntimeException(errorMessage, ioe);
         }
     }
 
