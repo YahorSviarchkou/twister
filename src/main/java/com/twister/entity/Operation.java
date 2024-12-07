@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -18,11 +20,12 @@ import java.util.Set;
 
 /**
  * Сущность, описывающая возможные работы(Операции) над транспортом
- * @see Spare
  */
 @Data
 @Entity
 @Table(name = "operations")
+@ToString(exclude = "works")
+@EqualsAndHashCode(exclude = "works")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Operation {
 
@@ -35,4 +38,7 @@ public class Operation {
 
     @ManyToMany(mappedBy = "operations")
     Set<Spare> spares = new HashSet<>();
+
+    @ManyToMany(mappedBy = "operations")
+    Set<Work> works = new HashSet<>();
 }

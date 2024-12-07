@@ -27,15 +27,17 @@
          <children>
             <HBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#create" text="Button" />
                   <TextField />
                   <TextField />
                </children>
             </HBox>
             <TableView prefWidth="539.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn prefWidth="75.0" text="№" />
+                <TableColumn prefWidth="165.0" text="ФИО клиента" />
+                  <TableColumn prefWidth="125.0" text="Особые отметки" />
+                  <TableColumn prefWidth="135.0" text="Дата создания" />
               </columns>
             </TableView>
          </children>

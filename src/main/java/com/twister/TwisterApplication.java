@@ -17,7 +17,7 @@ import static com.twister.ui.UiUtils.showErrorDialog;
 @EnableConfigurationProperties(TwisterProperties.class)
 public class TwisterApplication extends Application {
 
-    private static final String SPRING_BOOT_THREAD = "SPRING_BOOT";
+    private static final String SPRING_BOOT_THREAD_NAME = "SPRING_BOOT";
     private static String[] args;
 
     public static void main(String[] args) {
@@ -48,7 +48,7 @@ public class TwisterApplication extends Application {
                     }
                 });
             }
-        }, SPRING_BOOT_THREAD
+        }, SPRING_BOOT_THREAD_NAME
         ).start();
     }
 }

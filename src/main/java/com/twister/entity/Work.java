@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -35,34 +37,21 @@ public class Work {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String title;
+    String notes;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "transport_id")
-    Transport transport;
-
     @CreationTimestamp
     @Column(updatable = false)
     Date created;
 
-    @UpdateTimestamp
-    Date updated;
-
-    Date completed;
-
-    @Transient
-    BigDecimal totalCost;
-
-    @OneToMany(mappedBy = "work")
-    Set<Task> tasks = new HashSet<>();
-
-//    public BigDecimal getTotalCost() {
-//        return tasks.stream()
-//                .reduce(BigDecimal::add)
-//                .orElse(null);
-//    }
+    @ManyToMany
+    @JoinTable(
+            name = "work_operations",
+            joinColumns = @JoinColumn(name = "work_id"),
+            inverseJoinColumns = @JoinColumn(name = "operation_id")
+    )
+    Set<Operation> operations = new HashSet<>();
 }

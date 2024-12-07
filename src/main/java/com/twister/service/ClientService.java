@@ -43,7 +43,7 @@ public class ClientService {
     public Client createClient(Client client) {
         if (Objects.isNull(client.getId())) {
             var saved = clientRepository.save(client);
-            log.info("Created client with id: {}, name: {}", saved.getId(), saved.getFullName());
+//            log.info("Created client with id: {}, name: {}", saved.getId(), saved.getFullName());
         }
         log.error("Can't create a client with non-null id");
         throw new IllegalStateException("Can't create a client with non-null id");

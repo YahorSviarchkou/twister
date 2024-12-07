@@ -65,11 +65,6 @@ public class MainScreen extends ScreenController {
     }
 
     @FXML
-    void clickTransport(MouseEvent mouseEvent) {
-        showTab(TransportsScreen.class);
-    }
-
-    @FXML
     void clickSpares(MouseEvent mouseEvent) {
         showTab(SparesScreen.class);
     }

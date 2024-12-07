@@ -43,7 +43,7 @@ public class WorkService {
     public Work createWork(Work work) {
         if (Objects.isNull(work.getId())) {
             var saved = workRepository.save(work);
-            log.info("Created work with id: {}, title: {}", saved.getId(), saved.getTitle());
+//            log.info("Created work with id: {}, title: {}", saved.getId(), saved.getTitle());
         }
         log.error("Can't create a work with non-null id");
         throw new IllegalStateException("Can't create a work with non-null id");

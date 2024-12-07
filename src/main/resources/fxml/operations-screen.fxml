@@ -10,36 +10,34 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.twister.ui.screen.ClientsScreen">
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.twister.ui.screen.OperationsScreen">
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
    </padding>
    <children>
-      <Text fill="#262628" strokeType="OUTSIDE" strokeWidth="0.0" text="Клиенты">
+      <Text fill="#262628" strokeType="OUTSIDE" strokeWidth="0.0" text="Сервис">
          <font>
             <Font name="Formular-Medium" size="32.0" />
          </font>
       </Text>
-      <VBox prefHeight="384.0" prefWidth="539.0" styleClass="vbox-container" stylesheets="@../styles/clients-screen.css">
+      <VBox prefHeight="384.0" prefWidth="539.0" styleClass="vbox-container" stylesheets="@../styles/operations-screen.css">
          <VBox.margin>
             <Insets top="50.0" />
          </VBox.margin>
          <children>
             <HBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#createOperation" text="Button" />
                   <TextField />
                   <TextField />
                </children>
             </HBox>
             <TableView prefWidth="539.0">
-               <columns>
-                  <TableColumn prefWidth="75.0" text="№" />
-                  <TableColumn prefWidth="165.0" text="Фамилия" />
-                  <TableColumn prefWidth="125.0" text="Имя" />
-                  <TableColumn prefWidth="135.0" text="Отчество" />
-                  <TableColumn prefWidth="135.0" text="Номер телефона" />
-               </columns>
+              <columns>
+                <TableColumn prefWidth="75.0" text="№" />
+                <TableColumn prefWidth="180.0" text="Наименование операции" />
+                  <TableColumn prefWidth="125.0" text="Стоимость" />
+              </columns>
             </TableView>
          </children>
       </VBox>

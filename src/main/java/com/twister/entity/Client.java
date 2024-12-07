@@ -7,9 +7,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
@@ -21,6 +25,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "clients")
+@ToString(exclude = "work")
+@EqualsAndHashCode(exclude = "work")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Client {
 
@@ -28,14 +34,11 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String fullName;
+    String name;
+    String surname;
+    String patronymic;
     String phone;
 
-    @ManyToMany
-    @JoinTable(
-            name = "client_transports",
-            joinColumns = @JoinColumn(name = "client_id"),
-            inverseJoinColumns = @JoinColumn(name = "transport_id")
-    )
-    Set<Transport> transports = new HashSet<>();
+    @OneToMany(mappedBy = "client")
+    Set<Work> work = new HashSet<>();
 }
