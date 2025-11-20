@@ -6,12 +6,16 @@ spring:
     password:
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
 hibernate:
   show_sql: true
 
 twister:
   app-name: Twister
-  app-version: 0.0.1
+  app-version: 0.0.1 alpha
 
 logging:
   level:
