@@ -5,7 +5,7 @@ import javafx.stage.StageStyle;
 
 import java.util.Optional;
 
-import static com.twister.ui.UiUtils.SCREEN_BOUNDS;
+import static com.twister.util.UiUtils.SCREEN_BOUNDS;
 
 public final class LoaderBuilder {
 

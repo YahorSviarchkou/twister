@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -19,8 +22,12 @@ public class JavaFxConfiguration {
     @Bean
     @Scope("prototype")
     public FXMLLoader fxmlLoader() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setControllerFactory(applicationContext::getBean);
+        var bundle = ResourceBundle.getBundle("i18n.messages", Locale.getDefault());
+        var loader = new FXMLLoader();
+
+        loader.setResources(bundle);
+//        loader.setControllerFactory(applicationContext::getBean);
+
         return loader;
     }
 }

@@ -1,11 +1,9 @@
 package com.twister.repository;
 
-import com.twister.entity.Operation;
+import com.twister.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OperationRepository extends JpaRepository<Operation, Long> {
-
-    boolean existsByTitle(String title);
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

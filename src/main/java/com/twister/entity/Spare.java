@@ -1,22 +1,17 @@
 package com.twister.entity;
 
+import com.twister.configuration.annotation.UIColumn;
+import com.twister.ui.TableModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Сущность, описывающая запчасть
@@ -24,23 +19,17 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "spares")
-@ToString(exclude = "operations")
-@EqualsAndHashCode(exclude = "operations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Spare {
+public class Spare implements TableModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UIColumn("table.id.column")
     Long id;
 
+    @UIColumn("table.title.column")
     String title;
-    BigDecimal cost;
 
-    @ManyToMany
-    @JoinTable(
-            name = "spare_operations",
-            joinColumns = @JoinColumn(name = "spare_id"),
-            inverseJoinColumns = @JoinColumn(name = "operation_id")
-    )
-    Set<Operation> operations = new HashSet<>();
+    @UIColumn("table.cost.column")
+    BigDecimal cost;
 }

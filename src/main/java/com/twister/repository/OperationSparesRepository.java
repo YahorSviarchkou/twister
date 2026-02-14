@@ -1,9 +1,9 @@
 package com.twister.repository;
 
-import com.twister.entity.Client;
+import com.twister.entity.OperationSpares;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface OperationSparesRepository extends JpaRepository<OperationSpares, Long> {
 }

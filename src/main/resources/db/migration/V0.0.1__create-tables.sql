@@ -1,4 +1,4 @@
-CREATE TABLE clients
+CREATE TABLE customers
 (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     name       VARCHAR,
@@ -21,28 +21,28 @@ CREATE TABLE operations
     cost  NUMERIC(20, 2) CHECK (cost >= 0)
 );
 
-CREATE TABLE works
+CREATE TABLE orders
 (
-    id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    notes     VARCHAR,
-    client_id INTEGER NOT_NULL,
-    created   DATETIME DEFAULT CURRENT_TIMESTAMP
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    notes       VARCHAR,
+    customer_id INTEGER NOT_NULL,
+    created     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers (id)
 );
 
-CREATE TABLE work_operations
+CREATE TABLE operation_spares
 (
-    work_id      INTEGER NOT NULL,
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
     operation_id INTEGER NOT NULL,
-    FOREIGN KEY (work_id) REFERENCES works (id),
-    FOREIGN KEY (operation_id) REFERENCES operations (id),
-    CONSTRAINT unq__work_operations UNIQUE (work_id, operation_id)
+    spare_ids    VARCHAR NOT NULL,
+    CONSTRAINT unq__op_sps UNIQUE (operation_id, spare_ids)
 );
 
-CREATE TABLE spare_operations
+CREATE TABLE order_op_sps
 (
-    spare_id     INTEGER NOT NULL,
-    operation_id INTEGER NOT NULL,
-    FOREIGN KEY (spare_id) REFERENCES spares (id),
-    FOREIGN KEY (operation_id) REFERENCES operations (id),
-    CONSTRAINT unq__spare_operations UNIQUE (spare_id, operation_id)
+    order_id            INTEGER NOT NULL,
+    operation_spares_id INTEGER NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders (id),
+    FOREIGN KEY (operation_spares_id) REFERENCES operation_spares (id),
+    CONSTRAINT unq__order_op_sps UNIQUE (order_id, operation_spares_id)
 );

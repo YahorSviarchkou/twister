@@ -41,12 +41,36 @@ public class OperationService {
     }
 
     public Operation createOperation(Operation operation) {
+        if (operationRepository.existsByTitle(operation.getTitle())) {
+            throw new IllegalStateException("Operation name already exists");
+        }
+
         if (Objects.isNull(operation.getId())) {
             var saved = operationRepository.save(operation);
             log.info("Created operation with id: {}, title: {}", saved.getId(), saved.getTitle());
+            return saved;
         }
         log.error("Can't create a operation with non-null id");
         throw new IllegalStateException("Can't create a operation with non-null id");
+    }
+
+    public Operation updateOperation(Operation oldOperation, Operation newOperation) {
+        if (!oldOperation.getTitle().equals(newOperation.getTitle())
+                && operationRepository.existsByTitle(newOperation.getTitle())) {
+            throw new IllegalStateException("Operation name already exists");
+        }
+
+        if (Objects.nonNull(oldOperation.getId())) {
+            newOperation.setId(oldOperation.getId());
+
+            var saved = operationRepository.save(newOperation);
+            log.info("Updated operation with id: {}, title: {}", saved.getId(), saved.getTitle());
+            return saved;
+        }
+
+        log.error("Can't update a operation with non-null id");
+        throw new IllegalStateException("Can't update a operation with non-null id");
+
     }
 
     public void deleteOperation(Long id) {

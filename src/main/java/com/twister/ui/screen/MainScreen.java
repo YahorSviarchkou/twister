@@ -2,19 +2,15 @@ package com.twister.ui.screen;
 
 import com.twister.configuration.TwisterProperties;
 import com.twister.configuration.annotation.FXMLController;
-import com.twister.entity.Client;
-import com.twister.repository.ClientRepository;
+import com.twister.repository.CustomerRepository;
 import com.twister.ui.ScreenManager;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -33,11 +29,6 @@ public class MainScreen extends ScreenController {
 
     public static final String FXML_PATH = "/fxml/main-screen.fxml";
 
-    @FXML
-    private Text appVersion;
-    @FXML
-    private StackPane contentPane;
-
     @Autowired
     private ApplicationContext context;
     @Autowired
@@ -45,63 +36,46 @@ public class MainScreen extends ScreenController {
     @Autowired
     private TwisterProperties twisterProperties;
     @Autowired
-    private ClientRepository clientRepository;
+    private CustomerRepository customerRepository;
+
+    @FXML
+    private Text appVersion;
+    @FXML
+    private StackPane contentPane;
+    @FXML
+    private ImageView imageView;
 
     private Class<? extends ScreenController> currentTab;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        appVersion.setText(twisterProperties.getFullVersion());
+        imageView.setFitHeight(contentPane.getHeight());
+    }
+
     @FXML
     void clickClients(MouseEvent event) {
-        showTab(ClientsScreen.class);
+        showTab(CustomersTabScreen.class);
     }
 
     @FXML
     void clickWorks(MouseEvent event) {
-        showTab(WorksScreen.class);
+        showTab(OrdersTabScreen.class);
     }
 
     @FXML
     void clickOperations(MouseEvent mouseEvent) {
-        showTab(OperationsScreen.class);
+        showTab(OperationsTabScreen.class);
     }
 
     @FXML
     void clickSpares(MouseEvent mouseEvent) {
-        showTab(SparesScreen.class);
+        showTab(SparesTabScreen.class);
     }
 
     @FXML
     void clickExit(MouseEvent mouseEvent) {
         showCloseDialog();
-    }
-
-    @FXML
-    void createUser(ActionEvent event) {
-//        var dbUser = clientRepository.save(user);
-//        table.getItems().add(dbUser);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        appVersion.setText(twisterProperties.getFullVersion());
-//        tf.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        ts.setCellValueFactory(new PropertyValueFactory<>("login"));
-//        tt.setCellValueFactory(new PropertyValueFactory<>("password"));
-//
-//        table.setItems(initialData());
-    }
-
-    private ObservableList<Client> initialData() {
-//        var u1 = new User();
-//        u1.setLogin("user1");
-//        u1.setPassword("password1");
-//        userRepository.save(u1);
-//
-//        var u2 = new User();
-//        u2.setLogin("user2");
-//        u2.setPassword("password2");
-//        userRepository.save(u2);
-
-        return FXCollections.observableArrayList(clientRepository.findAll());
     }
 
     private void showCloseDialog() {
@@ -115,13 +89,14 @@ public class MainScreen extends ScreenController {
 
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.CLOSE) {
-            Platform.exit();;
+            Platform.exit();
         }
     }
 
     private void showTab(Class<? extends ScreenController> tabClass) {
-        if(Objects.isNull(currentTab) || tabClass != currentTab) {
+        if (Objects.isNull(currentTab) || tabClass != currentTab) {
             currentTab = tabClass;
+            contentPane.getChildren().clear();
             screenManager.loadChildFxml(contentPane, tabClass);
         }
     }

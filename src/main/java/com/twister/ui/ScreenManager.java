@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ScreenManager {
 
+    ApplicationContext context;
     TwisterProperties twisterProperties;
 
     @Lookup
@@ -47,7 +50,16 @@ public class ScreenManager {
         });
     }
 
-    public Region loadFxml(Class<? extends ScreenController> controllerClass) {
+    public <T extends ScreenController> void showDialogAndWait(Class<T> controllerClass) {
+        var dialog = loadFxml(controllerClass);
+        var stage = new Stage();
+
+        stage.setScene(new Scene(dialog));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+    }
+
+    public <T extends ScreenController> Region loadFxml(Class<T> controllerClass) {
         log.info("Loading FXML for controller: {}", controllerClass.getSimpleName());
 
         if (!controllerClass.isAnnotationPresent(FXMLController.class)) {
@@ -62,6 +74,7 @@ public class ScreenManager {
         try {
             var fxmlLoader = getFxmlLoader();
             fxmlLoader.setLocation(Objects.requireNonNull(controllerClass.getResource(fxmlPath)));
+            fxmlLoader.setController(context.getBean(controllerClass));
 
             return fxmlLoader.load();
         } catch (NullPointerException npe) {
@@ -77,7 +90,7 @@ public class ScreenManager {
         }
     }
 
-    public Parent loadChildFxml(Pane parentPane, Class<? extends ScreenController> controllerClass) {
+    public <T extends ScreenController> Parent loadChildFxml(Pane parentPane, Class<T> controllerClass) {
         Region child = loadFxml(controllerClass);
         parentPane.getChildren().setAll(child);
         child.prefWidthProperty().bind(parentPane.widthProperty());

@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import static com.twister.ui.UiUtils.showErrorDialog;
+import java.util.Locale;
+
+import static com.twister.util.UiUtils.showErrorDialog;
 
 @SpringBootApplication
 @EnableConfigurationProperties(TwisterProperties.class)
@@ -28,6 +30,8 @@ public class TwisterApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GlobalExceptionHandler.register();
+
+        Locale.setDefault(new Locale("ru"));
 
         new LoaderBuilder()
                 .configure(primaryStage)
