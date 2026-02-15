@@ -40,7 +40,7 @@ jobs:
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: build\installer\twister.exe
+          files: build\installer\Twister-1.0.0.exe
           tag_name: ${{ github.event.inputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

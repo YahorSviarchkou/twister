@@ -48,24 +48,28 @@ application {
 tasks.register<Copy>("prepareJPackage") {
     dependsOn("bootJar")
     from(tasks.getByName("bootJar").outputs.files)
-    into("$buildDir/jpackage-input")
+    into(layout.buildDirectory.dir("jpackage-input").get().asFile.absolutePath)
 }
 
 tasks.register<Exec>("createInstaller") {
     dependsOn("prepareJPackage")
+    doFirst {
+        layout.buildDirectory.dir("installer").get().asFile.mkdirs()
+    }
     commandLine(
         "jpackage",
         "--type", "exe",
         "--name", "Twister",
-        "--input", "$buildDir/jpackage-input",
+        "--input", layout.buildDirectory.dir("jpackage-input").get().asFile.absolutePath,
         "--main-jar", "twister-1.0-SNAPSHOT.jar",
-        "--main-class", "com.twister.TwisterApplication",
+        "--main-class",  "org.springframework.boot.loader.JarLauncher",
         "--java-options", "-Xmx512m",
         "--win-menu",
         "--win-shortcut",
         "--win-dir-chooser",
         "--win-per-user-install",
         "--app-version", "1.0.0",
-        "--vendor", "Twister"
+        "--vendor", "Twister",
+        "--dest", layout.buildDirectory.dir("installer").get().asFile.absolutePath
     )
 }
