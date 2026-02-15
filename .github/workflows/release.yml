@@ -7,10 +7,6 @@ on:
         description: 'Choose brunch'
         required: true
         default: 'main'
-      release_name:
-        description: 'Release name'
-        required: true
-        default: 'v1.0.0'
 
 jobs:
   build-windows:
@@ -41,6 +37,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: build\installer\Twister-1.0.0.exe
-          tag_name: ${{ github.event.inputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
