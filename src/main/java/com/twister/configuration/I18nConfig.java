@@ -13,7 +13,7 @@ public class I18nConfig {
         var messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:i18n/messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setCacheSeconds(3600); // обновление каждые 60 минут (можно 0 — для разработки)
+        messageSource.setCacheSeconds(3600);
         return messageSource;
     }
 }

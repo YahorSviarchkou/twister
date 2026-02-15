@@ -44,3 +44,28 @@ javafx {
 application {
     mainClass.set("com.twister.TwisterApplication")
 }
+
+tasks.register<Copy>("prepareJPackage") {
+    dependsOn("bootJar")
+    from(tasks.getByName("bootJar").outputs.files)
+    into("$buildDir/jpackage-input")
+}
+
+tasks.register<Exec>("createInstaller") {
+    dependsOn("prepareJPackage")
+    commandLine(
+        "jpackage",
+        "--type", "exe",
+        "--name", "Twister",
+        "--input", "$buildDir/jpackage-input",
+        "--main-jar", "twister-1.0-SNAPSHOT.jar",
+        "--main-class", "com.twister.TwisterApplication",
+        "--java-options", "-Xmx512m",
+        "--win-menu",
+        "--win-shortcut",
+        "--win-dir-chooser",
+        "--win-per-user-install",
+        "--app-version", "1.0.0",
+        "--vendor", "Twister"
+    )
+}

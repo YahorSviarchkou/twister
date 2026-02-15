@@ -46,7 +46,7 @@ public class TwisterApplication extends Application {
                         .listeners(appStartEvent)
                         .run(args);
             } catch (Exception e) {
-                showErrorDialog("Error Starting Spring Boot", "Ошибка запуска", (resp) -> {
+                showErrorDialog("Error Starting Spring Boot", "Ошибка запуска: " + e.getMessage(), (resp) -> {
                     if (ButtonType.OK == resp) {
                         primaryStage.close();
                     }
