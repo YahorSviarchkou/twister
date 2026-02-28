@@ -51,25 +51,21 @@ tasks.register<Copy>("prepareJPackage") {
     into(layout.buildDirectory.dir("jpackage-input").get().asFile.absolutePath)
 }
 
-tasks.register<Exec>("createInstaller") {
-    dependsOn("prepareJPackage")
-    doFirst {
-        layout.buildDirectory.dir("installer").get().asFile.mkdirs()
-    }
+tasks.register<Exec>("createAppImage") {
+    dependsOn("bootJar")
+
+    val libsDir = layout.buildDirectory.dir("libs").get().asFile
+    val outputDir = layout.buildDirectory.dir("app-image").get().asFile
+    outputDir.mkdirs()
+
     commandLine(
         "jpackage",
-        "--type", "exe",
+        "--type", "app-image",
         "--name", "Twister",
-        "--input", layout.buildDirectory.dir("jpackage-input").get().asFile.absolutePath,
+        "--input", libsDir.absolutePath,
         "--main-jar", "twister-1.0-SNAPSHOT.jar",
+        "--main-class", "org.springframework.boot.loader.launch.JarLauncher",
         "--java-options", "-Xmx512m",
-        "--win-menu",
-        "--win-shortcut",
-        "--win-dir-chooser",
-        "--win-per-user-install",
-        "--win-upgrade-uuid", "d290f1ee-6c54-4b01-90e6-d701748f0851",
-        "--app-version", "1.0.0",
-        "--vendor", "Twister",
-        "--dest", layout.buildDirectory.dir("installer").get().asFile.absolutePath
+        "--dest", outputDir.absolutePath
     )
 }
