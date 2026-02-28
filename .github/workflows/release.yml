@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Choose brunch'
+        description: 'Choose branch'
         required: true
         default: 'main'
       release_name:
@@ -30,23 +30,24 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
-      - name: Install WiX Toolset
-        run: choco install wixtoolset -y
+      - name: Build App Image
+        run: .\gradlew clean bootJar createAppImage
 
-      - name: Grant gradlew execute
-        run: icacls gradlew /grant Everyone:F
+      - name: Install Inno Setup
+        run: choco install innosetup -y
 
-      - name: Build project
-        run: .\gradlew clean bootJar createInstaller
+      - name: Build Installer
+        run: iscc installer.iss
 
       - name: List installer directory
-        run: dir build/installer
+        run: dir build\installer
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: build/installer/*.exe
+          files: build/installer/TwisterInstaller.exe
           tag_name: ${{ github.event.inputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
