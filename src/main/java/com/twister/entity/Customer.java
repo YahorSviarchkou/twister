@@ -1,7 +1,7 @@
 package com.twister.entity;
 
 import com.twister.configuration.annotation.UIColumn;
-import com.twister.ui.TableModel;
+import com.twister.ui.components.TableModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

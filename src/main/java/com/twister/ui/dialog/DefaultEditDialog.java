@@ -1,6 +1,6 @@
 package com.twister.ui.dialog;
 
-import com.twister.ui.TableModel;
+import com.twister.ui.components.TableModel;
 import com.twister.ui.components.ValidatableField;
 import com.twister.ui.screen.ScreenController;
 import com.twister.util.I18nUtils;

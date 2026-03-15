@@ -1,7 +1,7 @@
 package com.twister.ui.screen;
 
 import com.twister.configuration.annotation.FXMLController;
-import com.twister.payload.ProcessedOrder;
+import com.twister.viewmodel.ProcessedOrder;
 import com.twister.service.OrderService;
 import com.twister.ui.dialog.DefaultEditDialog;
 import com.twister.ui.dialog.OrderEditDialog;

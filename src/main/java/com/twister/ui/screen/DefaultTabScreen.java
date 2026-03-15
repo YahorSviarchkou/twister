@@ -2,7 +2,7 @@ package com.twister.ui.screen;
 
 import com.twister.configuration.annotation.UIColumn;
 import com.twister.ui.ScreenManager;
-import com.twister.ui.TableModel;
+import com.twister.ui.components.TableModel;
 import com.twister.ui.dialog.DefaultEditDialog;
 import com.twister.ui.dialog.DialogMode;
 import com.twister.util.I18nUtils;

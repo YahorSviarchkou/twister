@@ -1,7 +1,7 @@
 package com.twister.service;
 
 import com.twister.entity.Order;
-import com.twister.payload.ProcessedOrder;
+import com.twister.viewmodel.ProcessedOrder;
 import com.twister.repository.OrderRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package com.twister.payload;
+package com.twister.viewmodel;
 
 import com.twister.configuration.annotation.UIColumn;
-import com.twister.ui.TableModel;
+import com.twister.ui.components.TableModel;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
