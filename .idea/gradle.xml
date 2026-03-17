@@ -8,8 +8,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/javafx-spring-boot-starter" />
+            <option value="$PROJECT_DIR$/tw-core" />
+            <option value="$PROJECT_DIR$/tw-desktop-app" />
+            <option value="$PROJECT_DIR$/tw-javafx-starter" />
+            <option value="$PROJECT_DIR$/tw-persistence-api" />
+            <option value="$PROJECT_DIR$/tw-web-app" />
           </set>
         </option>
       </GradleProjectSettings>

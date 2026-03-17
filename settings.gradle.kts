@@ -1,4 +1,7 @@
 rootProject.name = "twister"
 
-include("core")
-include("javafx-spring-boot-starter")
+include("tw-core")
+include("tw-javafx-starter")
+include("tw-persistence-api")
+include("tw-desktop-app")
+include("tw-web-app")
