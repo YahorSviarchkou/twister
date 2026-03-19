@@ -6,7 +6,7 @@ import com.twister.domain.reference.Spare;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.domain.repair.RepairTaskItemStatus;
-import com.twister.repository.repair.RepairTaskItemRepository;
+import com.twister.workflow.dao.repair.RepairTaskItemDao;
 import com.twister.workflow.service.reference.ServiceTypeService;
 import com.twister.workflow.service.reference.SpareService;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +25,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RepairTaskItemService {
 
-    private final RepairTaskItemRepository repository;
+    private final RepairTaskItemDao repairTaskItemDao;
     private final RepairTaskService repairTaskService;
     private final RepairTaskItemStatusHistoryService historyService;
     private final ServiceTypeService serviceTypeService;
     private final SpareService spareService;
 
-    public List<RepairTaskItem> getAllByTaskId(Long taskId) {
-        return repository.findRepairTaskItemByTask_Id(taskId);
+    public RepairTaskItem getRepairTaskItemById(Long id) {
+        return repairTaskItemDao.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("RepairTaskItem not found by id: " + id));
     }
 
-    public RepairTaskItem getRepairTaskItemById(Long id) {
-        return repository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("RepairTaskItem not found by id: " + id));
+    public List<RepairTaskItem> getAllByTaskId(Long taskId) {
+        return repairTaskItemDao.findRepairTaskItemByTaskId(taskId);
     }
 
     @Transactional
@@ -67,7 +67,7 @@ public class RepairTaskItemService {
             .map(spareService::getAllByIds)
             .ifPresent(repairTaskItem::setSpares);
 
-        RepairTaskItem dbRepairTaskItem = repository.save(repairTaskItem);
+        RepairTaskItem dbRepairTaskItem = repairTaskItemDao.save(repairTaskItem);
         log.info("RepairTaskItem successfully created with id: {}", dbRepairTaskItem.getId());
 
         historyService.updateWorkflowStatus(dbRepairTaskItem.getId(), RepairTaskItemStatus.CREATED);
@@ -87,7 +87,7 @@ public class RepairTaskItemService {
         }
 
         dbRepairTaskItem.getSpares().addAll(dbSpares);
-        repository.save(dbRepairTaskItem);
+        repairTaskItemDao.save(dbRepairTaskItem);
         log.info("Spares successfully added to RepairTaskItem with id: {}", dbRepairTaskItem.getId());
     }
 
@@ -102,7 +102,7 @@ public class RepairTaskItemService {
         ServiceType dbServiceType = serviceTypeService.getById(serviceTypeId);
 
         dbRepairTaskItem.setServiceType(dbServiceType);
-        repository.save(dbRepairTaskItem);
+        repairTaskItemDao.save(dbRepairTaskItem);
 
         log.info("ServiceType changed: {} -> {}, for RepairTaskItem with id: {}",
             previousServiceType.getName(), dbServiceType.getName(), dbRepairTaskItem.getId());

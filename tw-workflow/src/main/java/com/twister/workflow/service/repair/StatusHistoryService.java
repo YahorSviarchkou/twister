@@ -1,7 +1,7 @@
 package com.twister.workflow.service.repair;
 
 import com.twister.domain.repair.StatusHistory;
-import com.twister.repository.repair.StatusHistoryRepository;
+import com.twister.workflow.dao.repair.StatusHistoryDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> {
 
-    private StatusHistoryRepository<H> repository;
+    private StatusHistoryDao<H> statusHistoryDao;
 
     public abstract Class<W> getWorkflowClass();
 
@@ -21,12 +21,12 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> 
 
     protected abstract H buildHistory(Long workflowItem, S status);
 
-    public void setRepository(@Autowired StatusHistoryRepository<H> repository) {
-        this.repository = repository;
+    public void setStatusHistoryDao(@Autowired StatusHistoryDao<H> statusHistoryDao) {
+        this.statusHistoryDao = statusHistoryDao;
     }
 
     public Optional<H> getLastWorkflowStatusHistory(Long workflowItemId) {
-        return repository.findFirstByWorkflowItem_IdOrderByCreatedAtDesc(workflowItemId);
+        return statusHistoryDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(workflowItemId);
     }
 
     public S getLastWorkflowStatus(Long workflowItemId) {
@@ -41,7 +41,7 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> 
     }
 
     public List<H> getWorkflowStatusHistory(Long workflowItemId) {
-        List<H> statusHistory = repository.findByWorkflowItem_Id(workflowItemId);
+        List<H> statusHistory = statusHistoryDao.findByWorkflowItemId(workflowItemId);
         return statusHistory.isEmpty()
             ? Collections.emptyList()
             : Collections.unmodifiableList(statusHistory);
@@ -61,7 +61,7 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> 
         H history = buildHistory(workflowItemId, status);
         validateHistory(history, workflowItemId, status);
 
-        H dbHistory = repository.save(history);
+        H dbHistory = statusHistoryDao.save(history);
         log.info(
             "Status: {}, successfully applied to {} workflow item id: {}, historyId: {}",
             status, workflow, workflowItemId, dbHistory.getId()

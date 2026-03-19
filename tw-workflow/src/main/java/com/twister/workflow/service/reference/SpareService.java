@@ -2,14 +2,12 @@ package com.twister.workflow.service.reference;
 
 import com.twister.domain.reference.Reference;
 import com.twister.domain.reference.Spare;
-import com.twister.repository.reference.SpareRepository;
 import com.twister.payload.SpareFilter;
-import com.twister.repository.specification.SpareSpecification;
+import com.twister.workflow.dao.reference.SpareDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,28 +21,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SpareService {
 
-    private final SpareRepository spareRepository;
+    private final SpareDao spareDao;
     private final SpareBrandService spareBrandService;
     private final SpareTypeService spareTypeService;
     private final CountryService countryService;
     private final TransportTypeService transportTypeService;
 
     public Spare getSpareById(Long id) {
-        return spareRepository.findById(id)
+        return spareDao.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Spare not found by id: " + id));
     }
 
     public Page<Spare> getAllSpares(SpareFilter filter, Pageable pageable) {
-        Specification<Spare> specification = SpareSpecification.search(filter);
-        return spareRepository.findAll(specification, pageable);
+        return spareDao.findAll(filter, pageable);
     }
 
     public Page<Spare> getAllSpares(Pageable pageable) {
-        return spareRepository.findAll(pageable);
+        return spareDao.findAll(pageable);
     }
 
     public List<Spare> getAllByIds(Set<Long> ids) {
-        List<Spare> spares = spareRepository.findByIdIn(ids);
+        List<Spare> spares = spareDao.findByIdIn(ids);
         if (spares.isEmpty()) {
             throw new NoSuchElementException("No spares found for ids: " + ids);
         }
@@ -67,7 +64,7 @@ public class SpareService {
         updateNotNull(spare, spare);
 
         spare.setId(null);
-        Spare dbSpare = spareRepository.save(spare);
+        Spare dbSpare = spareDao.save(spare);
         log.info("Spare successfully created with id: {}", dbSpare.getId());
     }
 
@@ -80,7 +77,7 @@ public class SpareService {
         Spare dbSpare = getSpareById(spare.getId());
         updateNotNull(spare, dbSpare);
 
-        spareRepository.save(dbSpare);
+        spareDao.save(dbSpare);
         log.info("Spare with id: {}, successfully updated", spare.getId());
     }
 
@@ -111,7 +108,7 @@ public class SpareService {
         }
 
         spare.setWarehouseQuantity(spare.getWarehouseQuantity() - quantity);
-        Spare savedSpare = spareRepository.save(spare);
+        Spare savedSpare = spareDao.save(spare);
         log.info("Spares[id: {}] warehouse quantity updated to {}",
             savedSpare.getId(), savedSpare.getWarehouseQuantity()
         );

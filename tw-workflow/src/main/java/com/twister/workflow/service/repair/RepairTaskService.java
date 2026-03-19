@@ -3,7 +3,7 @@ package com.twister.workflow.service.repair;
 import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskStatus;
-import com.twister.repository.repair.RepairTaskRepository;
+import com.twister.workflow.dao.repair.RepairTaskDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,22 +18,22 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class RepairTaskService {
 
-    private final RepairTaskRepository repairTaskRepository;
+    private final RepairTaskDao repairTaskDao;
     private final RepairOrderService repairOrderService;
     private final RepairTaskStatusHistoryService historyService;
 
     public RepairTask getRepairTaskById(Long id) {
-        return repairTaskRepository.findById(id)
+        return repairTaskDao.findById(id)
             .orElseThrow(() -> new NoSuchElementException("RepairTask not found by id: " + id));
     }
 
     public RepairTask getRepairTaskByOrderId(Long orderId) {
-        return repairTaskRepository.findByOrder_Id(orderId)
+        return repairTaskDao.findByOrderId(orderId)
             .orElseThrow(() -> new NoSuchElementException("RepairTask not found by orderId: " + orderId));
     }
 
     public Page<RepairTask> getAllRepairTasks(Pageable pageable) {
-        return repairTaskRepository.findAll(pageable);
+        return repairTaskDao.findAll(pageable);
     }
 
     @Transactional
@@ -54,7 +54,7 @@ public class RepairTaskService {
         repairTask.setId(null);
         repairTask.setOrder(repairOrder);
 
-        RepairTask dbRepairTask = repairTaskRepository.save(repairTask);
+        RepairTask dbRepairTask = repairTaskDao.save(repairTask);
         log.info("RepairTask successfully created with id: {}", dbRepairTask.getId());
 
         historyService.updateWorkflowStatus(dbRepairTask.getId(), RepairTaskStatus.CREATED);

@@ -4,16 +4,14 @@ import com.twister.domain.Customer;
 import com.twister.domain.reference.Transport;
 import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairOrderStatus;
-import com.twister.repository.repair.RepairOrderRepository;
 import com.twister.payload.RepairOrderFilter;
-import com.twister.repository.specification.RepairOrderSpecification;
-import com.twister.service.CustomerService;
+import com.twister.workflow.dao.repair.RepairOrderDao;
+import com.twister.workflow.service.CustomerService;
 import com.twister.workflow.service.reference.TransportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,28 +22,27 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class RepairOrderService {
 
-    private final RepairOrderRepository repository;
+    private final RepairOrderDao repairOrderDao;
     private final CustomerService customerService;
     private final TransportService transportService;
     private final RepairOrderStatusHistoryService historyService;
 
     public RepairOrder getRepairOrderById(Long id) {
-        return repository.findById(id)
+        return repairOrderDao.findById(id)
             .orElseThrow(() -> new NoSuchElementException("RepairOrder not found by id: " + id));
     }
 
     public RepairOrder getRepairOrderByTaskId(Long taskId) {
-        return repository.findRepairOrderByTask_Id(taskId)
+        return repairOrderDao.findRepairOrderByTaskId(taskId)
             .orElseThrow(() -> new NoSuchElementException("RepairOrder not found by repair task id: " + taskId));
     }
 
     public Page<RepairOrder> findAll(RepairOrderFilter filter, Pageable pageable) {
-        Specification<RepairOrder> specification = RepairOrderSpecification.search(filter);
-        return repository.findAll(specification, pageable);
+        return repairOrderDao.findAll(filter, pageable);
     }
 
     public Page<RepairOrder> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+        return repairOrderDao.findAll(pageable);
     }
 
     @Transactional
@@ -65,7 +62,7 @@ public class RepairOrderService {
         repairOrder.setCustomer(customer);
         repairOrder.setTransport(transport);
 
-        RepairOrder dbRepairOrder = repository.save(repairOrder);
+        RepairOrder dbRepairOrder = repairOrderDao.save(repairOrder);
         log.info("RepairOrder successfully created with id: {}", dbRepairOrder.getId());
 
         historyService.updateWorkflowStatus(dbRepairOrder.getId(), RepairOrderStatus.OPEN);

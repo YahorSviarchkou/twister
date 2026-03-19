@@ -2,15 +2,13 @@ package com.twister.workflow.service;
 
 import com.twister.domain.Customer;
 import com.twister.domain.reference.Transport;
-import com.twister.repository.CustomerRepository;
 import com.twister.payload.CustomerFilter;
-import com.twister.repository.specification.CustomerSpecification;
+import com.twister.workflow.dao.CustomerDao;
 import com.twister.workflow.service.reference.TransportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -21,23 +19,22 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerDao customerDao;
     private final TransportService transportService;
 
     public Customer getCustomerById(Long id) {
-        return customerRepository.findById(id)
+        return customerDao.findById(id)
             .orElseThrow(() ->
                 new NoSuchElementException("Customer not found by id: " + id)
             );
     }
 
     public Page<Customer> getAllCustomers(CustomerFilter filter, Pageable pageable) {
-        Specification<Customer> specification = CustomerSpecification.search(filter);
-        return customerRepository.findAll(specification, pageable);
+        return customerDao.findAll(filter, pageable);
     }
 
     public Page<Customer> getAllCustomers(Pageable pageable) {
-        return customerRepository.findAll(pageable);
+        return customerDao.findAll(pageable);
     }
 
     public void create(Customer customer) {
@@ -56,7 +53,7 @@ public class CustomerService {
         }
 
         customer.setId(null);
-        Customer dbCustomer = customerRepository.save(customer);
+        Customer dbCustomer = customerDao.save(customer);
         log.info("Customer successfully created with id: {}", dbCustomer.getId());
     }
 
@@ -76,7 +73,7 @@ public class CustomerService {
         Optional.ofNullable(customer.getPatronymic()).ifPresent(dbCustomer::setPatronymic);
         Optional.ofNullable(customer.getPhone()).ifPresent(dbCustomer::setPhone);
 
-        customerRepository.save(dbCustomer);
+        customerDao.save(dbCustomer);
         log.info("Customer with id: {}, successfully updated", customer.getId());
     }
 
@@ -96,7 +93,7 @@ public class CustomerService {
         }
 
         customer.getTransportList().add(transport);
-        customerRepository.save(customer);
+        customerDao.save(customer);
         log.info("Transport [id: {}] successfully added to customer[id: {}]", transportId, customerId);
     }
 
@@ -106,7 +103,7 @@ public class CustomerService {
         }
 
         log.info("Deleting customer by id: {}", customerId);
-        customerRepository.deleteById(customerId);
+        customerDao.deleteById(customerId);
         log.info("Customer with id: {}, was successfully deleted", customerId);
     }
 }

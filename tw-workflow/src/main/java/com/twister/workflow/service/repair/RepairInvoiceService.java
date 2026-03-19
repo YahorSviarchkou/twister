@@ -6,7 +6,7 @@ import com.twister.domain.repair.RepairInvoice;
 import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
-import com.twister.repository.repair.RepairInvoiceRepository;
+import com.twister.workflow.dao.repair.RepairInvoiceDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,18 +24,18 @@ public class RepairInvoiceService {
 
     private static final BigDecimal ZERO = BigDecimal.ZERO;
 
-    private final RepairInvoiceRepository repository;
+    private final RepairInvoiceDao repairInvoiceDao;
     private final RepairOrderService repairOrderService;
     private final RepairTaskService repairTaskService;
     private final RepairTaskItemService repairTaskItemService;
 
     public RepairInvoice getRepairInvoiceById(Long id) {
-        return repository.findById(id)
+        return repairInvoiceDao.findById(id)
             .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by id: " + id));
     }
 
     public RepairInvoice getRepairInvoiceByOrderId(Long orderId) {
-        return repository.findRepairInvoiceByOrder_Id(orderId)
+        return repairInvoiceDao.findRepairInvoiceByOrderId(orderId)
             .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by order id: " + orderId));
     }
 
@@ -54,7 +54,7 @@ public class RepairInvoiceService {
         invoice.setSparePrice(calculateSparesPrice(repairTaskItems));
         invoice.setDescription(description);
 
-        RepairInvoice dbRepairInvoice = repository.save(invoice);
+        RepairInvoice dbRepairInvoice = repairInvoiceDao.save(invoice);
         log.info("Repair invoice with id: {}, successfully generated for order id: {}",
             dbRepairInvoice.getId(), orderId
         );

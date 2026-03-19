@@ -1,7 +1,7 @@
 package com.twister.workflow.service.reference;
 
 import com.twister.domain.reference.Reference;
-import com.twister.repository.reference.ReferenceRepository;
+import com.twister.workflow.dao.reference.ReferenceDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class ReferenceService<T extends Reference> {
 
-    protected ReferenceRepository<T> repository;
+    protected ReferenceDao<T> referenceDao;
 
     protected abstract Class<T> getReferenceClass();
 
-    public void setRepository(@Autowired ReferenceRepository<T> repository) {
-        this.repository = repository;
+    public void setReferenceDao(@Autowired ReferenceDao<T> referenceDao) {
+        this.referenceDao = referenceDao;
     }
 
     public T getById(Long id) {
-        return repository.findById(id)
+        return referenceDao.findById(id)
             .orElseThrow(() ->
                 new NoSuchElementException(
                     "%s not found by id: %s".formatted(getReferenceClassName(), id)
@@ -34,7 +34,7 @@ public abstract class ReferenceService<T extends Reference> {
     }
 
     public T getByName(String name) {
-        return repository.findByName(name.toUpperCase())
+        return referenceDao.findByName(name.toUpperCase())
             .orElseThrow(() ->
                 new NoSuchElementException(
                     "%s not found by name: %s".formatted(getReferenceClassName(), name)
@@ -43,15 +43,15 @@ public abstract class ReferenceService<T extends Reference> {
     }
 
     public Page<T> getAllContainingName(String name, Pageable pageable) {
-        return repository.findByNameContainingIgnoreCase(name, pageable);
+        return referenceDao.findByNameContainingIgnoreCase(name, pageable);
     }
 
     public Page<T> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+        return referenceDao.findAll(pageable);
     }
 
     public List<T> getAllByIds(Set<Long> ids) {
-        List<T> refs = repository.findByIdIn(ids);
+        List<T> refs = referenceDao.findByIdIn(ids);
         if (refs.isEmpty()) {
             throw new NoSuchElementException("No reference found for ids: " + ids);
         }
@@ -72,7 +72,7 @@ public abstract class ReferenceService<T extends Reference> {
 
         log.info("Creating {}: {}", getReferenceClassName(), reference.getName());
 
-        Optional<T> existingReference = repository.findByName(reference.getName());
+        Optional<T> existingReference = referenceDao.findByName(reference.getName());
         if (existingReference.isPresent()) {
             throw new IllegalArgumentException(
                 "%s with name: %s, already exists".formatted(getReferenceClassName(), reference.getName())
@@ -81,7 +81,7 @@ public abstract class ReferenceService<T extends Reference> {
 
         reference.setId(null);
         reference.setName(reference.getName().toUpperCase());
-        T savedRefence = repository.save(reference);
+        T savedRefence = referenceDao.save(reference);
         log.info("{}: {}, saved with id: {}",
             getReferenceClassName(), savedRefence.getName(), savedRefence.getId()
         );
@@ -89,7 +89,7 @@ public abstract class ReferenceService<T extends Reference> {
 
     protected void delete(Long id) {
         log.info("Deleting {} by id: {}", getReferenceClassName(), id);
-        repository.deleteById(id);
+        referenceDao.deleteById(id);
         log.info("{} with id: {}, was successfully deleted", getReferenceClassName(), id);
     }
 
