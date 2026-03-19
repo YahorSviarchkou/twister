@@ -1,13 +1,13 @@
 package com.twister.persistence.repository.repair;
 
-import com.twister.domain.repair.RepairTaskItem;
+import com.twister.persistence.entity.repair.RepairTaskItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface RepairTaskItemRepository extends JpaRepository<RepairTaskItem, Long> {
+public interface RepairTaskItemRepository extends JpaRepository<RepairTaskItemEntity, Long> {
 
-    List<RepairTaskItem> findRepairTaskItemByTask_Id(Long taskId);
+    List<RepairTaskItemEntity> findRepairTaskItemByTask_Id(Long taskId);
 }

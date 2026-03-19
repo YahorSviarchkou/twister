@@ -1,6 +1,6 @@
 package com.twister.persistence.entity.reference;
 
-import com.twister.domain.AuditableEntity;
+import com.twister.persistence.entity.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

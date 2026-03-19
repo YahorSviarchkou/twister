@@ -24,7 +24,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class User extends AuditableEntity {
+public class UserEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +41,5 @@ public class User extends AuditableEntity {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleEnum role;
 }

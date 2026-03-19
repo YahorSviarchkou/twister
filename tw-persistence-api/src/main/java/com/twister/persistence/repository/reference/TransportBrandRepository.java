@@ -1,7 +1,6 @@
 package com.twister.persistence.repository.reference;
 
-import com.twister.domain.reference.TransportBrand;
-import com.twister.repository.reference.ReferenceRepository;
+import com.twister.persistence.entity.reference.TransportBrand;
 import org.springframework.stereotype.Repository;
 
 @Repository

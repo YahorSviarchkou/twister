@@ -1,7 +1,5 @@
-package com.twister.persistence.entity.repair;
+package com.twister.persistence.entity.reference;
 
-import com.twister.domain.repair.RepairTaskItem;
-import com.twister.domain.repair.StatusHistoryEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -11,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Table(name = "repair_task_item_status_history")
+@Table(name = "transport")
 @Entity
 @Getter
 @Setter
@@ -19,5 +17,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairTaskItemStatusHistory extends StatusHistoryEntity<RepairTaskItem, RepairTaskItemStatus> {
+public class TransportEntity extends CompositeReferenceEntity<TransportTypeEntity, TransportBrand> {
 }

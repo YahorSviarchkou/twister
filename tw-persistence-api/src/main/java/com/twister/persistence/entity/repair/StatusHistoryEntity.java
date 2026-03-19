@@ -1,6 +1,6 @@
 package com.twister.persistence.entity.repair;
 
-import com.twister.domain.AuditableEntity;
+import com.twister.persistence.entity.AuditableEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;

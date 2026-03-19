@@ -1,6 +1,5 @@
 package com.twister.persistence.entity.reference;
 
-import com.twister.domain.reference.ReferenceEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;

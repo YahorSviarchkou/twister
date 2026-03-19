@@ -1,7 +1,5 @@
 package com.twister.persistence.entity.reference;
 
-import com.twister.domain.reference.Country;
-import com.twister.domain.reference.ReferenceEntity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
@@ -35,7 +33,7 @@ public abstract class CompositeReferenceEntity<TYPE, BRAND> extends ReferenceEnt
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    private Country country;
+    private CountryEntity country;
 
     private String sku;
 

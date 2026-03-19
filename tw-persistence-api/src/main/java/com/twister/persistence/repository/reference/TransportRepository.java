@@ -1,9 +1,8 @@
 package com.twister.persistence.repository.reference;
 
-import com.twister.domain.reference.Transport;
-import com.twister.repository.reference.CompositeReferenceRepository;
+import com.twister.persistence.entity.reference.TransportEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TransportRepository extends CompositeReferenceRepository<Transport> {
+public interface TransportRepository extends CompositeReferenceRepository<TransportEntity> {
 }

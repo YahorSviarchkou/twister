@@ -1,6 +1,5 @@
 package com.twister.persistence.entity.reference;
 
-import com.twister.domain.reference.TransportType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Table(name = "transport")
+@Table(name = "spare_brands")
 @Entity
 @Getter
 @Setter
@@ -18,5 +17,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Transport extends CompositeReferenceEntity<TransportType, TransportBrand> {
+public class SpareBrandEntity extends ReferenceEntity {
 }

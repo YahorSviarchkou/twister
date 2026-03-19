@@ -1,9 +1,8 @@
 package com.twister.persistence.repository.specification;
 
-import com.twister.domain.Customer;
-import com.twister.domain.reference.Transport;
-import com.twister.domain.repair.RepairOrder;
-import com.twister.repository.specification.RepairOrderFilter;
+import com.twister.persistence.entity.CustomerEntity;
+import com.twister.persistence.entity.reference.TransportEntity;
+import com.twister.persistence.entity.repair.RepairOrderEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 public final class RepairOrderSpecification {
 
-    public static Specification<RepairOrder> search(RepairOrderFilter filter) {
+    public static Specification<RepairOrderEntity> search(RepairOrderFilter filter) {
         return ((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -23,12 +22,12 @@ public final class RepairOrderSpecification {
             ));
 
             Optional.ofNullable(filter.customerId()).ifPresent(customerId -> {
-                Join<RepairOrder, Customer> customerJoin = root.join("customer");
+                Join<RepairOrderEntity, CustomerEntity> customerJoin = root.join("customer");
                 predicates.add(cb.equal(customerJoin.get("id"), customerId));
             });
 
             Optional.ofNullable(filter.transportId()).ifPresent(transportId -> {
-                Join<RepairOrder, Transport> transportJoin = root.join("transport");
+                Join<RepairOrderEntity, TransportEntity> transportJoin = root.join("transport");
                 predicates.add(cb.equal(transportJoin.get("id"), transportId));
             });
 

@@ -1,8 +1,8 @@
 package com.twister.persistence.entity.repair;
 
-public enum RepairTaskStatus {
+public enum RepairTaskItemStatusEnum {
     CREATED,
-    DIAGNOSIS,
+    WAITING_PARTS,
     IN_PROGRESS,
     READY,
     CANCELED

@@ -1,11 +1,8 @@
 package com.twister.persistence.entity.repair;
 
-import com.twister.domain.AuditableEntity;
-import com.twister.domain.Customer;
-import com.twister.domain.reference.Transport;
-import com.twister.domain.repair.RepairInvoice;
-import com.twister.domain.repair.RepairOrderStatusHistory;
-import com.twister.domain.repair.RepairTask;
+import com.twister.persistence.entity.AuditableEntity;
+import com.twister.persistence.entity.CustomerEntity;
+import com.twister.persistence.entity.reference.TransportEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairOrder extends AuditableEntity {
+public class RepairOrderEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,22 +39,22 @@ public class RepairOrder extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private CustomerEntity customer;
 
     @ManyToOne
     @JoinColumn(name = "transport_id", nullable = false)
-    private Transport transport;
+    private TransportEntity transport;
 
     @OneToMany(mappedBy = "order")
-    private List<RepairOrderStatusHistory> statusHistory;
+    private List<RepairOrderStatusHistoryEntity> statusHistory;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "order")
-    private RepairTask task;
+    private RepairTaskEntity task;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "order")
-    private RepairInvoice invoice;
+    private RepairInvoiceEntity invoice;
 }

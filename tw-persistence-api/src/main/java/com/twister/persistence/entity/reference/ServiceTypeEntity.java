@@ -1,7 +1,5 @@
-package com.twister.persistence.entity.repair;
+package com.twister.persistence.entity.reference;
 
-import com.twister.domain.repair.RepairOrderStatus;
-import com.twister.domain.repair.StatusHistoryEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -11,7 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Table(name = "repair_order_status_history")
+import java.math.BigDecimal;
+
+@Table(name = "service_types")
 @Entity
 @Getter
 @Setter
@@ -19,5 +19,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairOrderStatusHistory extends StatusHistoryEntity<RepairOrder, RepairOrderStatus> {
+public class ServiceTypeEntity extends ReferenceEntity {
+
+    private BigDecimal price;
 }

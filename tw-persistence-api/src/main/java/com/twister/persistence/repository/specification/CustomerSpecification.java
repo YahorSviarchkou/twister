@@ -1,7 +1,6 @@
 package com.twister.persistence.repository.specification;
 
-import com.twister.domain.Customer;
-import com.twister.repository.specification.CustomerFilter;
+import com.twister.persistence.entity.CustomerEntity;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -11,7 +10,7 @@ import java.util.Optional;
 
 public final class CustomerSpecification {
 
-    public static Specification<Customer> search(CustomerFilter filter) {
+    public static Specification<CustomerEntity> search(CustomerFilter filter) {
         return ((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 

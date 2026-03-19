@@ -1,11 +1,12 @@
 package com.twister.persistence.entity.repair;
 
-import com.twister.domain.AuditableEntity;
+import com.twister.persistence.entity.AuditableEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -15,9 +16,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-@Table(name = "repair_invoices")
+@Table(name = "repair_tasks")
 @Entity
 @Getter
 @Setter
@@ -25,21 +26,19 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairInvoice extends AuditableEntity {
+public class RepairTaskEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
-
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private RepairOrder order;
+    private RepairOrderEntity order;
 
-    private BigDecimal diagnosticPrice;
+    @OneToMany(mappedBy = "task")
+    private List<RepairTaskItemEntity> items;
 
-    private BigDecimal sparePrice;
-
-    private BigDecimal laborPrice;
+    @OneToMany(mappedBy = "taskItem")
+    private List<RepairTaskStatusHistoryEntity> statusHistory;
 }

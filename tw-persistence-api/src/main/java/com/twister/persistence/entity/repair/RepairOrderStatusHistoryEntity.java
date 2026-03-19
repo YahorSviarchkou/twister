@@ -1,4 +1,4 @@
-package com.twister.persistence.entity.reference;
+package com.twister.persistence.entity.repair;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Table(name = "transport_types")
+@Table(name = "repair_order_status_history")
 @Entity
 @Getter
 @Setter
@@ -17,5 +17,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TransportType extends ReferenceEntity {
+public class RepairOrderStatusHistoryEntity extends StatusHistoryEntity<RepairOrderEntity, RepairOrderStatusEnum> {
 }

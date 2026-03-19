@@ -1,9 +1,9 @@
 package com.twister.persistence.repository.reference;
 
-import com.twister.domain.reference.Country;
+import com.twister.persistence.entity.reference.CountryEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CountryRepository extends ReferenceRepository<Country> {
+public interface CountryRepository extends ReferenceRepository<CountryEntity> {
 
 }

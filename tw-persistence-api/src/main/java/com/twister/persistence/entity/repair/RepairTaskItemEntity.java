@@ -1,8 +1,8 @@
 package com.twister.persistence.entity.repair;
 
-import com.twister.domain.AuditableEntity;
-import com.twister.domain.reference.ServiceType;
-import com.twister.domain.reference.Spare;
+import com.twister.persistence.entity.AuditableEntity;
+import com.twister.persistence.entity.reference.ServiceTypeEntity;
+import com.twister.persistence.entity.reference.SpareEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +30,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairTaskItem extends AuditableEntity {
+public class RepairTaskItemEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +40,11 @@ public class RepairTaskItem extends AuditableEntity {
     @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private RepairTask task;
+    private RepairTaskEntity task;
 
     @ManyToOne
     @JoinColumn(name = "service_type_id", nullable = false)
-    private ServiceType serviceType;
+    private ServiceTypeEntity serviceType;
 
     @ManyToMany
     @JoinTable(
@@ -52,8 +52,8 @@ public class RepairTaskItem extends AuditableEntity {
         joinColumns = {@JoinColumn(name = "item_id")},
         inverseJoinColumns = {@JoinColumn(name = "spare_id")}
     )
-    private List<Spare> spares;
+    private List<SpareEntity> spares;
 
     @OneToMany(mappedBy = "taskItem")
-    private List<RepairTaskItemStatusHistory> statusHistory;
+    private List<RepairTaskItemStatusHistoryEntity> statusHistory;
 }

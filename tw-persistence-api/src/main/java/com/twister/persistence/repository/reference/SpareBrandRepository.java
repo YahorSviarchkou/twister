@@ -1,8 +1,8 @@
 package com.twister.persistence.repository.reference;
 
-import com.twister.domain.reference.SpareBrand;
+import com.twister.persistence.entity.reference.SpareBrandEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpareBrandRepository extends ReferenceRepository<SpareBrand> {
+public interface SpareBrandRepository extends ReferenceRepository<SpareBrandEntity> {
 }

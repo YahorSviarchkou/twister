@@ -1,6 +1,6 @@
 package com.twister.persistence.entity;
 
-public enum Role {
+public enum RoleEnum {
     ADMIN,
     WORKER,
     ACCOUNTANT

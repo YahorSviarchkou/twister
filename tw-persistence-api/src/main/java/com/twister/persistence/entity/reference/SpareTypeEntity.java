@@ -1,6 +1,5 @@
 package com.twister.persistence.entity.reference;
 
-import com.twister.domain.reference.ReferenceEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Table(name = "countries")
+@Table(name = "spare_types")
 @Entity
 @Getter
 @Setter
@@ -18,5 +17,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Country extends ReferenceEntity {
+public class SpareTypeEntity extends ReferenceEntity {
 }

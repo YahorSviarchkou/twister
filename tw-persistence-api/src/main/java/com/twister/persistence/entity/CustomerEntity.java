@@ -1,7 +1,6 @@
 package com.twister.persistence.entity;
 
-import com.twister.domain.AuditableEntity;
-import com.twister.domain.reference.Transport;
+import com.twister.persistence.entity.reference.TransportEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Customer extends AuditableEntity {
+public class CustomerEntity extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +52,5 @@ public class Customer extends AuditableEntity {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<Transport> transportList;
+    List<TransportEntity> transportList;
 }
