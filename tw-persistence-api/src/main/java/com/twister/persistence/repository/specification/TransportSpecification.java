@@ -1,5 +1,6 @@
 package com.twister.persistence.repository.specification;
 
+import com.twister.payload.TransportFilter;
 import com.twister.persistence.entity.reference.CountryEntity;
 import com.twister.persistence.entity.reference.TransportBrand;
 import com.twister.persistence.entity.reference.TransportEntity;

@@ -1,9 +1,5 @@
 package com.twister.domain.reference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,23 +9,17 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
-@Table(name = "spares")
-@Entity
+
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Spare extends CompositeReferenceEntity<SpareType, SpareBrand> {
+public class Spare extends CompositeReference<SpareType, SpareBrand> {
 
-    @ManyToOne
-    @JoinColumn(name = "transport_type_id")
     private TransportType transportType;
-
     private String material;
-
     private Integer warehouseQuantity;
-
     private BigDecimal price;
 }

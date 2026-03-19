@@ -1,6 +1,6 @@
 package com.twister.persistence.entity;
 
-import com.twister.service.AuditorProvider;
+import com.twister.persistence.AuditorProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;

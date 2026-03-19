@@ -1,5 +1,6 @@
 package com.twister.persistence.repository.specification;
 
+import com.twister.payload.SpareFilter;
 import com.twister.persistence.entity.reference.CountryEntity;
 import com.twister.persistence.entity.reference.SpareBrandEntity;
 import com.twister.persistence.entity.reference.SpareEntity;

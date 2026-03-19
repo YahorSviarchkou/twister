@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":tw-core"))
     implementation(libs.bundles.spring.jpa)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)

@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/tw-javafx-starter" />
             <option value="$PROJECT_DIR$/tw-persistence-api" />
             <option value="$PROJECT_DIR$/tw-web-app" />
+            <option value="$PROJECT_DIR$/tw-workflow" />
           </set>
         </option>
       </GradleProjectSettings>

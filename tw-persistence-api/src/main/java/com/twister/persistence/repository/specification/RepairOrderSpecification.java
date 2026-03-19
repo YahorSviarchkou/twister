@@ -1,5 +1,6 @@
 package com.twister.persistence.repository.specification;
 
+import com.twister.payload.RepairOrderFilter;
 import com.twister.persistence.entity.CustomerEntity;
 import com.twister.persistence.entity.reference.TransportEntity;
 import com.twister.persistence.entity.repair.RepairOrderEntity;

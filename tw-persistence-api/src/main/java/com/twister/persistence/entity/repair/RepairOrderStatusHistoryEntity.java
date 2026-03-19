@@ -1,5 +1,6 @@
 package com.twister.persistence.entity.repair;
 
+import com.twister.domain.repair.RepairOrderStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -17,5 +18,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairOrderStatusHistoryEntity extends StatusHistoryEntity<RepairOrderEntity, RepairOrderStatusEnum> {
+public class RepairOrderStatusHistoryEntity
+    extends StatusHistoryEntity<RepairOrderEntity, RepairOrderStatus> {
 }

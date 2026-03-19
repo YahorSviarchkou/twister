@@ -1,5 +1,6 @@
 package com.twister.persistence.entity;
 
+import com.twister.domain.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,5 +42,5 @@ public class UserEntity extends AuditableEntity {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private Role role;
 }

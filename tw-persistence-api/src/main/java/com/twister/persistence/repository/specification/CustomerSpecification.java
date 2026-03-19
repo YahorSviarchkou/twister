@@ -1,5 +1,6 @@
 package com.twister.persistence.repository.specification;
 
+import com.twister.payload.CustomerFilter;
 import com.twister.persistence.entity.CustomerEntity;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
