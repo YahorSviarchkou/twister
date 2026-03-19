@@ -3,8 +3,6 @@ package com.twister.domain.repair;
 import com.twister.domain.AuditableModel;
 import com.twister.domain.Customer;
 import com.twister.domain.reference.Transport;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +12,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Table(name = "repair_orders")
-@Entity
 @Getter
 @Setter
 @SuperBuilder
@@ -23,7 +19,6 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class RepairOrder extends AuditableModel {
-
 
     private Long id;
     private String description;
