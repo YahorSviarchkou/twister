@@ -4,6 +4,4 @@ import com.twister.persistence.entity.repair.RepairTaskStatusHistoryEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepairTaskStatusHistoryRepository
-    extends StatusHistoryRepository<RepairTaskStatusHistoryEntity> {
-}
+public interface RepairTaskStatusHistoryRepository extends StatusHistoryRepository<RepairTaskStatusHistoryEntity> {}

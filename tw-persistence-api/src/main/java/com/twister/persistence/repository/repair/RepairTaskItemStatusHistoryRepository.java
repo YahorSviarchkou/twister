@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepairTaskItemStatusHistoryRepository
-    extends StatusHistoryRepository<RepairTaskItemStatusHistoryEntity> {
-}
+        extends StatusHistoryRepository<RepairTaskItemStatusHistoryEntity> {}

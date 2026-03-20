@@ -17,5 +17,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TransportEntity extends CompositeReferenceEntity<TransportTypeEntity, TransportBrand> {
-}
+public class TransportEntity extends CompositeReferenceEntity<TransportTypeEntity, TransportBrand> {}

@@ -4,14 +4,13 @@ import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskStatus;
 import com.twister.workflow.dao.repair.RepairTaskDao;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -23,13 +22,15 @@ public class RepairTaskService {
     private final RepairTaskStatusHistoryService historyService;
 
     public RepairTask getRepairTaskById(Long id) {
-        return repairTaskDao.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("RepairTask not found by id: " + id));
+        return repairTaskDao
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("RepairTask not found by id: " + id));
     }
 
     public RepairTask getRepairTaskByOrderId(Long orderId) {
-        return repairTaskDao.findByOrderId(orderId)
-            .orElseThrow(() -> new NoSuchElementException("RepairTask not found by orderId: " + orderId));
+        return repairTaskDao
+                .findByOrderId(orderId)
+                .orElseThrow(() -> new NoSuchElementException("RepairTask not found by orderId: " + orderId));
     }
 
     public Page<RepairTask> getAllRepairTasks(Pageable pageable) {
@@ -49,7 +50,8 @@ public class RepairTaskService {
         if (repairTask.getOrder() == null) {
             throw new IllegalStateException("RepairTask must related with repair order");
         }
-        RepairOrder repairOrder = repairOrderService.getRepairOrderById(repairTask.getOrder().getId());
+        RepairOrder repairOrder =
+                repairOrderService.getRepairOrderById(repairTask.getOrder().getId());
 
         repairTask.setId(null);
         repairTask.setOrder(repairOrder);
@@ -67,6 +69,5 @@ public class RepairTaskService {
         if (repairTask.getItems() != null && !repairTask.getItems().isEmpty()) {
             throw new IllegalStateException("RepairTask must not contains items on updating");
         }
-
     }
 }

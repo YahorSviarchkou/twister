@@ -13,5 +13,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Country extends Reference {
-}
+public class Country extends Reference {}

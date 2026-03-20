@@ -10,14 +10,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Table(name = "customers")
 @Entity
@@ -46,10 +45,9 @@ public class CustomerEntity extends AuditableEntity {
 
     @ManyToMany
     @JoinTable(
-        name = "customer_transport",
-        joinColumns = {@JoinColumn(name = "customer_id")},
-        inverseJoinColumns = {@JoinColumn(name = "transport_id")}
-    )
+            name = "customer_transport",
+            joinColumns = {@JoinColumn(name = "customer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "transport_id")})
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<TransportEntity> transportList;

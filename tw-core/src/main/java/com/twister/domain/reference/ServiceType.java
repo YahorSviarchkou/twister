@@ -1,13 +1,12 @@
 package com.twister.domain.reference;
 
+import java.math.BigDecimal;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter

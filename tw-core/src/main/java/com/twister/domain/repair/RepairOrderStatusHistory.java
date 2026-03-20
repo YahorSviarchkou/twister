@@ -13,5 +13,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairOrderStatusHistory extends StatusHistory<RepairOrder, RepairOrderStatus> {
-}
+public class RepairOrderStatusHistory extends StatusHistory<RepairOrder, RepairOrderStatus> {}

@@ -7,11 +7,10 @@ import com.twister.persistence.entity.reference.TransportEntity;
 import com.twister.persistence.entity.reference.TransportTypeEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
 
 public final class TransportSpecification {
 
@@ -19,13 +18,13 @@ public final class TransportSpecification {
         return ((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Optional.ofNullable(filter.name()).ifPresent(name -> predicates.add(
-                cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%")
-            ));
+            Optional.ofNullable(filter.name())
+                    .ifPresent(name ->
+                            predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%")));
 
-            Optional.ofNullable(filter.model()).ifPresent(model -> predicates.add(
-                cb.like(cb.lower(root.get("model")), "%" + model.toLowerCase() + "%")
-            ));
+            Optional.ofNullable(filter.model())
+                    .ifPresent(model ->
+                            predicates.add(cb.like(cb.lower(root.get("model")), "%" + model.toLowerCase() + "%")));
 
             Optional.ofNullable(filter.brandId()).ifPresent(brandId -> {
                 Join<TransportEntity, TransportBrand> brandJoin = root.join("brand");
@@ -42,10 +41,8 @@ public final class TransportSpecification {
                 predicates.add(cb.equal(typeJoin.get("id"), transportTypeId));
             });
 
-            Optional.ofNullable(filter.issueYear()).ifPresent(issueYear -> predicates.add(
-                cb.equal(root.get("issueYear"), issueYear)
-            ));
-
+            Optional.ofNullable(filter.issueYear())
+                    .ifPresent(issueYear -> predicates.add(cb.equal(root.get("issueYear"), issueYear)));
 
             return cb.and(predicates.toArray(new Predicate[0]));
         });

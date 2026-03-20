@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends
-    JpaRepository<CustomerEntity, Long>, JpaSpecificationExecutor<CustomerEntity> {
-}
+public interface CustomerRepository
+        extends JpaRepository<CustomerEntity, Long>, JpaSpecificationExecutor<CustomerEntity> {}

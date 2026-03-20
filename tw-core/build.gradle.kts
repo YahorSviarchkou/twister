@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    alias(libs.plugins.spotless.plugin)
 }
 
 group = "com.twister"
@@ -19,4 +20,24 @@ repositories {
 dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+}
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        targetExclude("**/build/generated/**")
+        palantirJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+tasks.named("spotlessApply") {
+    group = "verification"
+    description = "Formats code and moves the task to the Verification group."
+}
+
+tasks.check{
+    dependsOn(tasks.spotlessCheck)
 }

@@ -1,14 +1,13 @@
 package com.twister.domain.repair;
 
 import com.twister.domain.AuditableModel;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +16,6 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class RepairTask extends AuditableModel {
-
 
     private Long id;
     private RepairOrder order;

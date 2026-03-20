@@ -4,5 +4,4 @@ import com.twister.persistence.entity.reference.ServiceTypeEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServiceTypeRepository extends ReferenceRepository<ServiceTypeEntity> {
-}
+public interface ServiceTypeRepository extends ReferenceRepository<ServiceTypeEntity> {}

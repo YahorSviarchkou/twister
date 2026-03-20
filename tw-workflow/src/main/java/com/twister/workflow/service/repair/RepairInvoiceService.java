@@ -7,15 +7,14 @@ import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.workflow.dao.repair.RepairInvoiceDao;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -30,18 +29,18 @@ public class RepairInvoiceService {
     private final RepairTaskItemService repairTaskItemService;
 
     public RepairInvoice getRepairInvoiceById(Long id) {
-        return repairInvoiceDao.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by id: " + id));
+        return repairInvoiceDao
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by id: " + id));
     }
 
     public RepairInvoice getRepairInvoiceByOrderId(Long orderId) {
-        return repairInvoiceDao.findRepairInvoiceByOrderId(orderId)
-            .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by order id: " + orderId));
+        return repairInvoiceDao
+                .findRepairInvoiceByOrderId(orderId)
+                .orElseThrow(() -> new NoSuchElementException("RepairInvoice not found by order id: " + orderId));
     }
 
-    public RepairInvoice generateRepairInvoice(BigDecimal diagnosticPrice,
-                                               String description,
-                                               Long orderId) {
+    public RepairInvoice generateRepairInvoice(BigDecimal diagnosticPrice, String description, Long orderId) {
         RepairOrder repairOrder = repairOrderService.getRepairOrderById(orderId);
 
         RepairTask repairTask = repairTaskService.getRepairTaskByOrderId(orderId);
@@ -55,26 +54,27 @@ public class RepairInvoiceService {
         invoice.setDescription(description);
 
         RepairInvoice dbRepairInvoice = repairInvoiceDao.save(invoice);
-        log.info("Repair invoice with id: {}, successfully generated for order id: {}",
-            dbRepairInvoice.getId(), orderId
-        );
+        log.info(
+                "Repair invoice with id: {}, successfully generated for order id: {}",
+                dbRepairInvoice.getId(),
+                orderId);
         return dbRepairInvoice;
     }
 
     private BigDecimal calculateLaborPrice(List<RepairTaskItem> repairTaskItems) {
         return repairTaskItems.stream()
-            .map(RepairTaskItem::getServiceType)
-            .map(ServiceType::getPrice)
-            .reduce(BigDecimal::add)
-            .orElse(ZERO);
+                .map(RepairTaskItem::getServiceType)
+                .map(ServiceType::getPrice)
+                .reduce(BigDecimal::add)
+                .orElse(ZERO);
     }
 
     private BigDecimal calculateSparesPrice(List<RepairTaskItem> repairTaskItems) {
         return repairTaskItems.stream()
-            .map(RepairTaskItem::getSpares)
-            .flatMap(Collection::stream)
-            .map(Spare::getPrice)
-            .reduce(BigDecimal::add)
-            .orElse(ZERO);
+                .map(RepairTaskItem::getSpares)
+                .flatMap(Collection::stream)
+                .map(Spare::getPrice)
+                .reduce(BigDecimal::add)
+                .orElse(ZERO);
     }
 }

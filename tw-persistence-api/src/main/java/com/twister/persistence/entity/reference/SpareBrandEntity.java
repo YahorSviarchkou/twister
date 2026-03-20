@@ -17,5 +17,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class SpareBrandEntity extends ReferenceEntity {
-}
+public class SpareBrandEntity extends ReferenceEntity {}

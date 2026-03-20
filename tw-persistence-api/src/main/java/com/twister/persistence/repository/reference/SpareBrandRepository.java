@@ -4,5 +4,4 @@ import com.twister.persistence.entity.reference.SpareBrandEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpareBrandRepository extends ReferenceRepository<SpareBrandEntity> {
-}
+public interface SpareBrandRepository extends ReferenceRepository<SpareBrandEntity> {}

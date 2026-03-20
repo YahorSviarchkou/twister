@@ -2,14 +2,13 @@ package com.twister.persistence.entity.reference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.math.BigDecimal;
 
 @Table(name = "service_types")
 @Entity

@@ -1,8 +1,3 @@
 package com.twister.payload;
 
-public record RepairOrderFilter(
-    String description,
-    Long customerId,
-    Long transportId
-) {
-}
+public record RepairOrderFilter(String description, Long customerId, Long transportId) {}

@@ -3,11 +3,10 @@ package com.twister.persistence.repository.specification;
 import com.twister.payload.CustomerFilter;
 import com.twister.persistence.entity.CustomerEntity;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
 
 public final class CustomerSpecification {
 
@@ -15,21 +14,20 @@ public final class CustomerSpecification {
         return ((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Optional.ofNullable(filter.surname()).ifPresent(surname -> predicates.add(
-                cb.like(cb.lower(root.get("surname")), "%" + surname.toLowerCase() + "%")
-            ));
+            Optional.ofNullable(filter.surname())
+                    .ifPresent(surname ->
+                            predicates.add(cb.like(cb.lower(root.get("surname")), "%" + surname.toLowerCase() + "%")));
 
-            Optional.ofNullable(filter.name()).ifPresent(name -> predicates.add(
-                cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%")
-            ));
+            Optional.ofNullable(filter.name())
+                    .ifPresent(name ->
+                            predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%")));
 
-            Optional.ofNullable(filter.patronymic()).ifPresent(patronymic -> predicates.add(
-                cb.like(root.get("patronymic"), "%" + patronymic.toLowerCase() + "%")
-            ));
+            Optional.ofNullable(filter.patronymic())
+                    .ifPresent(patronymic ->
+                            predicates.add(cb.like(root.get("patronymic"), "%" + patronymic.toLowerCase() + "%")));
 
-            Optional.ofNullable(filter.phone()).ifPresent(phone -> predicates.add(
-                cb.like(root.get("phone"), "%" + phone + "%")
-            ));
+            Optional.ofNullable(filter.phone())
+                    .ifPresent(phone -> predicates.add(cb.like(root.get("phone"), "%" + phone + "%")));
 
             return cb.and(predicates.toArray(new Predicate[0]));
         });

@@ -6,7 +6,6 @@ import com.twister.domain.repair.RepairTaskStatus;
 import com.twister.workflow.service.workflow.event.RepairOrderEvent;
 import com.twister.workflow.service.workflow.event.RepairTaskEvent;
 import com.twister.workflow.service.workflow.event.RepairTaskItemEvent;
-
 import java.util.List;
 
 public final class TransitionTable {
