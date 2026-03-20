@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RepairOrderStatusHistoryService
-    extends StatusHistoryService<RepairOrder, RepairOrderStatusHistory, RepairOrderStatus> {
+        extends StatusHistoryService<RepairOrder, RepairOrderStatusHistory, RepairOrderStatus> {
 
     private final RepairOrderService repairOrderService;
 
@@ -29,8 +29,8 @@ public class RepairOrderStatusHistoryService
     protected RepairOrderStatusHistory buildHistory(Long workflowItem, RepairOrderStatus status) {
         RepairOrder repairOrder = repairOrderService.getRepairOrderById(workflowItem);
         return RepairOrderStatusHistory.builder()
-            .workflowItem(repairOrder)
-            .status(status)
-            .build();
+                .workflowItem(repairOrder)
+                .status(status)
+                .build();
     }
 }

@@ -23,10 +23,9 @@ public class CustomerService {
     private final TransportService transportService;
 
     public Customer getCustomerById(Long id) {
-        return customerDao.findById(id)
-            .orElseThrow(() ->
-                new NoSuchElementException("Customer not found by id: " + id)
-            );
+        return customerDao
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Customer not found by id: " + id));
     }
 
     public Page<Customer> getAllCustomers(CustomerFilter filter, Pageable pageable) {
@@ -46,9 +45,12 @@ public class CustomerService {
         }
 
         log.info("Creating customer");
-        if (customer.getName() == null || customer.getName().isBlank()
-            || customer.getSurname() == null || customer.getSurname().isBlank()
-            || customer.getPatronymic() == null || customer.getPatronymic().isBlank()) {
+        if (customer.getName() == null
+                || customer.getName().isBlank()
+                || customer.getSurname() == null
+                || customer.getSurname().isBlank()
+                || customer.getPatronymic() == null
+                || customer.getPatronymic().isBlank()) {
             throw new IllegalStateException("Customer name, surname, patronymic must exist");
         }
 
@@ -88,8 +90,7 @@ public class CustomerService {
         log.info("Adding transport[id: {}] to customer[id: {}]", transportId, customerId);
         if (customer.getTransportList().contains(transport)) {
             throw new IllegalStateException(
-                "Customer[id: %s] already has transport[id: %s]".formatted(customerId, transportId)
-            );
+                    "Customer[id: %s] already has transport[id: %s]".formatted(customerId, transportId));
         }
 
         customer.getTransportList().add(transport);

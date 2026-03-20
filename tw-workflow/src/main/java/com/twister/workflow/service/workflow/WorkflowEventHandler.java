@@ -16,8 +16,8 @@ public class WorkflowEventHandler {
 
     public <S, E extends WorkflowEvent<?>> S applyEvent(E event, Long workflowItemId) {
         log.info("Handling event: {}, for workflow item id: {}", event, workflowItemId);
-        StatusHistoryService<?, ?, S> statusHistoryService = workflowRegistry
-            .getStatusHistoryService(event.getWorkflowType());
+        StatusHistoryService<?, ?, S> statusHistoryService =
+                workflowRegistry.getStatusHistoryService(event.getWorkflowType());
 
         S current = statusHistoryService.getLastWorkflowStatus(workflowItemId);
 

@@ -50,9 +50,7 @@ public class WorkflowOrchestrator {
             case RepairTaskEvent ignored -> handleCascadeForTask((RepairTaskStatus) resultingStatus, workflowItemId);
             case RepairTaskItemEvent ignored ->
                 handleCascadeForTaskItem((RepairTaskItemStatus) resultingStatus, workflowItemId);
-            default -> throw new UnsupportedOperationException(
-                "Unsupported event: " + event
-            );
+            default -> throw new UnsupportedOperationException("Unsupported event: " + event);
         }
     }
 
@@ -93,14 +91,12 @@ public class WorkflowOrchestrator {
     private void handleReadyTask(Long taskId) {
         RepairOrder repairOrder = repairOrderService.getRepairOrderByTaskId(taskId);
         self.execute(RepairOrderEvent.GENERATE_INVOICE, repairOrder.getId());
-        //todo gen invoice needed? or manual
+        // todo gen invoice needed? or manual
     }
 
     private void handleCanceledTask(Long taskId) {
         List<RepairTaskItem> repairTaskItems = repairTaskItemService.getAllByTaskId(taskId);
-        repairTaskItems.forEach(item ->
-            self.execute(RepairTaskItemEvent.CANCEL, item.getId()));
-
+        repairTaskItems.forEach(item -> self.execute(RepairTaskItemEvent.CANCEL, item.getId()));
     }
 
     private void handleReadyTaskItem(Long taskItemId) {
@@ -108,11 +104,11 @@ public class WorkflowOrchestrator {
         long taskId = item.getTask().getId();
 
         List<RepairTaskItemStatusHistory> itemStatuses =
-            repairTaskItemStatusHistoryService.getLastWorkflowStatusesByTaskId(taskId);
+                repairTaskItemStatusHistoryService.getLastWorkflowStatusesByTaskId(taskId);
 
         boolean allItemsReady = itemStatuses.stream()
-            .map(RepairTaskItemStatusHistory::getStatus)
-            .allMatch(status -> status == RepairTaskItemStatus.READY);
+                .map(RepairTaskItemStatusHistory::getStatus)
+                .allMatch(status -> status == RepairTaskItemStatus.READY);
 
         if (allItemsReady) {
             self.execute(RepairTaskEvent.FINISH_TASK, taskId);
