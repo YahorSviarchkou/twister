@@ -9,16 +9,15 @@ import com.twister.domain.repair.RepairTaskItemStatus;
 import com.twister.workflow.dao.repair.RepairTaskItemDao;
 import com.twister.workflow.service.reference.ServiceTypeService;
 import com.twister.workflow.service.reference.SpareService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -32,8 +31,9 @@ public class RepairTaskItemService {
     private final SpareService spareService;
 
     public RepairTaskItem getRepairTaskItemById(Long id) {
-        return repairTaskItemDao.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("RepairTaskItem not found by id: " + id));
+        return repairTaskItemDao
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("RepairTaskItem not found by id: " + id));
     }
 
     public List<RepairTaskItem> getAllByTaskId(Long taskId) {
@@ -50,22 +50,20 @@ public class RepairTaskItemService {
         if (repairTaskItem.getTask() == null) {
             throw new IllegalStateException("RepairTaskItem must related with repair task");
         }
-        RepairTask repairTask = repairTaskService.getRepairTaskById(repairTaskItem.getTask().getId());
+        RepairTask repairTask =
+                repairTaskService.getRepairTaskById(repairTaskItem.getTask().getId());
 
         repairTaskItem.setId(null);
         repairTaskItem.setTask(repairTask);
 
         Optional.ofNullable(repairTaskItem.getServiceType())
-            .map(serviceType -> serviceTypeService.getById(serviceType.getId()))
-            .ifPresent(repairTaskItem::setServiceType);
+                .map(serviceType -> serviceTypeService.getById(serviceType.getId()))
+                .ifPresent(repairTaskItem::setServiceType);
 
         Optional.ofNullable(repairTaskItem.getSpares())
-            .map(spares -> spares.stream()
-                .map(Reference::getId)
-                .collect(Collectors.toSet())
-            )
-            .map(spareService::getAllByIds)
-            .ifPresent(repairTaskItem::setSpares);
+                .map(spares -> spares.stream().map(Reference::getId).collect(Collectors.toSet()))
+                .map(spareService::getAllByIds)
+                .ifPresent(repairTaskItem::setSpares);
 
         RepairTaskItem dbRepairTaskItem = repairTaskItemDao.save(repairTaskItem);
         log.info("RepairTaskItem successfully created with id: {}", dbRepairTaskItem.getId());
@@ -104,7 +102,10 @@ public class RepairTaskItemService {
         dbRepairTaskItem.setServiceType(dbServiceType);
         repairTaskItemDao.save(dbRepairTaskItem);
 
-        log.info("ServiceType changed: {} -> {}, for RepairTaskItem with id: {}",
-            previousServiceType.getName(), dbServiceType.getName(), dbRepairTaskItem.getId());
+        log.info(
+                "ServiceType changed: {} -> {}, for RepairTaskItem with id: {}",
+                previousServiceType.getName(),
+                dbServiceType.getName(),
+                dbRepairTaskItem.getId());
     }
 }

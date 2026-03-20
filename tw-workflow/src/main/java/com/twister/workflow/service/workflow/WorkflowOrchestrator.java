@@ -15,13 +15,12 @@ import com.twister.workflow.service.workflow.event.RepairOrderEvent;
 import com.twister.workflow.service.workflow.event.RepairTaskEvent;
 import com.twister.workflow.service.workflow.event.RepairTaskItemEvent;
 import com.twister.workflow.service.workflow.event.WorkflowEvent;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -48,8 +47,8 @@ public class WorkflowOrchestrator {
         switch (event) {
             case RepairOrderEvent ignored -> handleCascadeForOrder((RepairOrderStatus) resultingStatus, workflowItemId);
             case RepairTaskEvent ignored -> handleCascadeForTask((RepairTaskStatus) resultingStatus, workflowItemId);
-            case RepairTaskItemEvent ignored ->
-                handleCascadeForTaskItem((RepairTaskItemStatus) resultingStatus, workflowItemId);
+            case RepairTaskItemEvent ignored -> handleCascadeForTaskItem(
+                    (RepairTaskItemStatus) resultingStatus, workflowItemId);
             default -> throw new UnsupportedOperationException("Unsupported event: " + event);
         }
     }

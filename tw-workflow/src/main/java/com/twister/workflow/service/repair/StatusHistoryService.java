@@ -2,13 +2,12 @@ package com.twister.workflow.service.repair;
 
 import com.twister.domain.repair.StatusHistory;
 import com.twister.workflow.dao.repair.StatusHistoryDao;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> {
@@ -32,19 +31,15 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> 
     public S getLastWorkflowStatus(Long workflowItemId) {
         Optional<H> lastWorkflowStatusHistory = getLastWorkflowStatusHistory(workflowItemId);
         return lastWorkflowStatusHistory
-            .map(StatusHistory::getStatus)
-            .orElseThrow(() -> new NoSuchElementException(
-                    "Status history not found for workflow %s by workflow item id: %s"
-                        .formatted(getWorkflowClassName(), workflowItemId)
-                )
-            );
+                .map(StatusHistory::getStatus)
+                .orElseThrow(() ->
+                        new NoSuchElementException("Status history not found for workflow %s by workflow item id: %s"
+                                .formatted(getWorkflowClassName(), workflowItemId)));
     }
 
     public List<H> getWorkflowStatusHistory(Long workflowItemId) {
         List<H> statusHistory = statusHistoryDao.findByWorkflowItemId(workflowItemId);
-        return statusHistory.isEmpty()
-            ? Collections.emptyList()
-            : Collections.unmodifiableList(statusHistory);
+        return statusHistory.isEmpty() ? Collections.emptyList() : Collections.unmodifiableList(statusHistory);
     }
 
     public S updateWorkflowStatus(Long workflowItemId, S status) {
@@ -63,18 +58,18 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<W, S>, S> 
 
         H dbHistory = statusHistoryDao.save(history);
         log.info(
-            "Status: {}, successfully applied to {} workflow item id: {}, historyId: {}",
-            status, workflow, workflowItemId, dbHistory.getId()
-        );
+                "Status: {}, successfully applied to {} workflow item id: {}, historyId: {}",
+                status,
+                workflow,
+                workflowItemId,
+                dbHistory.getId());
         return status;
     }
 
     private void validateHistory(H history, Long workflowItemId, S status) {
         if (history.getWorkflowItem() == null || history.getStatus() == null) {
-            throw new IllegalStateException(
-                "History fields are not defined for workflowItemId: %s, status: %s"
-                    .formatted(workflowItemId, status)
-            );
+            throw new IllegalStateException("History fields are not defined for workflowItemId: %s, status: %s"
+                    .formatted(workflowItemId, status));
         }
     }
 

@@ -3,17 +3,16 @@ package com.twister.workflow.service.repair;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.domain.repair.RepairTaskItemStatus;
 import com.twister.domain.repair.RepairTaskItemStatusHistory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class RepairTaskItemStatusHistoryService
-    extends StatusHistoryService<RepairTaskItem, RepairTaskItemStatusHistory, RepairTaskItemStatus> {
+        extends StatusHistoryService<RepairTaskItem, RepairTaskItemStatusHistory, RepairTaskItemStatus> {
 
     private final RepairTaskItemService repairTaskItemService;
 
@@ -31,9 +30,9 @@ public class RepairTaskItemStatusHistoryService
     protected RepairTaskItemStatusHistory buildHistory(Long workflowItem, RepairTaskItemStatus status) {
         RepairTaskItem repairTaskItem = repairTaskItemService.getRepairTaskItemById(workflowItem);
         return RepairTaskItemStatusHistory.builder()
-            .workflowItem(repairTaskItem)
-            .status(status)
-            .build();
+                .workflowItem(repairTaskItem)
+                .status(status)
+                .build();
     }
 
     public List<RepairTaskItemStatusHistory> getLastWorkflowStatusesByTaskId(Long taskId) {

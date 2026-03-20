@@ -3,14 +3,13 @@ package com.twister.workflow.service.reference;
 import com.twister.domain.reference.Transport;
 import com.twister.payload.TransportFilter;
 import com.twister.workflow.dao.reference.TransportDao;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,8 +22,9 @@ public class TransportService {
     private final CountryService countryService;
 
     public Transport getTransportById(Long id) {
-        return transportDao.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Transport not found by id: " + id));
+        return transportDao
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Transport not found by id: " + id));
     }
 
     public Page<Transport> getAllTransport(TransportFilter filter, Pageable pageable) {
@@ -70,13 +70,13 @@ public class TransportService {
         Optional.ofNullable(source.getIssueYear()).ifPresent(target::setIssueYear);
 
         Optional.ofNullable(source.getType())
-            .map(transportType -> transportTypeService.getById(transportType.getId()))
-            .ifPresent(target::setType);
+                .map(transportType -> transportTypeService.getById(transportType.getId()))
+                .ifPresent(target::setType);
         Optional.ofNullable(source.getBrand())
-            .map(transportBrand -> transportBrandService.getById(transportBrand.getId()))
-            .ifPresent(target::setBrand);
+                .map(transportBrand -> transportBrandService.getById(transportBrand.getId()))
+                .ifPresent(target::setBrand);
         Optional.ofNullable(source.getCountry())
-            .map(country -> countryService.getById(country.getId()))
-            .ifPresent(target::setCountry);
+                .map(country -> countryService.getById(country.getId()))
+                .ifPresent(target::setCountry);
     }
 }

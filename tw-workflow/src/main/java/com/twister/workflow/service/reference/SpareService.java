@@ -4,17 +4,16 @@ import com.twister.domain.reference.Reference;
 import com.twister.domain.reference.Spare;
 import com.twister.payload.SpareFilter;
 import com.twister.workflow.dao.reference.SpareDao;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -28,8 +27,7 @@ public class SpareService {
     private final TransportTypeService transportTypeService;
 
     public Spare getSpareById(Long id) {
-        return spareDao.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Spare not found by id: " + id));
+        return spareDao.findById(id).orElseThrow(() -> new NoSuchElementException("Spare not found by id: " + id));
     }
 
     public Page<Spare> getAllSpares(SpareFilter filter, Pageable pageable) {
@@ -109,9 +107,10 @@ public class SpareService {
 
         spare.setWarehouseQuantity(spare.getWarehouseQuantity() - quantity);
         Spare savedSpare = spareDao.save(spare);
-        log.info("Spares[id: {}] warehouse quantity updated to {}",
-            savedSpare.getId(), savedSpare.getWarehouseQuantity()
-        );
+        log.info(
+                "Spares[id: {}] warehouse quantity updated to {}",
+                savedSpare.getId(),
+                savedSpare.getWarehouseQuantity());
     }
 
     private void updateNotNull(Spare source, Spare target) {
@@ -126,16 +125,16 @@ public class SpareService {
         Optional.ofNullable(source.getIssueYear()).ifPresent(target::setIssueYear);
 
         Optional.ofNullable(source.getType())
-            .map(spareType -> spareTypeService.getById(spareType.getId()))
-            .ifPresent(target::setType);
+                .map(spareType -> spareTypeService.getById(spareType.getId()))
+                .ifPresent(target::setType);
         Optional.ofNullable(source.getBrand())
-            .map(spareBrand -> spareBrandService.getById(spareBrand.getId()))
-            .ifPresent(target::setBrand);
+                .map(spareBrand -> spareBrandService.getById(spareBrand.getId()))
+                .ifPresent(target::setBrand);
         Optional.ofNullable(source.getTransportType())
-            .map(transportType -> transportTypeService.getById(transportType.getId()))
-            .ifPresent(target::setTransportType);
+                .map(transportType -> transportTypeService.getById(transportType.getId()))
+                .ifPresent(target::setTransportType);
         Optional.ofNullable(source.getCountry())
-            .map(country -> countryService.getById(country.getId()))
-            .ifPresent(target::setCountry);
+                .map(country -> countryService.getById(country.getId()))
+                .ifPresent(target::setCountry);
     }
 }
