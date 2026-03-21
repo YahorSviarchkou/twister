@@ -82,7 +82,7 @@ public abstract class ReferenceService<T extends Reference> {
         return savedRefence;
     }
 
-    protected void delete(Long id) {
+    private void delete(Long id) {
         log.info("Deleting {} by id: {}", getReferenceClassName(), id);
         referenceDao.deleteById(id);
         log.info("{} with id: {}, was successfully deleted", getReferenceClassName(), id);
