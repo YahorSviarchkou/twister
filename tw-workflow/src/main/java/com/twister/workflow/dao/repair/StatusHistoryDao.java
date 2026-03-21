@@ -3,11 +3,11 @@ package com.twister.workflow.dao.repair;
 import java.util.List;
 import java.util.Optional;
 
-public interface StatusHistoryDao<T> {
+public interface StatusHistoryDao<H> {
 
-    Optional<T> findFirstByWorkflowItemIdOrderByCreatedAtDesc(Long workflowItemId);
+    Optional<H> findFirstByWorkflowItemIdOrderByCreatedAtDesc(Long workflowItemId);
 
-    List<T> findByWorkflowItemId(Long workflowItemId);
+    List<H> findByWorkflowItemId(Long workflowItemId);
 
-    T save(T history);
+    H save(H history);
 }

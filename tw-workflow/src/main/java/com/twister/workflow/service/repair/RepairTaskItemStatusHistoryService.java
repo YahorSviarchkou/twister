@@ -22,15 +22,10 @@ public class RepairTaskItemStatusHistoryService
     }
 
     @Override
-    protected Class<RepairTaskItemStatusHistory> getStatusHistoryClass() {
-        return RepairTaskItemStatusHistory.class;
-    }
-
-    @Override
-    protected RepairTaskItemStatusHistory buildHistory(Long workflowItem, RepairTaskItemStatus status) {
-        RepairTaskItem repairTaskItem = repairTaskItemService.getRepairTaskItemById(workflowItem);
+    protected RepairTaskItemStatusHistory buildHistory(Long workflowItemId, RepairTaskItemStatus status) {
+        RepairTaskItem repairTaskItem = repairTaskItemService.getRepairTaskItemById(workflowItemId);
         return RepairTaskItemStatusHistory.builder()
-                .workflowItem(repairTaskItem)
+                .workflowItemId(repairTaskItem.getId())
                 .status(status)
                 .build();
     }
