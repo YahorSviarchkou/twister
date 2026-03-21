@@ -35,7 +35,7 @@ public class TransportService {
         return transportDao.findAll(pageable);
     }
 
-    public void create(Transport transport) {
+    public Transport create(Transport transport) {
         if (transport == null) {
             throw new IllegalArgumentException("Transport not exist for creating");
         }
@@ -46,6 +46,7 @@ public class TransportService {
         transport.setId(null);
         Transport dbTransport = transportDao.save(transport);
         log.info("Transport successfully created with id: {}", dbTransport.getId());
+        return dbTransport;
     }
 
     public void update(Transport transport) {
@@ -62,7 +63,13 @@ public class TransportService {
     }
 
     private void updateNotNull(Transport source, Transport target) {
-        Optional.ofNullable(source.getName()).ifPresent(target::setName);
+        Optional.ofNullable(source.getName()).ifPresent(name -> {
+            Optional<Transport> existed = transportDao.findByName(name);
+            if (existed.isPresent()) {
+                throw new IllegalArgumentException("Transport with name: " + name + ", already exist");
+            }
+            target.setName(name);
+        });
         Optional.ofNullable(source.getModel()).ifPresent(target::setModel);
         Optional.ofNullable(source.getDescription()).ifPresent(target::setDescription);
         Optional.ofNullable(source.getSku()).ifPresent(target::setSku);

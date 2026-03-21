@@ -60,7 +60,7 @@ public abstract class ReferenceService<T extends Reference> {
         return refs;
     }
 
-    public void create(T reference) {
+    public T create(T reference) {
         if (reference == null
                 || reference.getName() == null
                 || reference.getName().isBlank()) {
@@ -79,6 +79,7 @@ public abstract class ReferenceService<T extends Reference> {
         reference.setName(reference.getName().toUpperCase());
         T savedRefence = referenceDao.save(reference);
         log.info("{}: {}, saved with id: {}", getReferenceClassName(), savedRefence.getName(), savedRefence.getId());
+        return savedRefence;
     }
 
     protected void delete(Long id) {

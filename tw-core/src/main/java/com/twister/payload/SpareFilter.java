@@ -1,5 +1,8 @@
 package com.twister.payload;
 
+import lombok.Builder;
+
+@Builder
 public record SpareFilter(
         String name,
         String model,

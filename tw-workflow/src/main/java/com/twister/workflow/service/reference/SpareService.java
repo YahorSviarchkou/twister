@@ -53,7 +53,7 @@ public class SpareService {
         return spares;
     }
 
-    public void create(Spare spare) {
+    public Spare create(Spare spare) {
         if (spare == null) {
             throw new IllegalArgumentException("Spare not exist for creating");
         }
@@ -64,6 +64,7 @@ public class SpareService {
         spare.setId(null);
         Spare dbSpare = spareDao.save(spare);
         log.info("Spare successfully created with id: {}", dbSpare.getId());
+        return dbSpare;
     }
 
     public void update(Spare spare) {
@@ -105,7 +106,7 @@ public class SpareService {
             throw new IllegalArgumentException("Not enough spares in warehouse");
         }
 
-        spare.setWarehouseQuantity(spare.getWarehouseQuantity() - quantity);
+        spare.setWarehouseQuantity(spare.getWarehouseQuantity() + quantity);
         Spare savedSpare = spareDao.save(spare);
         log.info(
                 "Spares[id: {}] warehouse quantity updated to {}",
@@ -114,14 +115,19 @@ public class SpareService {
     }
 
     private void updateNotNull(Spare source, Spare target) {
-        Optional.ofNullable(source.getName()).ifPresent(target::setName);
+        Optional.ofNullable(source.getName()).ifPresent(name -> {
+            Optional<Spare> existed = spareDao.findByName(name);
+            if (existed.isPresent()) {
+                throw new IllegalArgumentException("Spare with name: " + name + ", already exist");
+            }
+            target.setName(name);
+        });
         Optional.ofNullable(source.getModel()).ifPresent(target::setModel);
         Optional.ofNullable(source.getMaterial()).ifPresent(target::setMaterial);
         Optional.ofNullable(source.getDescription()).ifPresent(target::setDescription);
         Optional.ofNullable(source.getPrice()).ifPresent(target::setPrice);
         Optional.ofNullable(source.getSku()).ifPresent(target::setSku);
         Optional.ofNullable(source.getUrl()).ifPresent(target::setUrl);
-        Optional.ofNullable(source.getWarehouseQuantity()).ifPresent(target::setWarehouseQuantity);
         Optional.ofNullable(source.getIssueYear()).ifPresent(target::setIssueYear);
 
         Optional.ofNullable(source.getType())

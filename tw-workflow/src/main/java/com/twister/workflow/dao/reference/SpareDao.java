@@ -12,6 +12,8 @@ public interface SpareDao {
 
     Optional<Spare> findById(Long id);
 
+    Optional<Spare> findByName(String name);
+
     List<Spare> findByIdIn(Set<Long> ids);
 
     Page<Spare> findAll(SpareFilter filter, Pageable pageable);

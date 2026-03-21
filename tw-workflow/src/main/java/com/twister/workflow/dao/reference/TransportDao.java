@@ -10,6 +10,8 @@ public interface TransportDao {
 
     Optional<Transport> findById(Long id);
 
+    Optional<Transport> findByName(String name);
+
     Page<Transport> findAll(TransportFilter filter, Pageable pageable);
 
     Page<Transport> findAll(Pageable pageable);
