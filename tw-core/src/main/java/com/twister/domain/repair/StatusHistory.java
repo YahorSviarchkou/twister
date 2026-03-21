@@ -14,13 +14,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public abstract class StatusHistory<W, S> extends AuditableModel {
+public abstract class StatusHistory<S> extends AuditableModel {
 
     private Long id;
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private W workflowItem;
-
+    private Long workflowItemId;
     private S status;
 }

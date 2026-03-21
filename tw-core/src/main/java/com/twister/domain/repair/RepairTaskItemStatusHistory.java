@@ -13,4 +13,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class RepairTaskItemStatusHistory extends StatusHistory<RepairTaskItem, RepairTaskItemStatus> {}
+public class RepairTaskItemStatusHistory extends StatusHistory<RepairTaskItemStatus> {}
