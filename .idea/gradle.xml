@@ -8,11 +8,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/tw-app-desktop" />
+            <option value="$PROJECT_DIR$/tw-app-web" />
             <option value="$PROJECT_DIR$/tw-core" />
-            <option value="$PROJECT_DIR$/tw-desktop-app" />
-            <option value="$PROJECT_DIR$/tw-javafx-starter" />
+            <option value="$PROJECT_DIR$/tw-fx-javafx-starter" />
+            <option value="$PROJECT_DIR$/tw-fx-plugin-api" />
+            <option value="$PROJECT_DIR$/tw-fx-plugin-excel" />
+            <option value="$PROJECT_DIR$/tw-fx-plugin-web-sync" />
             <option value="$PROJECT_DIR$/tw-persistence-api" />
-            <option value="$PROJECT_DIR$/tw-web-app" />
             <option value="$PROJECT_DIR$/tw-workflow" />
           </set>
         </option>

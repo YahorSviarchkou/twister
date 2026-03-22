@@ -1,8 +1,11 @@
 rootProject.name = "twister"
 
 include("tw-core")
-include("tw-javafx-starter")
-include("tw-persistence-api")
-include("tw-desktop-app")
-include("tw-web-app")
 include("tw-workflow")
+include("tw-persistence-api")
+include("tw-app-web")
+include("tw-app-desktop")
+include("tw-fx-javafx-starter")
+include("tw-fx-plugin-api")
+include("tw-fx-plugin-excel")
+include("tw-fx-plugin-web-sync")
