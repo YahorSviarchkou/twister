@@ -9,13 +9,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Table(name = "repair_tasks")
 @Entity
@@ -38,6 +39,6 @@ public class RepairTaskEntity extends AuditableEntity {
     @OneToMany(mappedBy = "task")
     private List<RepairTaskItemEntity> items;
 
-    @OneToMany(mappedBy = "taskItem")
+    @OneToMany(mappedBy = "workflowItem")
     private List<RepairTaskStatusHistoryEntity> statusHistory;
 }

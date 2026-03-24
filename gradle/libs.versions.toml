@@ -5,6 +5,8 @@ lombok = "1.18.32"
 junit = "6.0.3"
 jacoco = "0.8.14"
 spotless = "6.25.0"
+testcontainers = "1.21.4"
+postgresql = "42.7.8"
 
 [libraries]
 # SPRING
@@ -13,10 +15,14 @@ spring-boot-data-jpa = { module = "org.springframework.boot:spring-boot-starter-
 
 # UTILS
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 
 # TESTING
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -32,4 +38,9 @@ spring-jpa = [
 testing = [
     "junit",
     "spring-boot-starter-test"
+]
+testcontainers = [
+    "spring-boot-testcontainers",
+    "testcontainers-postgresql",
+    "testcontainers-junit"
 ]

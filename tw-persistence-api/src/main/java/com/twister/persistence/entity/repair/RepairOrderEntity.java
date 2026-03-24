@@ -12,13 +12,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Table(name = "repair_orders")
 @Entity
@@ -44,7 +45,7 @@ public class RepairOrderEntity extends AuditableEntity {
     @JoinColumn(name = "transport_id", nullable = false)
     private TransportEntity transport;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "workflowItem")
     private List<RepairOrderStatusHistoryEntity> statusHistory;
 
     @ToString.Exclude

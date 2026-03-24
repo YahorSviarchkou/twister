@@ -13,13 +13,14 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Table(name = "repair_task_items")
 @Entity
@@ -52,6 +53,6 @@ public class RepairTaskItemEntity extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "spare_id")})
     private List<SpareEntity> spares;
 
-    @OneToMany(mappedBy = "taskItem")
+    @OneToMany(mappedBy = "workflowItem")
     private List<RepairTaskItemStatusHistoryEntity> statusHistory;
 }

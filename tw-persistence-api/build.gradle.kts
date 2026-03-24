@@ -26,9 +26,11 @@ dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 
+    testRuntimeOnly(libs.postgresql)
     testCompileOnly(libs.lombok)
     testAnnotationProcessor(libs.lombok)
     testImplementation(libs.bundles.testing)
+    testImplementation(libs.bundles.testcontainers)
 }
 
 

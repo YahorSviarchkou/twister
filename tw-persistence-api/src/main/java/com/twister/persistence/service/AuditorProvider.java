@@ -1,4 +1,4 @@
-package com.twister.persistence;
+package com.twister.persistence.service;
 
 public final class AuditorProvider {
 
