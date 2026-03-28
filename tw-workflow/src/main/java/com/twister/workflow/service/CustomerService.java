@@ -98,14 +98,4 @@ public class CustomerService {
         customerDao.save(customer);
         log.info("Transport [id: {}] successfully added to customer[id: {}]", transportId, customerId);
     }
-
-    private void deleteCustomer(Long customerId) {
-        if (customerId == null) {
-            throw new IllegalArgumentException("CustomerId must be exist for deleting");
-        }
-
-        log.info("Deleting customer by id: {}", customerId);
-        customerDao.deleteById(customerId);
-        log.info("Customer with id: {}, was successfully deleted", customerId);
-    }
 }

@@ -7,15 +7,14 @@ import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.workflow.dao.repair.RepairInvoiceDao;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -26,6 +25,7 @@ public class RepairInvoiceService {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final RepairInvoiceDao repairInvoiceDao;
+
     private final RepairOrderService repairOrderService;
     private final RepairTaskService repairTaskService;
     private final RepairTaskItemService repairTaskItemService;

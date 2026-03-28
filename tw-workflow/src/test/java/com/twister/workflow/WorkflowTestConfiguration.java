@@ -7,7 +7,6 @@ import com.twister.domain.reference.SpareType;
 import com.twister.domain.reference.TransportBrand;
 import com.twister.domain.reference.TransportType;
 import com.twister.domain.repair.RepairOrderStatusHistory;
-import com.twister.domain.repair.RepairTaskItemStatusHistory;
 import com.twister.domain.repair.RepairTaskStatusHistory;
 import com.twister.workflow.dao.CustomerDao;
 import com.twister.workflow.dao.UserDao;
@@ -18,6 +17,7 @@ import com.twister.workflow.dao.repair.RepairInvoiceDao;
 import com.twister.workflow.dao.repair.RepairOrderDao;
 import com.twister.workflow.dao.repair.RepairTaskDao;
 import com.twister.workflow.dao.repair.RepairTaskItemDao;
+import com.twister.workflow.dao.repair.RepairTaskItemStatusHistoryDao;
 import com.twister.workflow.dao.repair.StatusHistoryDao;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -113,19 +113,16 @@ public class WorkflowTestConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(
-            value = RepairTaskItemStatusHistory.class,
-            parameterizedContainer = StatusHistoryDao.class)
-    public StatusHistoryDao<RepairTaskItemStatusHistory> repairTaskItemStatusHistoryDaoMock() {
-        //noinspection unchecked
-        return (StatusHistoryDao<RepairTaskItemStatusHistory>) Mockito.mock(StatusHistoryDao.class);
-    }
-
-    @Bean
     @ConditionalOnMissingBean(value = RepairTaskStatusHistory.class, parameterizedContainer = StatusHistoryDao.class)
     public StatusHistoryDao<RepairTaskStatusHistory> repairTaskStatusHistoryDaoMock() {
         //noinspection unchecked
         return (StatusHistoryDao<RepairTaskStatusHistory>) Mockito.mock(StatusHistoryDao.class);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RepairTaskItemStatusHistoryDao repairTaskItemStatusHistoryDaoMock() {
+        return Mockito.mock(RepairTaskItemStatusHistoryDao.class);
     }
 
     @Bean

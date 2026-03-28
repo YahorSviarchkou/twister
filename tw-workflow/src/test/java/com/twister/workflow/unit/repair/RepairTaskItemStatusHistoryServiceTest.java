@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 import com.twister.domain.repair.RepairTaskItemStatus;
 import com.twister.domain.repair.RepairTaskItemStatusHistory;
-import com.twister.workflow.dao.repair.StatusHistoryDao;
+import com.twister.workflow.dao.repair.RepairTaskItemStatusHistoryDao;
 import com.twister.workflow.service.repair.RepairTaskItemStatusHistoryService;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,7 +31,7 @@ public class RepairTaskItemStatusHistoryServiceTest {
     private final Long ID = 1L;
 
     @Mock
-    private StatusHistoryDao<RepairTaskItemStatusHistory> historyDao;
+    private RepairTaskItemStatusHistoryDao historyDao;
 
     @Captor
     private ArgumentCaptor<RepairTaskItemStatusHistory> historyCaptor;

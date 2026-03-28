@@ -5,7 +5,6 @@ import com.twister.domain.repair.RepairOrderStatus;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.domain.repair.RepairTaskItemStatus;
-import com.twister.domain.repair.RepairTaskItemStatusHistory;
 import com.twister.domain.repair.RepairTaskStatus;
 import com.twister.workflow.service.repair.RepairOrderService;
 import com.twister.workflow.service.repair.RepairTaskItemService;
@@ -105,12 +104,10 @@ public class WorkflowOrchestrator {
         RepairTaskItem item = repairTaskItemService.getRepairTaskItemById(taskItemId);
         long taskId = item.getTask().getId();
 
-        List<RepairTaskItemStatusHistory> itemStatuses =
-                repairTaskItemStatusHistoryService.getLastWorkflowStatusesByTaskId(taskId);
+        List<RepairTaskItemStatus> itemStatuses =
+                repairTaskItemStatusHistoryService.getAllTaskItemsStatusesByTaskId(taskId);
 
-        boolean allItemsReady = itemStatuses.stream()
-                .map(RepairTaskItemStatusHistory::getStatus)
-                .allMatch(status -> status == RepairTaskItemStatus.READY);
+        boolean allItemsReady = itemStatuses.stream().allMatch(status -> status == RepairTaskItemStatus.READY);
 
         if (allItemsReady) {
             self.execute(RepairTaskEvent.FINISH_TASK, taskId);
