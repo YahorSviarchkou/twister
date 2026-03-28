@@ -53,12 +53,13 @@ public class WorkflowRegistry {
         return (StateMachine<S, E>) stateMachine;
     }
 
-    public WorkflowService<?> getWorkflowService(Class<?> workflowEvent) {
+    public <W> WorkflowService<W> getWorkflowService(Class<?> workflowEvent) {
         WorkflowService<?> service = workflowItemService.get(workflowEvent);
         if (service == null) {
             throw new NoSuchElementException(
                     "WorkflowService not found for workflow event: %s".formatted(workflowEvent.getSimpleName()));
         }
-        return service;
+        // noinspection unchecked
+        return (WorkflowService<W>) service;
     }
 }

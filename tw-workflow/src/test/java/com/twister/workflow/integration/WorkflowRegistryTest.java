@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
-import com.twister.workflow.WorkflowConfiguration;
 import com.twister.workflow.service.repair.RepairOrderService;
 import com.twister.workflow.service.repair.RepairOrderStatusHistoryService;
 import com.twister.workflow.service.repair.RepairTaskItemService;
@@ -23,11 +22,9 @@ import com.twister.workflow.service.workflow.statemachine.RepairTaskStateMachine
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SuppressWarnings("AssertBetweenInconvertibleTypes")
-@SpringBootTest(classes = WorkflowConfiguration.class)
-public class WorkflowRegistryTest {
+public class WorkflowRegistryTest extends BaseIntegrationTest {
 
     @Autowired
     private WorkflowRegistry registry;

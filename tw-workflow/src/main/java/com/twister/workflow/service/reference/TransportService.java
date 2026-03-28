@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TransportService {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final TransportDao transportDao;
+
     private final TransportTypeService transportTypeService;
     private final TransportBrandService transportBrandService;
     private final CountryService countryService;
@@ -62,6 +64,7 @@ public class TransportService {
         log.info("Transport with id: {}, successfully updated", transport.getId());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void updateNotNull(Transport source, Transport target) {
         Optional.ofNullable(source.getName()).ifPresent(name -> {
             Optional<Transport> existed = transportDao.findByName(name);

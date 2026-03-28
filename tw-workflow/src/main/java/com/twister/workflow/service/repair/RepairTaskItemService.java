@@ -12,6 +12,7 @@ import com.twister.workflow.service.reference.SpareService;
 import com.twister.workflow.service.workflow.WorkflowService;
 import com.twister.workflow.service.workflow.event.RepairTaskItemEvent;
 import com.twister.workflow.service.workflow.event.WorkflowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -27,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RepairTaskItemService implements WorkflowService<RepairTaskItem> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final RepairTaskItemDao repairTaskItemDao;
+
     private final RepairTaskService repairTaskService;
     private final RepairTaskItemStatusHistoryService historyService;
     private final ServiceTypeService serviceTypeService;
@@ -84,22 +87,25 @@ public class RepairTaskItemService implements WorkflowService<RepairTaskItem> {
         historyService.updateWorkflowStatus(dbRepairTaskItem.getId(), RepairTaskItemStatus.CREATED);
     }
 
-    public void addSpares(Set<Long> sparesIds, Long repairTaskItemId) {
-        if (sparesIds == null || sparesIds.isEmpty()) {
-            throw new IllegalArgumentException("Spares not exist for updating repair task item");
-        }
-
+    public void updateSpares(Set<Long> sparesIds, Long repairTaskItemId) {
         RepairTaskItem dbRepairTaskItem = getRepairTaskItemById(repairTaskItemId);
 
-        List<Spare> dbSpares = spareService.getAllByIds(sparesIds);
-        if (dbSpares.isEmpty()) {
-            log.warn("No spares found to update repair task item id: {}", repairTaskItemId);
-            return;
+        List<Spare> updatedSpares;
+        if (sparesIds == null || sparesIds.isEmpty()) {
+            log.info("Removing all spares from task item with id: {}", repairTaskItemId);
+            updatedSpares = new ArrayList<>();
+        } else {
+            updatedSpares = spareService.getAllByIds(sparesIds);
+            if (updatedSpares.isEmpty()) {
+                log.warn("No spares found to update repair task item id: {}", repairTaskItemId);
+                return;
+            }
         }
 
-        dbRepairTaskItem.getSpares().addAll(dbSpares);
-        repairTaskItemDao.save(dbRepairTaskItem);
-        log.info("Spares successfully added to RepairTaskItem with id: {}", dbRepairTaskItem.getId());
+        RepairTaskItem updatedItem =
+                dbRepairTaskItem.toBuilder().spares(updatedSpares).build();
+        repairTaskItemDao.save(updatedItem);
+        log.info("Spares successfully added to RepairTaskItem with id: {}", updatedItem.getId());
     }
 
     public void updateServiceType(Long serviceTypeId, Long repairTaskItemId) {
@@ -117,7 +123,7 @@ public class RepairTaskItemService implements WorkflowService<RepairTaskItem> {
 
         log.info(
                 "ServiceType changed: {} -> {}, for RepairTaskItem with id: {}",
-                previousServiceType.getName(),
+                Optional.ofNullable(previousServiceType).map(Reference::getName).orElse(null),
                 dbServiceType.getName(),
                 dbRepairTaskItem.getId());
     }

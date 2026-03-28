@@ -7,14 +7,15 @@ import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskItem;
 import com.twister.workflow.dao.repair.RepairInvoiceDao;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -23,6 +24,7 @@ public class RepairInvoiceService {
 
     private static final BigDecimal ZERO = BigDecimal.ZERO;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final RepairInvoiceDao repairInvoiceDao;
     private final RepairOrderService repairOrderService;
     private final RepairTaskService repairTaskService;
@@ -55,7 +57,7 @@ public class RepairInvoiceService {
 
         RepairInvoice dbRepairInvoice = repairInvoiceDao.save(invoice);
         log.info(
-                "Repair invoice with id: {}, successfully generated for order id: {}",
+                "Repair invoice with id: {}, successfully generated for order with id: {}",
                 dbRepairInvoice.getId(),
                 orderId);
         return dbRepairInvoice;
@@ -64,7 +66,8 @@ public class RepairInvoiceService {
     private BigDecimal calculateLaborPrice(List<RepairTaskItem> repairTaskItems) {
         return repairTaskItems.stream()
                 .map(RepairTaskItem::getServiceType)
-                .map(ServiceType::getPrice)
+                .map(Optional::ofNullable)
+                .map(o -> o.map(ServiceType::getPrice).orElse(BigDecimal.ZERO))
                 .reduce(BigDecimal::add)
                 .orElse(ZERO);
     }

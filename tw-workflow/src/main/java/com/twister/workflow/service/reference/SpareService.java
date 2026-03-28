@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SpareService {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final SpareDao spareDao;
+
     private final SpareBrandService spareBrandService;
     private final SpareTypeService spareTypeService;
     private final CountryService countryService;
@@ -114,6 +116,7 @@ public class SpareService {
                 savedSpare.getWarehouseQuantity());
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void updateNotNull(Spare source, Spare target) {
         Optional.ofNullable(source.getName()).ifPresent(name -> {
             Optional<Spare> existed = spareDao.findByName(name);

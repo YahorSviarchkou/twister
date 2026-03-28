@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class RepairOrderStatusHistoryService
         extends StatusHistoryService<RepairOrder, RepairOrderStatusHistory, RepairOrderStatus> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final StatusHistoryDao<RepairOrderStatusHistory> repairOrderStatusHistoryDao;
 
     @Override

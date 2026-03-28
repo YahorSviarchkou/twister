@@ -41,13 +41,21 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
 
         Optional<H> lastHistory = getLastWorkflowStatusHistory(workflowItemId);
 
-        if (lastHistory.isPresent() && lastHistory.get().getStatus() == status) {
-            log.warn(
-                    "Status {} already defined for {} workflow item with id: {}",
+        if (lastHistory.isPresent()) {
+            log.info(
+                    "Switching status: {} -> {}, for {} workflow item with id: {}",
+                    lastHistory.get().getStatus(),
                     status,
                     workflowClassName,
                     workflowItemId);
-            return status;
+            if (lastHistory.get().getStatus() == status) {
+                log.warn(
+                        "Status {} already defined for {} workflow item with id: {}",
+                        status,
+                        workflowClassName,
+                        workflowItemId);
+                return status;
+            }
         }
 
         H history = buildHistory(workflowItemId, status);
@@ -55,7 +63,7 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
 
         H dbHistory = getStatusHistoryDao().save(history);
         log.info(
-                "Status: {}, successfully applied to {} workflow item id: {}, historyId: {}",
+                "Status: {}, successfully applied to {} workflow item with id: {}, historyId: {}",
                 status,
                 workflowClassName,
                 workflowItemId,
@@ -65,8 +73,9 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
 
     protected void validateHistory(H history, Long workflowItemId, S status) {
         if (history.getWorkflowItemId() == null || history.getStatus() == null) {
-            throw new IllegalStateException("History fields are not defined for workflowItemId: %s, status: %s"
-                    .formatted(workflowItemId, status));
+            throw new IllegalStateException(
+                    "History fields are not defined for %s workflow item with id: %s, status: %s"
+                            .formatted(getWorkflowClassName(), workflowItemId, status));
         }
     }
 

@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RepairOrderService implements WorkflowService<RepairOrder> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final RepairOrderDao repairOrderDao;
+
     private final CustomerService customerService;
     private final TransportService transportService;
     private final RepairOrderStatusHistoryService historyService;

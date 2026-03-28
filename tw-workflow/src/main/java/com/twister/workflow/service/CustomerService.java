@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomerService {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final CustomerDao customerDao;
+
     private final TransportService transportService;
 
     public Customer getCustomerById(Long id) {

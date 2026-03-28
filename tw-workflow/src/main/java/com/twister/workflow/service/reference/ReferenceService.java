@@ -2,20 +2,20 @@ package com.twister.workflow.service.reference;
 
 import com.twister.domain.reference.Reference;
 import com.twister.workflow.dao.reference.ReferenceDao;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 public abstract class ReferenceService<T extends Reference> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     protected ReferenceDao<T> referenceDao;
 
@@ -78,12 +78,6 @@ public abstract class ReferenceService<T extends Reference> {
         T savedRefence = referenceDao.save(reference);
         log.info("{}: {}, saved with id: {}", getReferenceClassName(), savedRefence.getName(), savedRefence.getId());
         return savedRefence;
-    }
-
-    private void delete(Long id) {
-        log.info("Deleting {} by id: {}", getReferenceClassName(), id);
-        referenceDao.deleteById(id);
-        log.info("{} with id: {}, was successfully deleted", getReferenceClassName(), id);
     }
 
     private String getReferenceClassName() {

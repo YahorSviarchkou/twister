@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RepairTaskService implements WorkflowService<RepairTask> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final RepairTaskDao repairTaskDao;
+
     private final RepairOrderService repairOrderService;
     private final RepairTaskStatusHistoryService historyService;
 
@@ -73,14 +75,5 @@ public class RepairTaskService implements WorkflowService<RepairTask> {
         log.info("RepairTask successfully created with id: {}", dbRepairTask.getId());
 
         historyService.updateWorkflowStatus(dbRepairTask.getId(), RepairTaskStatus.CREATED);
-    }
-
-    public void update(RepairTask repairTask) {
-        if (repairTask == null || repairTask.getId() == null) {
-            throw new IllegalArgumentException("RepairTask not exist for updating");
-        }
-        if (repairTask.getItems() != null && !repairTask.getItems().isEmpty()) {
-            throw new IllegalStateException("RepairTask must not contains items on updating");
-        }
     }
 }
