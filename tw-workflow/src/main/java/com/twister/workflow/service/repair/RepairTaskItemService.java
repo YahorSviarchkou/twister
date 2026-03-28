@@ -9,6 +9,9 @@ import com.twister.domain.repair.RepairTaskItemStatus;
 import com.twister.workflow.dao.repair.RepairTaskItemDao;
 import com.twister.workflow.service.reference.ServiceTypeService;
 import com.twister.workflow.service.reference.SpareService;
+import com.twister.workflow.service.workflow.WorkflowService;
+import com.twister.workflow.service.workflow.event.RepairTaskItemEvent;
+import com.twister.workflow.service.workflow.event.WorkflowEvent;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,13 +25,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RepairTaskItemService {
+public class RepairTaskItemService implements WorkflowService<RepairTaskItem> {
 
     private final RepairTaskItemDao repairTaskItemDao;
     private final RepairTaskService repairTaskService;
     private final RepairTaskItemStatusHistoryService historyService;
     private final ServiceTypeService serviceTypeService;
     private final SpareService spareService;
+
+    @Override
+    public Class<? extends WorkflowEvent<RepairTaskItem>> getWorkflowEvent() {
+        return RepairTaskItemEvent.class;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return repairTaskItemDao.existsById(id);
+    }
 
     public RepairTaskItem getRepairTaskItemById(Long id) {
         return repairTaskItemDao

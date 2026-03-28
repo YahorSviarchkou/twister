@@ -26,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 public abstract class BaseReferenceServiceTest<T extends Reference, S extends ReferenceService<T>> {
@@ -45,7 +46,7 @@ public abstract class BaseReferenceServiceTest<T extends Reference, S extends Re
     @BeforeEach
     void setUp() {
         service = createService();
-        service.setReferenceDao(referenceDao);
+        ReflectionTestUtils.setField(service, "referenceDao", referenceDao);
     }
 
     @Test

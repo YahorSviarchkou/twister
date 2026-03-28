@@ -3,6 +3,7 @@ package com.twister.workflow.service.repair;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskStatus;
 import com.twister.domain.repair.RepairTaskStatusHistory;
+import com.twister.workflow.dao.repair.StatusHistoryDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class RepairTaskStatusHistoryService
         extends StatusHistoryService<RepairTask, RepairTaskStatusHistory, RepairTaskStatus> {
 
-    private final RepairTaskService repairTaskService;
+    private final StatusHistoryDao<RepairTaskStatusHistory> repairTaskStatusHistoryDao;
 
     @Override
     public Class<RepairTask> getWorkflowClass() {
@@ -21,10 +22,14 @@ public class RepairTaskStatusHistoryService
     }
 
     @Override
+    protected StatusHistoryDao<RepairTaskStatusHistory> getStatusHistoryDao() {
+        return repairTaskStatusHistoryDao;
+    }
+
+    @Override
     protected RepairTaskStatusHistory buildHistory(Long workflowItemId, RepairTaskStatus status) {
-        RepairTask repairTask = repairTaskService.getRepairTaskById(workflowItemId);
         return RepairTaskStatusHistory.builder()
-                .workflowItemId(repairTask.getId())
+                .workflowItemId(workflowItemId)
                 .status(status)
                 .build();
     }

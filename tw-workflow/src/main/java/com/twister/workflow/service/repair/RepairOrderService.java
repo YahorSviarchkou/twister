@@ -8,6 +8,9 @@ import com.twister.payload.RepairOrderFilter;
 import com.twister.workflow.dao.repair.RepairOrderDao;
 import com.twister.workflow.service.CustomerService;
 import com.twister.workflow.service.reference.TransportService;
+import com.twister.workflow.service.workflow.WorkflowService;
+import com.twister.workflow.service.workflow.event.RepairOrderEvent;
+import com.twister.workflow.service.workflow.event.WorkflowEvent;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +22,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RepairOrderService {
+public class RepairOrderService implements WorkflowService<RepairOrder> {
 
     private final RepairOrderDao repairOrderDao;
     private final CustomerService customerService;
     private final TransportService transportService;
     private final RepairOrderStatusHistoryService historyService;
+
+    @Override
+    public Class<? extends WorkflowEvent<RepairOrder>> getWorkflowEvent() {
+        return RepairOrderEvent.class;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return repairOrderDao.existsById(id);
+    }
 
     public RepairOrder getRepairOrderById(Long id) {
         return repairOrderDao

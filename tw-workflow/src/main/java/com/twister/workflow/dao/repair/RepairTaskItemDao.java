@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface RepairTaskItemDao {
 
+    boolean existsById(Long id);
+
     Optional<RepairTaskItem> findById(Long id);
 
     List<RepairTaskItem> findRepairTaskItemByTaskId(Long taskId);

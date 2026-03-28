@@ -18,6 +18,7 @@ import com.twister.workflow.service.workflow.event.WorkflowEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,9 @@ public class WorkflowOrchestrator {
     private final RepairTaskItemStatusHistoryService repairTaskItemStatusHistoryService;
 
     @Lazy
-    private final WorkflowOrchestrator self;
+    @Autowired
+    @SuppressWarnings("all")
+    private WorkflowOrchestrator self;
 
     @Transactional
     public <E extends WorkflowEvent<?>> void execute(E event, Long workflowItemId) {

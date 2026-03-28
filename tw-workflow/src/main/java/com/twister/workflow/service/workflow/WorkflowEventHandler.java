@@ -16,6 +16,15 @@ public class WorkflowEventHandler {
 
     public <S, E extends WorkflowEvent<?>> S applyEvent(E event, Long workflowItemId) {
         log.info("Handling event: {}, for workflow item id: {}", event, workflowItemId);
+        if (event == null) {
+            throw new IllegalArgumentException("Event must be exist");
+        }
+
+        WorkflowService<?> workflowService = workflowRegistry.getWorkflowService(event.getClass());
+        if (!workflowService.existsById(workflowItemId)) {
+            throw new IllegalArgumentException("Workflow item not found by id: " + workflowItemId);
+        }
+
         StatusHistoryService<?, ?, S> statusHistoryService =
                 workflowRegistry.getStatusHistoryService(event.getWorkflowType());
 

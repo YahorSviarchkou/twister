@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface RepairOrderDao {
 
+    boolean existsById(Long id);
+
     Optional<RepairOrder> findById(Long id);
 
     Optional<RepairOrder> findRepairOrderByTaskId(Long taskId);

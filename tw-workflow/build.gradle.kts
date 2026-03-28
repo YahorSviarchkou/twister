@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("java-library")
     id("jacoco")
     alias(libs.plugins.spotless.plugin)
     alias(libs.plugins.spring.boot)
@@ -13,6 +14,7 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
     }
+    withSourcesJar()
 }
 
 repositories {
@@ -31,6 +33,18 @@ dependencies {
     testImplementation(libs.bundles.testing)
 }
 
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.jar {
+    enabled = true
+}
+
 jacoco {
     toolVersion = libs.versions.jacoco.get()
 }
@@ -44,10 +58,6 @@ tasks.test {
     }
 
     finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
 }
 
 tasks.jacocoTestReport {

@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class WorkflowRegistry {
 
     private final List<StatusHistoryService<?, ?, ?>> statusHistoryServices;
+    private final List<WorkflowService<?>> workflowServices;
     private final List<StateMachine<?, ?>> stateMachines;
 
     private Map<Class<?>, StatusHistoryService<?, ?, ?>> workflowItemStatusHistoryService;
+    private Map<Class<?>, WorkflowService<?>> workflowItemService;
     private Map<Class<?>, StateMachine<?, ?>> workflowItemStateMachine;
 
     @PostConstruct
@@ -27,6 +29,8 @@ public class WorkflowRegistry {
                 .collect(Collectors.toMap(StatusHistoryService::getWorkflowClass, Function.identity()));
         workflowItemStateMachine =
                 stateMachines.stream().collect(Collectors.toMap(StateMachine::getWorkflowClass, Function.identity()));
+        workflowItemService = workflowServices.stream()
+                .collect(Collectors.toMap(WorkflowService::getWorkflowEvent, Function.identity()));
     }
 
     public <S> StatusHistoryService<?, ?, S> getStatusHistoryService(Class<?> workflowClass) {
@@ -47,5 +51,14 @@ public class WorkflowRegistry {
         }
         // noinspection unchecked
         return (StateMachine<S, E>) stateMachine;
+    }
+
+    public WorkflowService<?> getWorkflowService(Class<?> workflowEvent) {
+        WorkflowService<?> service = workflowItemService.get(workflowEvent);
+        if (service == null) {
+            throw new NoSuchElementException(
+                    "WorkflowService not found for workflow event: %s".formatted(workflowEvent.getSimpleName()));
+        }
+        return service;
     }
 }

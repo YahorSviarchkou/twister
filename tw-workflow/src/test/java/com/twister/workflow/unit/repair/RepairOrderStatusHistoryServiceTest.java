@@ -10,20 +10,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairOrderStatus;
 import com.twister.domain.repair.RepairOrderStatusHistory;
 import com.twister.workflow.dao.repair.StatusHistoryDao;
-import com.twister.workflow.service.repair.RepairOrderService;
 import com.twister.workflow.service.repair.RepairOrderStatusHistoryService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,19 +33,11 @@ public class RepairOrderStatusHistoryServiceTest {
     @Mock
     private StatusHistoryDao<RepairOrderStatusHistory> historyDao;
 
-    @Mock
-    private RepairOrderService repairOrderService;
-
     @Captor
     private ArgumentCaptor<RepairOrderStatusHistory> historyCaptor;
 
+    @InjectMocks
     private RepairOrderStatusHistoryService historyService;
-
-    @BeforeEach
-    void setUp() {
-        historyService = new RepairOrderStatusHistoryService(repairOrderService);
-        historyService.setStatusHistoryDao(historyDao);
-    }
 
     @Test
     void testGetLastWorkflowStatusWhenWorkflowStatusExist() {
@@ -114,11 +104,8 @@ public class RepairOrderStatusHistoryServiceTest {
 
     @Test
     void testUpdateWorkflowStatusWhenStatusNotExist() {
-        // Given
-        RepairOrder order = RepairOrder.builder().id(ID).build();
         // When
         when(historyDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(ID)).thenReturn(Optional.empty());
-        when(repairOrderService.getRepairOrderById(ID)).thenReturn(order);
         when(historyDao.save(any(RepairOrderStatusHistory.class))).thenAnswer(inv -> inv.getArgument(0));
         // Then
         historyService.updateWorkflowStatus(ID, RepairOrderStatus.ACCEPTED);
@@ -130,7 +117,6 @@ public class RepairOrderStatusHistoryServiceTest {
         assertEquals(ID, result.getWorkflowItemId());
 
         verify(historyDao, times(1)).findFirstByWorkflowItemIdOrderByCreatedAtDesc(anyLong());
-        verify(repairOrderService, times(1)).getRepairOrderById(anyLong());
         verify(historyDao, times(1)).save(any(RepairOrderStatusHistory.class));
     }
 
@@ -150,38 +136,30 @@ public class RepairOrderStatusHistoryServiceTest {
         assertEquals(RepairOrderStatus.ACCEPTED, result);
 
         verify(historyDao, times(1)).findFirstByWorkflowItemIdOrderByCreatedAtDesc(anyLong());
-        verify(repairOrderService, times(0)).getRepairOrderById(anyLong());
         verify(historyDao, times(0)).save(any(RepairOrderStatusHistory.class));
     }
 
     @Test
     void testValidateHistoryWhenWorkflowItemIdIsNull() {
-        // Given
-        RepairOrder order = RepairOrder.builder().build();
         // When
-        when(historyDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(ID)).thenReturn(Optional.empty());
-        when(repairOrderService.getRepairOrderById(ID)).thenReturn(order);
+        when(historyDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(null)).thenReturn(Optional.empty());
         // Then
         assertThrows(
-                IllegalStateException.class, () -> historyService.updateWorkflowStatus(ID, RepairOrderStatus.ACCEPTED));
+                IllegalStateException.class,
+                () -> historyService.updateWorkflowStatus(null, RepairOrderStatus.ACCEPTED));
 
-        verify(historyDao, times(1)).findFirstByWorkflowItemIdOrderByCreatedAtDesc(anyLong());
-        verify(repairOrderService, times(1)).getRepairOrderById(anyLong());
+        verify(historyDao, times(1)).findFirstByWorkflowItemIdOrderByCreatedAtDesc(null);
         verify(historyDao, times(0)).save(any(RepairOrderStatusHistory.class));
     }
 
     @Test
     void testValidateHistoryWhenStatusIsNull() {
-        // Given
-        RepairOrder order = RepairOrder.builder().id(ID).build();
         // When
         when(historyDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(ID)).thenReturn(Optional.empty());
-        when(repairOrderService.getRepairOrderById(ID)).thenReturn(order);
         // Then
         assertThrows(IllegalStateException.class, () -> historyService.updateWorkflowStatus(ID, null));
 
         verify(historyDao, times(1)).findFirstByWorkflowItemIdOrderByCreatedAtDesc(anyLong());
-        verify(repairOrderService, times(1)).getRepairOrderById(anyLong());
         verify(historyDao, times(0)).save(any(RepairOrderStatusHistory.class));
     }
 }

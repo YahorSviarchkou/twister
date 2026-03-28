@@ -2,26 +2,24 @@ package com.twister.workflow.service.reference;
 
 import com.twister.domain.reference.Reference;
 import com.twister.workflow.dao.reference.ReferenceDao;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Slf4j
 public abstract class ReferenceService<T extends Reference> {
 
+    @Autowired
     protected ReferenceDao<T> referenceDao;
 
     protected abstract Class<T> getReferenceClass();
-
-    public void setReferenceDao(@Autowired ReferenceDao<T> referenceDao) {
-        this.referenceDao = referenceDao;
-    }
 
     public T getById(Long id) {
         return referenceDao

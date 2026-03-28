@@ -4,6 +4,9 @@ import com.twister.domain.repair.RepairOrder;
 import com.twister.domain.repair.RepairTask;
 import com.twister.domain.repair.RepairTaskStatus;
 import com.twister.workflow.dao.repair.RepairTaskDao;
+import com.twister.workflow.service.workflow.WorkflowService;
+import com.twister.workflow.service.workflow.event.RepairTaskEvent;
+import com.twister.workflow.service.workflow.event.WorkflowEvent;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RepairTaskService {
+public class RepairTaskService implements WorkflowService<RepairTask> {
 
     private final RepairTaskDao repairTaskDao;
     private final RepairOrderService repairOrderService;
     private final RepairTaskStatusHistoryService historyService;
+
+    @Override
+    public Class<? extends WorkflowEvent<RepairTask>> getWorkflowEvent() {
+        return RepairTaskEvent.class;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return repairTaskDao.existsById(id);
+    }
 
     public RepairTask getRepairTaskById(Long id) {
         return repairTaskDao

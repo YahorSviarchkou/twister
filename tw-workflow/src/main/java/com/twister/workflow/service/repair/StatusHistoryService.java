@@ -7,23 +7,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
 
-    protected StatusHistoryDao<H> statusHistoryDao;
-
     public abstract Class<W> getWorkflowClass();
+
+    protected abstract StatusHistoryDao<H> getStatusHistoryDao();
 
     protected abstract H buildHistory(Long workflowItemId, S status);
 
-    public void setStatusHistoryDao(@Autowired StatusHistoryDao<H> statusHistoryDao) {
-        this.statusHistoryDao = statusHistoryDao;
-    }
-
     public Optional<H> getLastWorkflowStatusHistory(Long workflowItemId) {
-        return statusHistoryDao.findFirstByWorkflowItemIdOrderByCreatedAtDesc(workflowItemId);
+        return getStatusHistoryDao().findFirstByWorkflowItemIdOrderByCreatedAtDesc(workflowItemId);
     }
 
     public S getLastWorkflowStatus(Long workflowItemId) {
@@ -36,7 +31,7 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
     }
 
     public List<H> getWorkflowStatusHistory(Long workflowItemId) {
-        List<H> statusHistory = statusHistoryDao.findByWorkflowItemId(workflowItemId);
+        List<H> statusHistory = getStatusHistoryDao().findByWorkflowItemId(workflowItemId);
         return statusHistory.isEmpty() ? Collections.emptyList() : Collections.unmodifiableList(statusHistory);
     }
 
@@ -58,7 +53,7 @@ public abstract class StatusHistoryService<W, H extends StatusHistory<S>, S> {
         H history = buildHistory(workflowItemId, status);
         validateHistory(history, workflowItemId, status);
 
-        H dbHistory = statusHistoryDao.save(history);
+        H dbHistory = getStatusHistoryDao().save(history);
         log.info(
                 "Status: {}, successfully applied to {} workflow item id: {}, historyId: {}",
                 status,
