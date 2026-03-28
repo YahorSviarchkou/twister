@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @EqualsAndHashCode
 public abstract class AuditableModel {
