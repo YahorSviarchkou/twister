@@ -1,5 +1,6 @@
 plugins {
     id("twister.spring-conventions")
+    id("twister.coverage-gate")
 }
 
 dependencies {
