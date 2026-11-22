@@ -1,6 +1,7 @@
 [versions]
 java = "21"
-javafx = "0.1.0"
+javafx = "21"
+javafx-plugin = "0.1.0"
 spring-boot = "4.2.0"
 spring-dependency-management = "1.1.7"
 lombok = "1.18.48"
@@ -38,7 +39,7 @@ spring-dependency-management = { id = "io.spring.dependency-management", version
 
 spotless-plugin = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
-javafx-plugin = { id = "org.openjfx.javafxplugin", version.ref = "javafx" }
+javafx-plugin = { id = "org.openjfx.javafxplugin", version.ref = "javafx-plugin" }
 
 [bundles]
 spring-jpa = [
