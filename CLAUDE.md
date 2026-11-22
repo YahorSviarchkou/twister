@@ -1,6 +1,6 @@
 # Twister
 
-Bicycle repair workshop management app: Java 21, Spring Boot 3, JavaFX, Gradle multi-module. It is being restructured from a monolithic Windows desktop app (legacy root `src/`) into modules that are assembled into desktop and web apps with build-time plugins.
+Management app for repair workshops of personal light vehicles (bikes, kick scooters, e-scooters), built as a product for CIS and English-speaking markets; the first goal is one real workshop running a season on it. Java, Spring Boot, JavaFX, Gradle multi-module. It is being restructured from a monolithic Windows desktop app (legacy root `src/`) into modules; the MVP is a full desktop app without plugins (ADR 0004 MVP scope, `.claude/rules/architecture.md`).
 
 ## Language
 
@@ -34,6 +34,6 @@ Use `gradlew.bat` on Windows, `./gradlew` elsewhere.
 
 - Decisions live in `tw-docs/adr/`. Check them before changing architecture; propose a new ADR instead of silently deviating.
 - Run `git status` before editing and never discard or stash changes you did not make.
-- Tasks are GitHub Issues. Git: no state-changing commands without an explicit request; branch, commit and issue conventions are in `.claude/rules/git.md`.
+- Tasks are GitHub Issues. Git: branches, staging and commits on work branches are allowed within a task; push, merge and history rewrites need the owner's request. Branch, commit and issue conventions are in `.claude/rules/git.md`.
 - Doubts found during a task go into a `// TODO(discuss): …` comment right away and into the task summary.
 - Keep diagrams as Mermaid sources in `tw-docs/diagrams/`; register new docs in `tw-docs/manifest.json`.

@@ -5,6 +5,7 @@ import com.twister.persistence.entity.repair.RepairOrderStatusHistoryEntity;
 import com.twister.persistence.mapper.AuditableRepositoryMapper;
 import org.mapstruct.Mapper;
 
+// TODO(discuss): workflowItemId is not mapped to workflowItem (non-null FK) or back, so it is lost
 @Mapper(componentModel = "spring")
 public interface RepairOrderStatusHistoryRepositoryMapper
         extends AuditableRepositoryMapper<RepairOrderStatusHistoryEntity, RepairOrderStatusHistory> {}

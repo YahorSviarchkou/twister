@@ -4,10 +4,11 @@
 
 Layered Gradle modules: `tw-core` (domain) ← `tw-workflow` (services, state machines, DAO ports) and `tw-persistence-api` (JPA). The bridge between DAO ports and repositories does not exist yet. Applications are wired with Spring Boot auto-configuration (`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`).
 
-## Direction (proposed, see ADRs)
+## Direction (see ADR statuses)
 
-- **Build-time plugins** (ADR 0004): plain-Java `tw-api` with ports, events and extension points; `tw-kernel` with use cases and the event bus; adapters, shells and plugins depend only on `tw-api`; desktop and web are different assemblies.
-- **Two state machines** (ADR 0005): order and work item; `RepairTask` disappears.
+- **Build-time plugins** (ADR 0004, accepted as the target; MVP keeps five modules and follows `.claude/rules/architecture.md`): plain-Java `tw-api` with ports, events and extension points; `tw-kernel` with use cases and the event bus; adapters, shells and plugins depend only on `tw-api`; desktop and web are different assemblies.
+- **Two state machines** (ADR 0005, accepted): order and work item; `RepairTask` disappears; vehicle-specific code stays behind the `vehicle` package boundary.
+- **Embedded database** (ADR 0009, accepted): SQLite in WAL mode, Flyway, portable SQL, money as minor units, UUIDs as text, `VACUUM INTO` backups.
 - **Tablets over Wi-Fi** (ADR 0006): the desktop app embeds a LAN server (REST + WebSocket + mobile web UI); devices pair by QR code.
 
 ## Where to look
