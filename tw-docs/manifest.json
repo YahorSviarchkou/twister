@@ -211,8 +211,8 @@
       "type": "mermaid",
       "section": "diagrams",
       "path": "diagrams/modules-current.mmd",
-      "date": "2026-11-15",
-      "description": "Gradle module graph on branch exp",
+      "date": "2026-11-22",
+      "description": "Gradle module graph",
       "tags": [
         "modules"
       ]

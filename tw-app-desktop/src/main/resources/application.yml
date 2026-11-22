@@ -1,0 +1,34 @@
+twister:
+  # All data of the installation, so that one property moves it. The fallback is for systems without LOCALAPPDATA.
+  data-dir: ${LOCALAPPDATA:${user.home}/.local/share}/Twister
+  javafx:
+    window:
+      state-file: ${twister.data-dir}/window-state.properties
+
+spring:
+  application:
+    name: Twister
+  main:
+    web-application-type: none
+  datasource:
+    # TODO(discuss): busy_timeout does not cover a transaction that read first and writes after another commit: it
+    # fails at once with SQLITE_BUSY_SNAPSHOT. Add transaction_mode=IMMEDIATE or a single writer before M2 writes?
+    url: jdbc:sqlite:${twister.data-dir}/twister.db?foreign_keys=on&journal_mode=WAL&busy_timeout=5000
+    hikari:
+      maximum-pool-size: 4
+  jpa:
+    open-in-view: false
+    hibernate:
+      # TODO(tw-10): change to validate (ADR 0009) once migrations create the tables of the entities.
+      ddl-auto: none
+
+logging:
+  file:
+    # TODO(discuss): Logback reads % in the path as a pattern, so such a data folder fails the start. Is it enough to
+    # reject it where the user chooses the folder?
+    name: ${twister.data-dir}/logs/twister.log
+  logback:
+    rollingpolicy:
+      max-history: 14
+      # The app is closed every evening, so it is rarely running when the day changes.
+      clean-history-on-start: true

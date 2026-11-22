@@ -16,7 +16,7 @@ We will use SQLite in WAL mode as the embedded database, with the `xerial` JDBC 
 - Money is stored as integer minor units, because SQLite has no exact decimal type. UUIDs are stored as text. Every aggregate table has a `version` column for optimistic locking. Tables are `STRICT`.
 - Online backup with `VACUUM INTO` at startup, daily and on exit, keeping the newest 14 copies.
 - SQL stays portable (no SQLite-only features beyond `STRICT`), so that moving to PostgreSQL later is a migration task, not a rewrite.
-- Repository tests run against a real SQLite file in a temporary folder with the production migrations. Testcontainers is no longer needed for the persistence module.
+- Repository tests run against a real SQLite file in a temporary folder with the production migrations. Testcontainers stays in the build for future PostgreSQL work, but is not the default for persistence tests.
 
 ## Options considered
 

@@ -4,17 +4,25 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/build-logic" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/tw-app-desktop" />
-            <option value="$PROJECT_DIR$/tw-app-web" />
             <option value="$PROJECT_DIR$/tw-core" />
             <option value="$PROJECT_DIR$/tw-fx-javafx-starter" />
-            <option value="$PROJECT_DIR$/tw-fx-plugin-api" />
-            <option value="$PROJECT_DIR$/tw-fx-plugin-excel" />
-            <option value="$PROJECT_DIR$/tw-fx-plugin-web-sync" />
             <option value="$PROJECT_DIR$/tw-persistence-api" />
             <option value="$PROJECT_DIR$/tw-workflow" />
           </set>

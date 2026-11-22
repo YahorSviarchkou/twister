@@ -1,0 +1,3 @@
+classes\ that\ are\ meta-annotated\ with\ @AutoConfiguration\ should\ not\ be\ meta-annotated\ with\ @ComponentScan\ and\ should\ not\ be\ meta-annotated\ with\ @ComponentScans=4ba184eb-40f9-44b8-8b3a-240f79eb9fac
+no\ classes\ that\ reside\ in\ any\ package\ ['com.twister.domain..',\ 'com.twister.payload..']\ should\ depend\ on\ classes\ that\ reside\ in\ a\ package\ 'lombok..'=bd6756c8-00c9-4143-831f-c42fc19ccff6
+ports\ should\ not\ expose\ Spring\ Data\ types=9662ac8f-875e-421e-a214-4a4da7ee62cb
