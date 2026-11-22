@@ -20,5 +20,14 @@ out/
 log/
 /data/
 twister.db
-/bin/
-/tw-core/bin/
+**/bin/
+
+### Claude Code ###
+.claude/settings.local.json
+CLAUDE.local.md
+
+### Machine-local IDE files ###
+.idea/dataSources.local.xml
+.idea/dataSources/
+.idea/doNotAskNotifications.xml
+.build/
