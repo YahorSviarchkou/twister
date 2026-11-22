@@ -5,6 +5,8 @@ pluginManagement {
 plugins {
     // Downloads missing JDK toolchains. The version catalog cannot be used in settings plugins.
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    // One class loader for build-logic in all projects, as the shared build service of Spotless needs.
+    id("twister.java-conventions") apply false
 }
 
 rootProject.name = "twister"
