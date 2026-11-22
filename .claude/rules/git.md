@@ -4,12 +4,11 @@ See `tw-docs/adr/0008-github-issues-as-tracker.md` (supersedes 0007).
 
 ## Commands
 
-- Never run state-changing git commands unless the user explicitly asks in the current task:
-  `commit`, `push`, `pull`, `add`, `checkout`, `switch`, `branch -d/-D/-m`, `merge`, `rebase`, `reset`, `restore`,
-  `stash`, `tag`, `cherry-pick`, `revert`, `clean`.
+- Within a task, without asking: create the work branch from `dev` with `git switch -c`, switch branches, `git add`, `git commit` following the conventions below. Commit only on work branches, never on `dev`, `sit`, `prod`.
+- Ask first: push, pull, merge, rebase, reset, restore, checkout, stash, tag, cherry-pick, revert, clean, `commit --amend`, deleting or renaming branches.
 - Read-only commands are always fine: `status`, `diff`, `log`, `show`, `blame`, `branch` (listing).
 - Never force-push.
-- When asked to commit, first show the proposed message and the list of files.
+- List the commits made (hash and header) in the task summary.
 
 ## Branches
 
@@ -21,26 +20,33 @@ See `tw-docs/adr/0008-github-issues-as-tracker.md` (supersedes 0007).
 ## Commit messages
 
 ```
-<type>(<scope>): <description>
+<type>(<scope>): <description> TW-<issue>
 
 <optional body: why, not what>
-
-Refs #<issue>
 ```
 
 - `type`: `feat` | `fix` | `refactor` | `test` | `docs` | `chore`.
 - `scope`: the Gradle module name (`tw-workflow`, `tw-persistence-api`, …); outside modules use `tw-docs`, `claude` (CLAUDE.md, .claude), `build` (root Gradle files), `ci` (.github).
 - One scope per commit: split changes that touch several modules.
-- `description`: imperative, lowercase, no trailing period; the whole header ≤ 72 characters.
-- Reference the issue in the body: `Refs #12`; the commit (or PR) that completes it uses `Closes #12`.
+- `description`: imperative, lowercase, no trailing period.
+- The header ends with the issue key `TW-<issue>` (uppercase, the same number as in the branch name). The whole header, key included, is ≤ 72 characters.
+- Body: optional, wrapped at 72 characters, explains why. No `Refs #` footer: the key in the header links the commit to the issue.
+- Closing issues: the PR description says `Closes #<issue>` (GitHub closes issues only through `#<issue>`, not through the key).
 - Never add `Co-Authored-By`, "Generated with", session links or any other attribution trailers.
 
 Examples:
 
 ```
-fix(tw-workflow): skip cancelled items when finishing a task
-refactor(tw-persistence-api): move auto-configuration imports to META-INF
-docs(tw-docs): add ADR for git conventions
+fix(tw-persistence-api): fix specification tests and mapper cycle TW-7
+
+Filters need persisted relations, the order/invoice mapper cycle kept
+the context from starting, and Boot downgraded Testcontainers below
+what Docker 29 accepts.
+```
+
+```
+fix(tw-persistence-api): move auto-config imports to META-INF TW-6
+docs(tw-docs): record accepted architecture decisions TW-13
 ```
 
 ## Issues

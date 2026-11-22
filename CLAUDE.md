@@ -34,6 +34,6 @@ Use `gradlew.bat` on Windows, `./gradlew` elsewhere.
 
 - Decisions live in `tw-docs/adr/`. Check them before changing architecture; propose a new ADR instead of silently deviating.
 - Run `git status` before editing and never discard or stash changes you did not make.
-- Tasks are GitHub Issues. Git: no state-changing commands without an explicit request; branch, commit and issue conventions are in `.claude/rules/git.md`.
+- Tasks are GitHub Issues. Git: branches, staging and commits on work branches are allowed within a task; push, merge and history rewrites need the owner's request. Branch, commit and issue conventions are in `.claude/rules/git.md`.
 - Doubts found during a task go into a `// TODO(discuss): …` comment right away and into the task summary.
 - Keep diagrams as Mermaid sources in `tw-docs/diagrams/`; register new docs in `tw-docs/manifest.json`.
