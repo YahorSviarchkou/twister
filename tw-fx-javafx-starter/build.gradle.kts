@@ -11,7 +11,7 @@ dependencies {
 }
 
 javafx {
-    version = libs.versions.java.get()
+    version = libs.versions.javafx.asProvider().get()
     modules("javafx.controls", "javafx.fxml", "javafx.base", "javafx.graphics")
     configurations = arrayOf("compileOnly", "implementation")
 }
