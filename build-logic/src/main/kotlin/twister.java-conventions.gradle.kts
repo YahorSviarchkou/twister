@@ -70,7 +70,7 @@ spotless {
     java {
         target("src/*/java/**/*.java")
         targetExclude("**/build/generated/**")
-        palantirJavaFormat()
+        palantirJavaFormat(catalog.findVersion("palantir-java-format").get().requiredVersion)
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
