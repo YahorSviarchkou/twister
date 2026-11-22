@@ -15,7 +15,8 @@ English for everything in the repository: code, identifiers, comments, commit me
 | `tw-persistence-api` | JPA entities, repositories, specifications, mappers |
 | `tw-fx-javafx-starter` | Spring Boot starter for JavaFX screens |
 | `tw-app-desktop` | Desktop assembly (does not start yet) |
-| `tw-app-web`, `tw-fx-plugin-*` | Empty placeholders |
+| `tw-app-web`, `tw-fx-plugin-*` | Parked empty folders, not in the build |
+| `build-logic/` | Gradle convention plugins shared by the modules |
 | `legacy/` | Legacy monolith (own `settings.gradle.kts`, builds with `gradlew -p legacy build`), frozen: read for reference, do not extend |
 | `tw-docs/` | Documentation: notes, ADRs, Mermaid diagrams, exported artifacts, viewer |
 | `.claude/` | Agent rules (`rules/`) and reference context (`context/`) |

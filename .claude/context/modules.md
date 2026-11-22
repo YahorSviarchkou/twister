@@ -9,7 +9,8 @@ State as of 2026-11-22 (see `../../tw-docs/notes/2026-11-15-codebase-analysis.md
 | `tw-persistence-api` | `tw-core` | JPA entities, Spring Data repositories, specifications, MapStruct mappers (incomplete). No DAO adapters. Registers itself as auto-configuration. |
 | `tw-fx-javafx-starter` | — | Spring Boot starter: `ScreenManager`, `@FXController`, i18n bridge, Caffeine screen cache. Not registered as auto-configuration (#8). |
 | `tw-app-desktop` | core, workflow, persistence | Main class and a stub `CustomerDaoImpl`. Does not start. |
-| `tw-app-web`, `tw-fx-plugin-api`, `tw-fx-plugin-excel`, `tw-fx-plugin-web-sync` | — | Empty. |
+| `tw-app-web`, `tw-fx-plugin-api`, `tw-fx-plugin-excel`, `tw-fx-plugin-web-sync` | — | Empty and parked until their phase (ADR 0004): folders only, not included in `settings.gradle.kts`. |
+| `../../build-logic` | — | Included build with the convention plugins `twister.java-conventions` (all five modules, directly or through the next one) and `twister.spring-conventions` (all but `tw-core`). |
 | `../../legacy` | — | Legacy monolith (JavaFX 17, SQLite, Flyway), standalone build outside the main settings: `gradlew -p legacy build`. Frozen. Packaged by CI and the Inno Setup installer from `prod`, which keeps the old layout. |
 
 Target layout after the MVP (ADR 0004, accepted): `tw-api`, `tw-kernel`, `tw-store-jpa`, `tw-store-remote`, `tw-rest`, `tw-shell-javafx`, `tw-shell-web`, `tw-plugin-*`, assemblies `app-*`.
