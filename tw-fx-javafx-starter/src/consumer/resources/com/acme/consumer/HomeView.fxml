@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.acme.consumer.HomeView">
+    <Label fx:id="title" text="%consumer.title"/>
+    <fx:include fx:id="detail" source="DetailView.fxml"/>
+</VBox>

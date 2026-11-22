@@ -12,12 +12,17 @@ archunit = "1.5.1"
 jacoco = "0.8.16"
 spotless = "8.12.0"
 palantir-java-format = "2.103.0"
+atlantafx = "3.0.0"
 
 [libraries]
 # SPRING
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
 spring-boot-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
 spring-boot-cache = { module = "org.springframework.boot:spring-boot-starter-cache" }
+
+# UI
+atlantafx-base = { module = "io.github.mkpaz:atlantafx-base", version.ref = "atlantafx" }
 
 # UTILS
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
@@ -25,6 +30,8 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 postgresql = { module = "org.postgresql:postgresql" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc" }
+hibernate-community-dialects = { module = "org.hibernate.orm:hibernate-community-dialects" }
 
 # TESTING
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }

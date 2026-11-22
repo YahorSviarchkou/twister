@@ -1,0 +1,2 @@
+org.springframework.boot.EnvironmentPostProcessor=\
+com.twister.fx.javafx.i18n.MessageBundlesEnvironmentPostProcessor
