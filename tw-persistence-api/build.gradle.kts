@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("java-library")
     id("jacoco")
     alias(libs.plugins.spotless.plugin)
     alias(libs.plugins.spring.boot)
@@ -13,6 +14,7 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
     }
+    withSourcesJar()
 }
 
 repositories {
@@ -23,16 +25,30 @@ repositories {
 dependencies {
     implementation(project(":tw-core"))
     implementation(libs.bundles.spring.jpa)
+    implementation(libs.mapstruct)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+    annotationProcessor(libs.mapstruct.processor)
 
     testRuntimeOnly(libs.postgresql)
     testCompileOnly(libs.lombok)
     testAnnotationProcessor(libs.lombok)
+    testAnnotationProcessor(libs.mapstruct.processor)
     testImplementation(libs.bundles.testing)
     testImplementation(libs.bundles.testcontainers)
 }
 
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.jar {
+    enabled = true
+}
 
 jacoco {
     toolVersion = libs.versions.jacoco.get()

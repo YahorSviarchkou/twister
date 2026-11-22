@@ -43,6 +43,8 @@ public class CustomerEntity extends AuditableEntity {
 
     String phone;
 
+    String email;
+
     @ManyToMany
     @JoinTable(
             name = "customer_transport",

@@ -2,15 +2,16 @@ package com.twister.persistence.repository.specification;
 
 import com.twister.payload.TransportFilter;
 import com.twister.persistence.entity.reference.CountryEntity;
-import com.twister.persistence.entity.reference.TransportBrand;
+import com.twister.persistence.entity.reference.TransportBrandEntity;
 import com.twister.persistence.entity.reference.TransportEntity;
 import com.twister.persistence.entity.reference.TransportTypeEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.domain.Specification;
 
 public final class TransportSpecification {
 
@@ -27,7 +28,7 @@ public final class TransportSpecification {
                             predicates.add(cb.like(cb.lower(root.get("model")), "%" + model.toLowerCase() + "%")));
 
             Optional.ofNullable(filter.brandId()).ifPresent(brandId -> {
-                Join<TransportEntity, TransportBrand> brandJoin = root.join("brand");
+                Join<TransportEntity, TransportBrandEntity> brandJoin = root.join("brand");
                 predicates.add(cb.equal(brandJoin.get("id"), brandId));
             });
 

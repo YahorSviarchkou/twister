@@ -17,4 +17,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TransportBrand extends ReferenceEntity {}
+public class TransportBrandEntity extends ReferenceEntity {}
