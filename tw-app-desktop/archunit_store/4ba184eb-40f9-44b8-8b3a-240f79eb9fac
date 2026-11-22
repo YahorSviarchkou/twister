@@ -1,0 +1,2 @@
+Class <com.twister.fx.javafx.JavaFxConfiguration> is meta-annotated with @ComponentScan in (JavaFxConfiguration.java:0)
+Class <com.twister.workflow.WorkflowConfiguration> is meta-annotated with @ComponentScan in (WorkflowConfiguration.java:0)
