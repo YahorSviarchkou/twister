@@ -1,4 +1,7 @@
 spring:
+  # These tests create the PostgreSQL schema from the entities. The migrations are for SQLite (ADR 0009).
+  flyway:
+    enabled: false
   jpa:
     hibernate:
       ddl-auto: update

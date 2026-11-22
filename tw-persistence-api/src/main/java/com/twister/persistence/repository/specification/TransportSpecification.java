@@ -7,11 +7,10 @@ import com.twister.persistence.entity.reference.TransportEntity;
 import com.twister.persistence.entity.reference.TransportTypeEntity;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
 
 public final class TransportSpecification {
 
