@@ -1,0 +1,28 @@
+name: Bug
+description: Something works incorrectly
+type: Bug
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+      description: Steps or the failing code path, and what you see.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where
+      description: Module, class or file, log excerpt.
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: Usually "a test reproduces the bug and passes after the fix".
+      value: A test reproduces the bug and passes after the fix.
