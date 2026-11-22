@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — приём велосипеда</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content">
+      <div class="pagehead" style="padding-bottom: 8px">
+        <div class="col">
+          <div class="row g6 t-sm muted"><a class="link" href="Main.dc.html" style="font-weight: 400">Заказы</a><i class="ic ic-chev-r s12"></i><span>Приём велосипеда</span></div>
+          <h1 class="t-display" style="margin: 0">Новый заказ</h1>
+        </div>
+        <div class="grow"></div>
+        <span class="t-sm muted row g6"><i class="ic ic-save s14"></i>Черновик сохраняется автоматически</span>
+      </div>
+      <div class="row start g24" style="padding: 4px 24px 0; flex: 1 1 auto; min-height: 0">
+        <form class="col panel" style="flex: 1 1 auto; min-width: 0; height: 100%" aria-label="Приём велосипеда">
+          <div class="col" style="flex: 1 1 auto; overflow: hidden">
+            <section class="row start g16" style="padding: 20px 24px; border-bottom: 1px solid var(--border)">
+              <span class="badge acc num" style="width: 24px; height: 24px; border-radius: 4px; font-size: 12px">1</span>
+              <div class="col g12 grow">
+                <div class="row between"><h2 class="t-h2" style="margin: 0">Клиент</h2><span class="t-sm muted">Ищем по номеру телефона, ФИО — через <span class="kbd">Ctrl+K</span></span></div>
+                <sc-if value="{{found}}" hint-placeholder-val="{{ true }}">
+                  <div class="row start g16">
+                    <div class="field" style="width: 300px"><label for="ph" class="req">Телефон</label>
+                      <div class="input input-lg"><i class="ic ic-phone"></i><input id="ph" class="num" value="+7 916 204-55-17"><i class="ic ic-check ok-text"></i></div>
+                      <span class="hint">Найден 1 клиент</span></div>
+                    <div class="tile on grow" style="flex-direction: row; align-items: center; gap: 14px; margin-top: 20px; cursor: default">
+                      <span class="av a4" style="width: 36px; height: 36px; font-size: 13px">АС</span>
+                      <div class="col grow"><span class="strong">Смирнов Андрей Викторович</span><span class="t-sm sub">a.smirnov@mail.ru · 4 заказа на <span class="money" style="font-weight: 400">18 750 ₽</span> · последний визит <span class="num">12.11.2026</span></span></div>
+                      <button type="button" class="btn btn-ghost btn-sm">Другой клиент<span class="kbd">Alt+К</span></button>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{isNew}}" hint-placeholder-val="{{ false }}">
+                  <div class="row start g16">
+                    <div class="field" style="width: 300px"><label for="ph2" class="req">Телефон</label>
+                      <div class="input input-lg"><i class="ic ic-phone"></i><input id="ph2" class="num" value="+7 921 555-02-14"></div></div>
+                    <div class="banner info grow" style="margin-top: 20px"><i class="ic ic-info"></i><span>Клиента с таким номером нет — заполните ФИО, и он будет создан вместе с заказом.</span></div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+                    <div class="field"><label class="req">Фамилия</label><input class="input" value="Кравцов" aria-label="Фамилия"></div>
+                    <div class="field"><label class="req">Имя</label><input class="input" value="Денис" aria-label="Имя"></div>
+                    <div class="field"><label>Отчество</label><input class="input" value="Олегович" aria-label="Отчество"></div>
+                    <div class="field"><label>Email</label><div class="input err"><i class="ic ic-mail"></i><input value="kravtsov@mail" aria-invalid="true" aria-label="Email"></div><span class="errmsg"><i class="ic ic-alert s14"></i>Нет домена: например, name@mail.ru</span></div>
+                  </div>
+                </sc-if>
+              </div>
+            </section>
+            <section class="row start g16" style="padding: 20px 24px; border-bottom: 1px solid var(--border)">
+              <span class="badge acc num" style="width: 24px; height: 24px; border-radius: 4px; font-size: 12px">2</span>
+              <div class="col g12 grow">
+                <div class="row between"><h2 class="t-h2" style="margin: 0">Велосипед</h2><span class="t-sm muted">Стрелки ← → для выбора</span></div>
+                <sc-if value="{{found}}" hint-placeholder-val="{{ true }}">
+                  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px" role="radiogroup" aria-label="Велосипед клиента">
+                    <button type="button" class="tile" role="radio" aria-checked="false"><span class="row g8"><i class="ic ic-bike s20 sub"></i><span class="strong">Merida Big.Nine 300</span></span><span class="t-sm sub">Горный (МТБ) · 2021 · Германия</span><span class="t-sm warn-text row g4"><i class="ic ic-st-work s14"></i>Сейчас в ремонте: заказ № 1047</span></button>
+                    <button type="button" class="tile on is-focus" role="radio" aria-checked="true"><span class="row g8"><i class="ic ic-bike s20 accent-text"></i><span class="strong">Stels Navigator 500</span><i class="ic ic-check accent-text" style="margin-left: auto"></i></span><span class="t-sm sub">Городской · 2019 · Россия</span><span class="t-sm muted">Последний ремонт <span class="num">02.08.2026</span> — замена тормозных колодок</span></button>
+                    <button type="button" class="tile add"><i class="ic ic-plus"></i>Другой велосипед</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{isNew}}" hint-placeholder-val="{{ false }}">
+                  <div style="display: grid; grid-template-columns: 1.1fr 1.1fr 1.4fr .6fr 1fr; gap: 16px">
+                    <div class="field"><label class="req">Тип</label><div class="input"><span class="grow">Горный (МТБ)</span><i class="ic ic-chev-d s14"></i></div></div>
+                    <div class="field" style="position: relative"><label class="req">Бренд</label>
+                      <div class="input is-focus"><i class="ic ic-search"></i><input value="Mer" aria-label="Бренд" aria-expanded="true"><i class="ic ic-chev-u s14"></i></div>
+                      <div class="pop" style="position: absolute; top: 58px; left: 0; width: 280px; z-index: 15" role="listbox">
+                        <div class="mi active" role="option"><span><mark>Mer</mark>ida</span><span class="t-sm muted" style="margin-left: auto">Германия · 8</span></div>
+                        <div class="mi" role="option"><span><mark>Mer</mark>cedes-Benz</span><span class="t-sm muted" style="margin-left: auto">Германия · 0</span></div>
+                        <div class="msep"></div>
+                        <div class="mi" style="color: var(--accent-text)"><i class="ic ic-plus" style="color: var(--accent-text)"></i>Добавить бренд «Mer»</div>
+                      </div>
+                    </div>
+                    <div class="field"><label class="req">Модель</label><input class="input" placeholder="Например, Matts 7.60" aria-label="Модель"></div>
+                    <div class="field"><label>Год</label><input class="input num" placeholder="2022" aria-label="Год"></div>
+                    <div class="field"><label>Страна</label><div class="input dis"><span class="grow">Определится по бренду</span></div></div>
+                  </div>
+                </sc-if>
+              </div>
+            </section>
+            <section class="row start g16" style="padding: 20px 24px">
+              <span class="badge acc num" style="width: 24px; height: 24px; border-radius: 4px; font-size: 12px">3</span>
+              <div class="col g12 grow">
+                <h2 class="t-h2" style="margin: 0">Жалоба, оценка и срок</h2>
+                <div class="row g6 wrap">
+                  <sc-for list="{{tags}}" as="t"><button type="button" class="{{t.cls}}">{{t.t}}</button></sc-for>
+                </div>
+                <div class="field"><label for="cmp" class="req">Жалоба клиента</label><textarea id="cmp" class="input" rows="3">{{complaint}}</textarea></div>
+                <div class="row start g16">
+                  <div class="field" style="width: 220px"><label>Предварительная оценка</label><div class="input"><span class="sfx">≈</span><input class="num" value="{{est}}" aria-label="Оценка"><span class="sfx">₽</span></div><span class="hint">Озвучиваем клиенту, в счёт не идёт</span></div>
+                  <div class="field" style="width: 200px"><label class="req">Плановый срок</label><div class="input"><i class="ic ic-calendar"></i><input class="num" value="{{due}}" aria-label="Плановый срок"></div><span class="hint">{{dueHint}}</span></div>
+                  <div class="col g4" style="padding-top: 20px"><div class="seg" role="group" aria-label="Быстрый срок"><button style="height: 30px">Завтра</button><button style="height: 30px">+2 дня</button><button class="on" style="height: 30px">+4 дня</button><button style="height: 30px">+7</button></div></div>
+                  <div class="field" style="width: 240px"><label>Мастер</label><div class="input"><span class="grow ph">Назначить позже</span><i class="ic ic-chev-d s14"></i></div><span class="hint">Сейчас загрузка: Лебедев 5, Макаров 4</span></div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="row g8" style="padding: 12px 24px; border-top: 1px solid var(--border); background: var(--surface-2)">
+            <a href="Main.dc.html" class="btn btn-ghost">Отмена<span class="kbd">Esc</span></a>
+            <span class="t-sm muted" style="margin-left: 8px">Диагностика <span class="money" style="font-weight: 400">800 ₽</span> входит в счёт всегда — даже если ремонт не понадобится.</span>
+            <div class="grow"></div>
+            <button type="button" class="btn"><i class="ic ic-print"></i>Создать и распечатать квитанцию<span class="kbd">Ctrl+P</span></button>
+            <a href="OrderWorks.dc.html" class="btn btn-primary"><i class="ic ic-check"></i>Создать заказ<span class="kbd">Ctrl+S</span></a>
+          </div>
+        </form>
+        <aside class="col g16" style="width: 400px; flex: none">
+          <div class="panel col">
+            <div class="ph-head"><span class="t-h3">Квитанция приёма</span><span class="t-sm muted" style="margin-left: auto">лента 80 мм</span></div>
+            <div style="padding: 16px; background: var(--surface-3); display: flex; justify-content: center">
+              <div class="paper" style="width: 260px; padding: 16px 14px; font-size: 11px; line-height: 15px">
+                <div style="text-align: center; font-weight: 700; font-size: 13px">ВЕЛОСЕРВИС «СПИЦА»</div>
+                <div style="text-align: center; color: #555">ул. Лесная, 14 · +7 495 120-44-80</div>
+                <div style="border-top: 1px dashed #999; margin: 8px 0"></div>
+                <div style="font-weight: 700">КВИТАНЦИЯ ПРИЁМА № <span class="num">1055</span></div>
+                <div class="num">15.11.2026 13:04</div>
+                <div style="border-top: 1px dashed #999; margin: 8px 0"></div>
+                <div>Клиент: {{rcClient}}</div>
+                <div>Тел.: <span class="num">{{rcPhone}}</span></div>
+                <div>Велосипед: {{rcBike}}</div>
+                <div style="margin-top: 4px">Жалоба: {{rcComplaint}}</div>
+                <div style="border-top: 1px dashed #999; margin: 8px 0"></div>
+                <div style="display: flex; justify-content: space-between"><span>Оценка</span><span class="num">≈ {{est}} ₽</span></div>
+                <div style="display: flex; justify-content: space-between"><span>Готовность</span><span class="num">{{due}}</span></div>
+                <div style="border-top: 1px dashed #999; margin: 8px 0"></div>
+                <div style="color: #555">Велосипед принят без аккумулятора и аксессуаров. Подпись клиента: ________</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel sect col g8">
+            <span class="t-h3">Порядок ввода</span>
+            <div class="col g6 t-sm sub">
+              <span class="row g8"><span class="kbd">Tab</span>Телефон → велосипед → жалоба → оценка → срок</span>
+              <span class="row g8"><span class="kbd">Alt+1…9</span>быстрые теги жалобы</span>
+              <span class="row g8"><span class="kbd">Ctrl+S</span>создать, <span class="kbd">Ctrl+P</span>создать и печатать</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div style="height: 24px; flex: none"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["found","new"],"default":"found"},"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const isNew = (this.props.mode ?? 'found') === 'new';
+    const on = isNew ? ['Восьмёрка / колесо'] : ['Переключатели', 'Подготовка к хранению'];
+    const tags = ['ТО', 'Скрип', 'Переключатели', 'Тормоза', 'Восьмёрка / колесо', 'Прокол', 'Цепь', 'Рулевая', 'Подготовка к хранению'].map(t => ({ t, cls: 'qtag' + (on.includes(t) ? ' on' : '') }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { isNew, found: !isNew, tags,
+      complaint: isNew ? 'Восьмёрка на заднем колесе после удара о бордюр, трёт о колодку.' : 'Не переключаются передние звёзды, цепь слетает на маленькую. Перед зимним хранением — общая проверка и смазка.',
+      est: isNew ? '1 200' : '2 500', due: '19.11.2026', dueHint: 'Ср, через 4 дня',
+      rcClient: isNew ? 'Кравцов Д. О.' : 'Смирнов А. В.', rcPhone: isNew ? '+7 921 555-02-14' : '+7 916 204-55-17',
+      rcBike: isNew ? 'Merida, модель не указана' : 'Stels Navigator 500, 2019', rcComplaint: isNew ? 'восьмёрка заднего колеса' : 'переключение спереди, подготовка к хранению',
+      rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Настройки — мастерская и язык</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; overflow: hidden">
+  <dc-import name="Settings" section="general" slots="{{no}}" hint-size="1920px,1080px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return { w: 1366, h: 768, yes: true, no: false }; }
+}
+</script>
+</body>
+</html>

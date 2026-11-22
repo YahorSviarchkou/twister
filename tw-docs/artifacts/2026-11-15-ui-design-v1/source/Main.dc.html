@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — доска заказов</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: {{w}}px; height: {{h}}px">
+  <dc-import name="Sidebar" active="orders" collapsed="{{collapsed}}" h="{{h}}" hint-size="232px,100%"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content">
+      <div class="pagehead">
+        <h1 class="t-display" style="margin: 0">Заказы</h1>
+        <span class="t-sm muted">17 активных · <span class="danger-text strong">2 просрочено</span></span>
+        <div class="grow"></div>
+        <div class="seg" role="group" aria-label="Вид доски">
+          <button class="on" title="Канбан · Ctrl+1"><i class="ic ic-board"></i>Канбан</button>
+          <a href="BoardTable.dc.html" title="Таблица · Ctrl+2"><i class="ic ic-list"></i>Таблица</a>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-sm"><i class="ic ic-user"></i><span class="muted">Мастер:</span>Все<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><i class="ic ic-calendar"></i><span class="muted">Срок:</span>Любой<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><i class="ic ic-filter"></i><span class="muted">Статус:</span>Активные<i class="ic ic-chev-d s14"></i></button>
+        <div class="vr" style="margin: 4px 4px"></div>
+        <button class="qtag on"><i class="ic ic-clock s14"></i>Просрочено <span class="num">2</span></button>
+        <button class="qtag"><i class="ic ic-st-wait s14"></i>Ждут запчасти <span class="num">2</span></button>
+        <button class="qtag">Только мои</button>
+        <label class="check t-sm" style="margin-left: 8px"><input type="checkbox">Показать отклонённые</label>
+        <div class="grow"></div>
+        <button class="btn btn-sm slot" data-slot="toolbar.action" title="Экспорт в Excel · Ctrl+E"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+        <button class="btn btn-sm btn-icon" aria-label="Обновить" title="Обновить · F5"><i class="ic ic-refresh"></i></button>
+      </div>
+      <div class="kb">
+        <sc-for list="{{cols}}" as="col" hint-placeholder-count="5">
+          <section class="kcol" aria-label="{{col.title}}">
+            <div class="kcol-h">
+              <div class="row between">
+                <div class="row g8"><i class="{{col.ic}}" style="color: var(--text-2)"></i><span class="t-h3">{{col.title}}</span><span class="badge">{{col.count}}</span></div>
+                <span class="money t-sm sub">{{col.sum}}</span>
+              </div>
+              <span class="t-sm muted" style="font-size: 12px">{{col.sub}}</span>
+            </div>
+            <div class="kcards">
+              <sc-for list="{{col.cards}}" as="c" hint-placeholder-count="3">
+                <article class="{{c.cls}}" tabindex="0">
+                  <div class="row between">
+                    <span class="num strong" style="font-size: 13px">№ {{c.no}}</span>
+                    <span class="{{c.dueCls}}"><i class="ic ic-clock s12"></i>{{c.due}}</span>
+                  </div>
+                  <div class="col">
+                    <span class="strong ell">{{c.client}}</span>
+                    <span class="t-sm sub ell">{{c.bike}}</span>
+                  </div>
+                  <span class="t-sm muted ell">{{c.note}}</span>
+                  <sc-if value="{{c.hasBadges}}" hint-placeholder-val="{{ false }}">
+                    <div class="row g6 wrap">
+                      <sc-for list="{{c.badges}}" as="b"><span class="{{b.cls}}"><i class="{{b.ic}}"></i>{{b.t}}</span></sc-for>
+                    </div>
+                  </sc-if>
+                  <div class="row between" style="padding-top: 6px; border-top: 1px solid var(--border)">
+                    <div class="row g6">
+                      <span class="{{c.avCls}}">{{c.av}}</span><span class="t-sm sub">{{c.master}}</span>
+                    </div>
+                    <span class="money" style="font-size: 13px">{{c.sum}}</span>
+                  </div>
+                </article>
+              </sc-for>
+            </div>
+          </section>
+        </sc-for>
+      </div>
+      <div class="statusbar">
+        <span class="row g6"><span class="dot ok"></span>База: подключено</span>
+        <span class="row g6"><span class="kbd">Ctrl+N</span>новый заказ</span>
+        <span class="row g6"><span class="kbd">Ctrl+K</span>поиск</span>
+        <span class="row g6"><span class="kbd">← →</span>колонки</span>
+        <span class="row g6"><span class="kbd">Enter</span>открыть</span>
+        <span class="row g6"><span class="kbd">Ctrl+]</span>следующий статус</span>
+        <div class="grow"></div>
+        <span class="row g6 slot" data-slot="statusbar.item"><i class="ic ic-cloud s14"></i>Веб-версия: синхронизировано 2 мин назад</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"collapsed":{"editor":"boolean","default":false},"w":{"editor":"int","default":1920},"h":{"editor":"int","default":1080},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const W = {t:'Ждёт запчасти', cls:'chip s-amb', ic:'ic ic-st-wait'};
+    const D = {t:'Только диагностика', cls:'chip s-neu', ic:'ic ic-st-skip'};
+    const AV = {'П. Лебедев':['ПЛ','av a1'], 'С. Макаров':['СМ','av a2'], '—':['?','av']};
+    const card = (no, client, bike, note, due, dueKind, master, sum, opts) => {
+      opts = opts || {};
+      const a = AV[master];
+      const dueCls = 'pill-due' + (dueKind === 'over' ? ' over' : dueKind === 'today' ? ' today' : '');
+      return { no, client, bike, note, due, dueCls, master: master === '—' ? 'Не назначен' : master, av: a[0], avCls: a[1],
+        sum: (opts.est ? '≈ ' : '') + m(sum), raw: sum, badges: opts.badges || [], hasBadges: !!(opts.badges && opts.badges.length),
+        cls: 'kcard' + (dueKind === 'over' ? ' over' : '') + (opts.focus ? ' is-focus' : '') + (opts.done ? ' done' : '') };
+    };
+    const cols = [
+      { title:'Новые', ic:'ic ic-st-new', sub:'Заказ: Новый', cards:[
+        card(1054,'Белова Мария','Format 1413 · 2021','Прокол заднего колеса','сегодня','today','—',600,{est:1}),
+        card(1053,'Орлов Дмитрий Сергеевич','Forward Sporting 27.5 2.0 · 2022','Подготовка к зимнему хранению','19.11','', '—',2000,{est:1}),
+        card(1052,'Кузнецова Ольга Игоревна','Stels Navigator 500 · 2019','Не переключаются задние звёзды','18.11','','С. Макаров',1500,{est:1}) ]},
+      { title:'Диагностика', ic:'ic ic-st-diag', sub:'Заказ: Принят · задача: Создана / Диагностика', cards:[
+        card(1049,'Волков Игорь Петрович','Cube Aim Pro 29 · 2020','Стук в рулевой колонке','просрочен 1 дн.','over','П. Лебедев',800),
+        card(1050,'Никитина Анна','Merida Crossway 100 · 2018','Слабо держат тормоза','17.11','','С. Макаров',800),
+        card(1051,'Фёдоров Кирилл','Stark Funriser 26 · 2017','Общая проверка перед продажей','18.11','','П. Лебедев',800) ]},
+      { title:'В работе', ic:'ic ic-st-work', sub:'Заказ: Принят · задача: В работе', cards:[
+        card(1043,'Морозова Елена','Stels Navigator 500 · 2020','Замена цепи и кассеты','просрочен 2 дн.','over','С. Макаров',5340,{badges:[W]}),
+        card(1047,'Смирнов Андрей Викторович','Merida Big.Nine 300 · 2021','Скрип при педалировании, люфт втулки','18.11','','П. Лебедев',8490,{badges:[W],focus:1}),
+        card(1045,'Соколов Михаил','Trek Marlin 5 · 2022','Настройка переключателей, тормоза','сегодня','today','П. Лебедев',3900),
+        card(1046,'Павлов Артём','GT Avalanche Sport · 2019','Переборка передней втулки','17.11','','С. Макаров',2450) ]},
+      { title:'Ждёт оплаты', ic:'ic ic-st-pay', sub:'Заказ: Ждёт оплаты · задача: Готова', cards:[
+        card(1041,'Егорова Наталья','Author Basic · 2016','Замена тросов и рубашек','готов 14.11','','С. Макаров',1980),
+        card(1044,'Зайцев Роман','Specialized Rockhopper · 2021','Сезонное ТО','готов 15.11','','П. Лебедев',4300),
+        card(1048,'Ковалёва Ирина','Stels Pilot 710 · 2015','Ремонт не нужен','готов 15.11','','П. Лебедев',800,{badges:[D]}) ]},
+      { title:'Закрыты сегодня', ic:'ic ic-st-closed', sub:'Заказ: Закрыт', cards:[
+        card(1039,'Григорьев Павел','Merida Matts 6.20 · 2020','Оплачено картой','10:42','','С. Макаров',7150,{done:1}),
+        card(1040,'Тихонова Вера','Forward Dortmund 28 · 2018','Оплачено наличными','12:15','','П. Лебедев',2600,{done:1}) ]},
+    ].map(c => ({ ...c, count: c.cards.length, sum: m(c.cards.reduce((s, x) => s + x.raw, 0)) }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { cols, w: this.props.w ?? 1920, h: this.props.h ?? 1080, collapsed: this.props.collapsed ?? false,
+      rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

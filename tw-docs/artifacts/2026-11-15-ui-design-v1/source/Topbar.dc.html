@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Верхняя панель</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<header class="tw-c topbar" style="font-family: 'IBM Plex Sans', sans-serif; color: var(--text)">
+  <div style="position: relative; width: 560px; max-width: 46%">
+    <label class="{{searchCls}}" style="height: 34px; background: var(--surface-2)">
+      <i class="ic ic-search"></i>
+      <input aria-label="Глобальный поиск" placeholder="Телефон, ФИО, № заказа, модель велосипеда" value="{{query}}">
+      <span class="kbd">Ctrl+K</span>
+    </label>
+    <sc-if value="{{search}}" hint-placeholder-val="{{ false }}">
+      <div class="pop" style="position: absolute; top: 40px; left: 0; width: 640px; z-index: 30; padding: 4px 4px 0">
+        <div class="mhead">Клиенты · 2</div>
+        <div class="mi active" style="height: 44px"><i class="ic ic-user"></i><div class="col grow"><span><mark>Смирн</mark>ов Андрей Викторович</span><span class="t-sm muted"><span class="num">+7 916 204-55-17</span> · 2 велосипеда · 4 заказа</span></div><span class="kbd">Enter</span></div>
+        <div class="mi" style="height: 44px"><i class="ic ic-user"></i><div class="col grow"><span><mark>Смирн</mark>ова Татьяна Олеговна</span><span class="t-sm muted"><span class="num">+7 903 771-20-46</span> · 1 велосипед · 1 заказ</span></div></div>
+        <div class="mhead">Заказы · 1</div>
+        <div class="mi" style="height: 40px"><i class="ic ic-board"></i><span class="num strong">№ 1047</span><span class="grow ell sub">Merida Big.Nine 300 · <mark>Смирн</mark>ов А. В.</span><span class="chip s-blu"><i class="ic ic-st-accept"></i>Принят</span><span class="chip s-blu"><i class="ic ic-st-work"></i>В работе</span></div>
+        <div class="mhead">Велосипеды · 2</div>
+        <div class="mi"><i class="ic ic-bike"></i><span>Merida Big.Nine 300 · 2021</span><span class="muted t-sm">— <mark>Смирн</mark>ов А. В.</span></div>
+        <div class="mi"><i class="ic ic-bike"></i><span>Stels Navigator 500 · 2019</span><span class="muted t-sm">— <mark>Смирн</mark>ов А. В.</span></div>
+        <div class="row g16 t-sm muted" style="height: 34px; padding: 0 10px; margin: 4px -4px 0; border-top: 1px solid var(--border); background: var(--surface-2); border-radius: 0 0 6px 6px; font-size: 12px">
+          <span class="row g4"><span class="kbd">↑</span><span class="kbd">↓</span>выбор</span><span class="row g4"><span class="kbd">Enter</span>открыть</span><span class="row g4"><span class="kbd">Tab</span>следующая группа</span><span class="row g4"><span class="kbd">Esc</span>закрыть</span>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  <div class="grow"></div>
+  <button class="btn btn-ghost btn-icon" aria-label="Горячие клавиши" title="Горячие клавиши · F1"><i class="ic ic-keyboard s20"></i></button>
+  <div style="position: relative">
+    <button class="{{bellCls}}" aria-label="Уведомления, 3 новых" title="Уведомления · Ctrl+Shift+N" style="position: relative"><i class="ic ic-bell s20"></i><span class="badge red" style="position: absolute; top: -4px; right: -6px; height: 16px; min-width: 16px; font-size: 10px; padding: 0 4px">3</span></button>
+    <sc-if value="{{notif}}" hint-placeholder-val="{{ false }}">
+      <div class="pop" style="position: absolute; top: 42px; right: -8px; width: 420px; z-index: 30; padding: 0">
+        <div class="row between" style="height: 44px; padding: 0 14px; border-bottom: 1px solid var(--border)"><span class="t-h3">Уведомления</span><button class="link t-sm">Отметить все прочитанными</button></div>
+        <sc-for list="{{notes}}" as="n" hint-placeholder-count="4">
+          <div class="row start g12" style="padding: 12px 14px; border-bottom: 1px solid var(--border); background: {{n.bg}}">
+            <span class="{{n.chip}}" style="width: 28px; height: 28px; padding: 0; justify-content: center; border-radius: 4px"><i class="{{n.ic}}"></i></span>
+            <div class="col grow g4">
+              <span class="t-sm strong">{{n.t}}</span>
+              <span class="t-sm sub">{{n.d}}</span>
+              <div class="row g12"><span class="t-sm muted" style="font-size: 12px">{{n.time}}</span><sc-if value="{{n.act}}" hint-placeholder-val="{{ true }}"><button class="link t-sm">{{n.act}}</button></sc-if></div>
+            </div>
+            <sc-if value="{{n.unread}}" hint-placeholder-val="{{ true }}"><span class="dot" style="background: var(--accent); margin-top: 6px"></span></sc-if>
+          </div>
+        </sc-for>
+        <div class="row" style="height: 40px; padding: 0 14px; justify-content: center"><button class="link t-sm">Все уведомления</button></div>
+      </div>
+    </sc-if>
+  </div>
+  <div class="vr" style="margin: 12px 4px"></div>
+  <a href="Intake.dc.html" class="btn btn-primary" title="Новый заказ · Ctrl+N"><i class="ic ic-plus"></i>Новый заказ<span class="kbd">Ctrl+N</span></a>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"search":{"editor":"boolean","default":false},"notif":{"editor":"boolean","default":false},"query":{"editor":"text","default":""},"$preview":{"width":1688,"height":52}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const search = !!(this.props.search ?? false), notif = !!(this.props.notif ?? false);
+    const notes = [
+      { t: 'Пришли запчасти по заказу № 1043', d: 'Цепь KMC X9 и кассета Shimano CS-HG200 поступили на склад и зарезервированы.', time: '10 мин назад', act: 'Открыть заказ', ic: 'ic ic-box', chip: 'chip s-amb', unread: true, bg: 'color-mix(in srgb, var(--accent-soft) 35%, var(--surface))' },
+      { t: 'Просрочен заказ № 1049', d: 'Плановый срок 14.11 · Cube Aim Pro 29 · мастер П. Лебедев', time: '1 ч назад', act: 'Перенести срок', ic: 'ic ic-clock', chip: 'chip s-red', unread: true, bg: 'color-mix(in srgb, var(--accent-soft) 35%, var(--surface))' },
+      { t: 'Новая веб-заявка', d: 'Кравцов Денис: «Восьмёрка на заднем колесе». Плагин «Синхронизация с веб-версией».', time: '2 ч назад', act: 'Создать заказ', ic: 'ic ic-cloud', chip: 'chip s-blu', unread: true, bg: 'color-mix(in srgb, var(--accent-soft) 35%, var(--surface))' },
+      { t: 'Оплата по счёту СЧ-2026-0409', d: '4 300 ₽ · карта · заказ № 1044', time: 'вчера, 18:20', act: '', ic: 'ic ic-st-ready', chip: 'chip s-grn', unread: false, bg: 'var(--surface)' },
+    ];
+    return { search, notif, notes, query: this.props.query ?? (search ? 'смирн' : ''),
+      searchCls: 'input' + (search ? ' is-focus' : ''), bellCls: 'btn btn-ghost btn-icon' + (notif ? ' is-hover' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twister MVP architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: a technical reference the owner and agents build against
+   IDEA a service-manual page: exploded drawing of a wheel, numbered callouts, parts list
+   PICTURE the app as a bicycle wheel: hub = domain, ring = use cases, spokes = ports, rim = adapters
+   COLOUR white paper, black ink, signal orange for the application layer, blue for storage, teal for UI
+   TYPE Geist 600 for headings, Geist for text, Geist Mono for code
+   LAYOUT title and verdict across the top, wheel full width beneath; phone: verdict, stacked layers */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#121416);--ink:light-dark(#111315,#eceef0);--mute:light-dark(#5c636b,#9aa3ab);--line:light-dark(#d9dde1,#2c3136);--panel:light-dark(#f3f4f6,#1a1d20);--code:light-dark(#f6f7f8,#16191c);--or:#ff4f00;--orS:light-dark(#fff0e8,#3a1d0e);--bl:light-dark(#2459c9,#6f9bff);--blS:light-dark(#e9f0ff,#16233d);--tl:light-dark(#0b7d78,#3cc7bf);--tlS:light-dark(#e2f6f4,#0f2c2a);--dm:light-dark(#111315,#eceef0);--dmS:light-dark(#ececee,#24282c);--warn:light-dark(#9a5b00,#ffb84d)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Geist,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip}
+a{color:inherit;text-underline-offset:3px}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:clamp(32px,4.4vw,50px);line-height:1.05;letter-spacing:-.02em;margin:0 0 14px;font-weight:650;text-wrap:balance}
+h2{font-size:clamp(24px,2.6vw,32px);line-height:1.1;letter-spacing:-.015em;margin:0 0 10px;font-weight:650;text-wrap:balance}
+h3{font-size:18px;margin:22px 0 8px;font-weight:600}
+p{margin:0 0 12px;max-width:74ch}
+.lead{font-size:18px;max-width:68ch}
+.mute{color:var(--mute)}
+small,.small{font-size:14px}
+nav.toc{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav.toc .scroll{display:flex;gap:4px;max-width:1240px;margin:0 auto;padding:8px max(5vw,16px);white-space:nowrap}
+nav.toc a{flex:none;text-decoration:none;font-size:14px;padding:8px 10px;border-radius:6px;color:var(--mute)}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--panel);color:var(--ink);outline:none}
+@media(max-width:900px){nav.toc{position:static}}
+.scroll{overflow-x:auto}
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px 48px;align-items:end}
+@media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr)}}
+.figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.figs div{background:var(--bg);padding:14px 16px}
+.figs b{display:block;font-size:clamp(26px,3vw,34px);line-height:1.1;font-weight:650;letter-spacing:-.02em;white-space:nowrap}
+.figs span{font-size:14px;color:var(--mute)}
+.fig{position:relative;min-height:440px;margin-top:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.fig svg text{font-family:Geist,system-ui,sans-serif;paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.c-dm{color:var(--dm);background:var(--dmS)}.c-or{color:var(--or);background:var(--orS)}.c-bl{color:var(--bl);background:var(--blS)}.c-tl{color:var(--tl);background:var(--tlS)}
+.alt{background:var(--panel)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 40px}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media(max-width:860px){.cols,.cols3{grid-template-columns:minmax(0,1fr)}}
+ul.clean{list-style:none;padding:0;margin:0}
+ul.clean li{padding:9px 0;border-bottom:1px solid var(--line)}
+ul.clean li:last-child{border-bottom:0}
+.yes::before,.no::before,.later::before{display:inline-block;width:1.4em;font-weight:700}
+.yes::before{content:"+";color:var(--tl)}.no::before{content:"–";color:var(--mute)}.later::before{content:"→";color:var(--or)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:600;font-size:14px;color:var(--mute);border-bottom:1px solid var(--ink)}
+td code,p code,li code{font:14px "Geist Mono",ui-monospace,monospace;background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.tw{border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+.tw table{min-width:640px}
+.tw th:first-child,.tw td:first-child{padding-left:16px}
+.verdict{font-weight:600}
+.pick{color:var(--tl);font-weight:600}.pass{color:var(--mute)}
+.note{border-left:3px solid var(--or);padding:10px 14px;background:var(--orS);border-radius:0 8px 8px 0;margin:14px 0;max-width:80ch}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tabs button{font:500 15px Geist,system-ui,sans-serif;min-height:44px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs button:focus-visible,.copy:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+.panel{display:none;margin-top:18px}.panel.on{display:block}
+.snip{border:1px solid var(--line);border-radius:10px;margin:0 0 18px;background:var(--code);overflow:hidden}
+.snip header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--line);background:var(--bg)}
+.snip header span{font:13px "Geist Mono",ui-monospace,monospace;overflow-wrap:anywhere}
+.snip .why{padding:10px 14px 0;font-size:15px;color:var(--mute);max-width:none}
+.copy{font:500 13px Geist,system-ui,sans-serif;min-height:36px;min-width:72px;padding:0 12px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;flex:none}
+pre{margin:0;padding:12px 14px 14px;overflow-x:auto;font:13.5px/1.55 "Geist Mono",ui-monospace,monospace;tab-size:4}
+.k{color:var(--bl)}.s{color:var(--tl)}.c{color:var(--mute);font-style:italic}.a{color:var(--or)}.n{color:var(--warn)}
+.flow{counter-reset:st;list-style:none;padding:0;margin:18px 0 0}
+.flow li{counter-increment:st;display:grid;grid-template-columns:2.4em 9.5em minmax(0,1fr);gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.flow li::before{content:counter(st);font-weight:650;font-size:18px}
+.flow li .chip{justify-self:start}
+@media(max-width:600px){.flow li{grid-template-columns:2em minmax(0,1fr)}.flow li>span:last-child{grid-column:2}}
+.matrix td,.matrix th{text-align:center;white-space:nowrap}
+.matrix td:first-child,.matrix th:first-child{text-align:left;white-space:normal}
+.y{color:var(--tl);font-weight:700}.o{color:var(--mute)}
+.phase{border-top:3px solid var(--ink);padding-top:12px}
+.phase.p2{border-color:var(--or)}.phase.p3{border-color:var(--line)}
+.issue{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.issue b{font-family:"Geist Mono",ui-monospace,monospace;font-weight:500;white-space:nowrap}
+footer{font-size:14px;color:var(--mute)}
+@media(max-width:600px){table{font-size:13px}th,td{padding:6px 4px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;text-align:right}.stack td::before{content:attr(data-l);color:var(--mute);text-align:left}.tw table{min-width:0}.stack td:empty{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<nav class="toc" aria-label="Разделы"><div class="scroll">
+<a href="#scope">Скоуп</a><a href="#modules">Модули</a><a href="#tech">Технологии</a><a href="#starter">JavaFX-стартер</a><a href="#code">Код по слоям</a><a href="#flow">Сквозной сценарий</a><a href="#patterns">Паттерны</a><a href="#users">Пользователи</a><a href="#next">Что дальше</a>
+</div></nav>
+
+<header class="band">
+<div class="wrap">
+<div class="hero">
+<div>
+<h1>Twister MVP: полный десктоп без плагинов, пять модулей и одно правило зависимостей</h1>
+<p class="lead">Эталон для первой рабочей версии (веха M3). Домен и сценарии не знают ни про JavaFX, ни про базу. UI ходит только в use cases, хранилище подключается в runtime. Свой JavaFX-стартер оставляем, но чиним и дописываем: бутстрап, фабрику контроллеров, потоки, навигацию.</p>
+<p class="small mute">Статус: дизайн, Proposed. Опирается на ADR 0004–0006 и roadmap от 21.11.2026. Расходится с ADR 0004 в одном месте, оно отмечено в разделе «Модули».</p>
+</div>
+<div class="figs" role="list">
+<div role="listitem"><b>5</b><span>Gradle-модулей в сборке</span></div>
+<div role="listitem"><b>0</b><span>плагинов и точек расширения</span></div>
+<div role="listitem"><b>3</b><span>роли: владелец, приёмка, механик</span></div>
+<div role="listitem"><b>28.03</b><span>MVP desk по таймлайну</span></div>
+</div>
+</div>
+<div class="fig" id="wheel" aria-label="Архитектура как колесо: ступица — домен, обод — адаптеры"><svg id="wheelSvg" role="img"></svg></div>
+<div class="legend">
+<span class="chip c-dm">tw-core: домен, чистая Java</span>
+<span class="chip c-or">tw-workflow: use cases и порты</span>
+<span class="chip c-tl">tw-app-desktop + tw-fx-javafx-starter: UI</span>
+<span class="chip c-bl">tw-persistence-api: SQLite, JPA, Flyway, бэкап</span>
+</div>
+<p class="small mute" style="margin-top:10px">Спицы — это порты. Слева ведущие адаптеры (экраны вызывают use cases), справа ведомые (use cases вызывают хранилище, печать, часы). Зависимости идут только к ступице.</p>
+</div>
+</header>
+
+<section class="band alt" id="scope">
+<div class="wrap">
+<h2>Скоуп MVP: всё, что нужно мастерской, чтобы отказаться от бумаги</h2>
+<p>Фаза 1 из продуктового переосмысления: принять, отремонтировать, выдать. Один ПК, одна база, несколько пользователей по очереди. Скоуп M3 на доске пока открытый вопрос, поэтому список предварительный.</p>
+<div class="cols3" style="margin-top:18px">
+<div><h3>Входит</h3><ul class="clean">
+<li class="yes">Клиенты и велосипеды, поиск по телефону и номеру рамы</li>
+<li class="yes">Приём: жалоба, чек-лист, фото из файлов, квитанция и бирка с QR</li>
+<li class="yes">Диагностика, смета, согласование (кто, как, порог «без звонка»)</li>
+<li class="yes">Пункты работ: услуга и запчасти с количеством, мастер</li>
+<li class="yes">Доска заказов по статусам, карточка заказа</li>
+<li class="yes">Счёт, оплата частями (наличные, карта вручную), выдача</li>
+<li class="yes">Склад: остатки, приход, списание по заказу</li>
+<li class="yes">Справочники: услуги и прайс, запчасти, бренды, типы</li>
+<li class="yes">Пользователи, роли, PIN, журнал «кто что сделал»</li>
+<li class="yes">Автобэкап, восстановление, установщик для Windows</li>
+</ul></div>
+<div><h3>Следующие фазы</h3><ul class="clean">
+<li class="later">Планшет механика по Wi-Fi, LAN-сервер (фаза 2)</li>
+<li class="later">Уведомления клиенту: Telegram, SMS (фаза 2)</li>
+<li class="later">Статус по QR и согласование по ссылке (фаза 2)</li>
+<li class="later">Поставщики, заказ запчастей, точки дозаказа (фаза 3)</li>
+<li class="later">Касса по 54-ФЗ, сдельная оплата мастеров (фаза 3)</li>
+<li class="later">Отчёты по марже и загрузке (фаза 3)</li>
+<li class="later">Сезонные напоминания, гарантия (фаза 4)</li>
+</ul></div>
+<div><h3>Не делаем вообще в MVP</h3><ul class="clean">
+<li class="no">Плагины, SPI, UI-слоты, дескрипторы плагинов</li>
+<li class="no"><code>tw-app-web</code>, <code>tw-fx-plugin-*</code>: исключить из сборки</li>
+<li class="no">Синхронизация двух баз, облако, мультиарендность</li>
+<li class="no">Обобщённый <code>Asset</code>, другие вертикали</li>
+<li class="no">Генерация таблиц из аннотаций на доменных классах</li>
+<li class="no">Перенос данных legacy, пока нет реальной мастерской с данными</li>
+</ul></div>
+</div>
+</div>
+</section>
+
+<section class="band" id="modules">
+<div class="wrap">
+<h2>Модули: пять в сборке, UI не видит JPA даже на этапе компиляции</h2>
+<p>Названия модулей пока не меняем: переименование в <code>tw-api</code> / <code>tw-kernel</code> / <code>tw-store-jpa</code> из ADR 0004 стоит делать, когда появятся вторая сборка или плагины. Сейчас это только шум в истории.</p>
+<div class="tw" style="margin-top:16px"><table class="stack">
+<thead><tr><th>Модуль</th><th>Отвечает за</th><th>Зависит от</th><th>Сейчас → что сделать</th></tr></thead>
+<tbody>
+<tr><td><span class="chip c-dm">tw-core</span></td><td>Агрегаты, value objects, движок стейт-машины и таблицы переходов, доменные события, исключения. Пакеты <code>order</code>, <code>customer</code>, <code>bike</code>, <code>stock</code>, <code>billing</code>, <code>access</code>, <code>shared</code>. Без Spring, JPA и JavaFX.</td><td>JDK</td><td>Анемичные модели на Lombok → поведение в агрегатах, движок переезжает сюда из <code>tw-workflow</code>, <code>Transport</code> уходит в <code>bike</code></td></tr>
+<tr><td><span class="chip c-or">tw-workflow</span></td><td>Use cases (команда + обработчик), запросы на чтение, порты: репозитории, <code>CurrentActor</code>, печать, бэкап. Транзакции и права проверяются здесь.</td><td>tw-core, spring-context, spring-tx</td><td>Сервисы на каждую сущность и оркестратор каскадов → обработчики сценариев; DAO-порты без типов Spring Data</td></tr>
+<tr><td><span class="chip c-bl">tw-persistence-api</span></td><td>JPA-сущности, Spring Data, адаптеры портов, мапперы MapStruct, миграции Flyway, бэкап, автоконфигурация.</td><td>tw-workflow, tw-core</td><td>Сущности есть, адаптеров нет, imports не в той папке (#6) → адаптеры, SQLite, миграции, тесты на файле</td></tr>
+<tr><td><span class="chip c-tl">tw-fx-javafx-starter</span></td><td>Инфраструктура JavaFX + Spring без знаний о Twister: запуск, загрузка FXML, i18n, фоновые задачи, навигация, диалоги, тема, кэш экранов.</td><td>spring-boot, JavaFX</td><td>Загрузка FXML и кэш есть, не зарегистрирован (#8) → починить, дописать бутстрап и потоки (раздел «JavaFX-стартер»)</td></tr>
+<tr><td><span class="chip c-tl">tw-app-desktop</span></td><td>Сборка приложения: <code>main</code>, экраны (FXML, контроллеры, view models), сессия пользователя, настройки, упаковка в установщик.</td><td>starter, tw-workflow; tw-persistence-api только <code>runtimeOnly</code></td><td>Не стартует → оболочка, экраны по дизайну v1, jpackage</td></tr>
+</tbody></table></div>
+<div class="cols" style="margin-top:22px">
+<div>
+<h3>Правило зависимостей</h3>
+<p>Стрелки только к домену. Домен не импортирует ничего, кроме JDK. Use cases не знают про JPA и JavaFX. Экраны вызывают use cases и запросы, но не репозитории. Хранилище подключено к приложению как <code>runtimeOnly</code>: класс JPA в контроллере просто не скомпилируется.</p>
+<p>Gradle закрывает границы между модулями, ArchUnit закрывает границы внутри модуля: домен без фреймворков и граница пакета <code>bike</code> (ADR 0005).</p>
+</div>
+<div>
+<h3>Что выпадает из ADR 0004 на время MVP</h3>
+<p><code>tw-api</code> как отдельный модуль портов не нужен: порты лежат в <code>tw-workflow</code>, а <code>tw-workflow</code> зависит только от <code>spring-context</code> и <code>spring-tx</code>. Когда появится LAN-сервер (фаза 2), отделить порты будет механической работой, если правило зависимостей соблюдалось.</p>
+<p><code>tw-shell-javafx</code> отдельно от сборки появится вместе с <code>app-desktop-client</code>. До этого экраны живут в <code>tw-app-desktop</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="band alt" id="tech">
+<div class="wrap">
+<h2>Технологии: Java 25 LTS, Spring Boot 4.2, JavaFX 27 и SQLite в одном файле</h2>
+<p>Версии проверены 21.11.2026 по релизам на GitHub, endoflife.date и документации. Главное изменение относительно текущего кода: Spring Boot 3.2 не поддерживается с 31.12.2024, а 3.5 с 30.06.2026. Обновляться сейчас дешевле всего, кода на старой версии почти нет.</p>
+<div class="tw" style="margin-top:16px"><table class="stack">
+<thead><tr><th>Область</th><th>Выбор</th><th>Версия</th><th>Почему</th><th>Отклонено</th></tr></thead>
+<tbody>
+<tr><td>Язык</td><td class="pick">Java 25 LTS</td><td>25</td><td>LTS с 16.09.2025, поддержка до 2030. JavaFX 27 и 28 требуют JDK 25. Виртуальные потоки для фоновых задач UI.</td><td class="pass">Java 21: старше, и новые JavaFX на ней не запускаются</td></tr>
+<tr><td>Каркас</td><td class="pick">Spring Boot 4.2</td><td>4.2.0, GA 19.11.2026</td><td>DI, конфигурация, транзакции, события, расписание уже используются. В 4.x автоконфигурации разнесены по стартерам: Flyway подключается отдельным стартером. Регистрация через <code>AutoConfiguration.imports</code> не изменилась.</td><td class="pass">3.5: бесплатная поддержка закончилась. Micronaut, Quarkus: переписывание без выгоды для десктопа</td></tr>
+<tr><td>UI</td><td class="pick">JavaFX 27</td><td>27.0.1.1</td><td>Есть код, стартер и дизайн v1 под десктоп, работает офлайн. Обновлять раз в полгода вместе с JavaFX, база остаётся JDK 25.</td><td class="pass">Compose Desktop (другой язык), Electron или Tauri (нужен веб-стек, он будет позже и отдельно), Swing</td></tr>
+<tr><td>Тема и контролы</td><td class="pick">AtlantaFX, ControlsFX, Ikonli</td><td>3.0.0 · 11.2.7 · 12.4.0</td><td>AtlantaFX — современные светлая и тёмная темы на CSS-переменных, под токены дизайна v1. ControlsFX — валидация, уведомления, поиск. Ikonli — иконки. GemsFX — по месту, если понадобятся календари и теги.</td><td class="pass">MaterialFX: последний релиз в 2023 году, переписывание не закончено</td></tr>
+<tr><td>База</td><td class="pick">SQLite (WAL)</td><td>sqlite-jdbc 3.54.1.0</td><td>Один файл, без сервиса и установки. Бэкап <code>VACUUM INTO</code> на ходу. С LAN-сервером (ADR 0006) к файлу по-прежнему ходит один процесс: десктоп. Сравнение ниже.</td><td class="pass">H2, HSQLDB, встроенный PostgreSQL</td></tr>
+<tr><td>ORM и маппинг</td><td class="pick">Spring Data JPA (Hibernate 7), MapStruct</td><td>из Boot 4.2 · 1.6.3</td><td>Сущности и спецификации уже написаны. Диалект SQLite из <code>hibernate-community-dialects</code> не проверяется в CI Hibernate, поэтому все тесты хранилища гоняем на настоящем SQLite-файле.</td><td class="pass">jOOQ: удобнее на SQLite, но всё переписывать</td></tr>
+<tr><td>Миграции</td><td class="pick">Flyway</td><td>13.13.0</td><td>Поддерживает SQLite, H2 и PostgreSQL. В Boot 4 подключается своим стартером. SQL пишем переносимый, чтобы потом переехать на PostgreSQL.</td><td class="pass">Liquibase 5: с 30.09.2025 лицензия FSL, запрет конкурирующего коммерческого использования</td></tr>
+<tr><td>Документы и печать</td><td class="pick">Thymeleaf + openhtmltopdf; JavaFX PrinterJob</td><td>1.1.114</td><td>Квитанция, смета и счёт как HTML/CSS-шаблоны: их легко править, позже те же шаблоны пойдут в письмо или на веб. Бирку с QR печатаем через <code>PrinterJob</code> на термопринтер. QR генерируем через ZXing.</td><td class="pass">JasperReports: мощно, но тяжело. OpenPDF и PDFBox: слишком низкий уровень для вёрстки счёта</td></tr>
+<tr><td>Хэш PIN и паролей</td><td class="pick">spring-security-crypto (BCrypt)</td><td>из Boot 4.2</td><td>Только хэширование, без фильтров и контекста Spring Security (см. раздел «Пользователи»).</td><td class="pass">Argon2: нужен BouncyCastle ради одного класса</td></tr>
+<tr><td>Логи</td><td class="pick">SLF4J + Logback</td><td>из Boot</td><td>Rolling-файл в папке данных, 14 дней. Владелец отправляет файл при ошибке, кнопка «Открыть папку логов» в настройках.</td><td class="pass">—</td></tr>
+<tr><td>Сборка</td><td class="pick">Gradle, version catalog, build-logic</td><td>9.9.2</td><td>Convention-плагин вместо скопированных в каждый модуль Spotless и Jacoco.</td><td class="pass">Maven: нет причины менять</td></tr>
+<tr><td>Установщик</td><td class="pick">jpackage через Badass Runtime</td><td>2.0.1</td><td>MSI для Windows с ярлыками и обновлением поверх. JavaFX не грузится из classpath, поэтому собирается jlink-рантайм с JavaFX. Автообновления у jpackage нет: в MVP проверка версии при старте.</td><td class="pass">Conveyor: автообновление из коробки, но $45 в месяц для закрытого кода; вернуться к нему в фазе 2. GraalVM native: Spring Boot + JavaFX слишком рискованно</td></tr>
+<tr><td>Тесты</td><td class="pick">JUnit, AssertJ, ArchUnit, TestFX</td><td>6.0.3 · — · 1.5.1 · 4.0.18</td><td>Домен и use cases без Spring, хранилище на SQLite-файле, границы на ArchUnit, 1–2 smoke-теста UI. Testcontainers для SQLite больше не нужен.</td><td class="pass">Много UI-тестов: TestFX не обновлялся с 02.2024</td></tr>
+</tbody></table></div>
+
+<h3 style="margin-top:30px">База данных: почему SQLite, а не H2 или PostgreSQL</h3>
+<p>Решение пока предварительное: в roadmap это отдельная задача и ADR. Рекомендация — SQLite, переносимый SQL и тесты на файле. Тогда переезд на PostgreSQL в фазе 5 стоит недели работы, а не переписывания.</p>
+<div class="tw" style="margin-top:12px"><table class="stack">
+<thead><tr><th>Вариант</th><th>Плюсы</th><th>Минусы</th><th>Вердикт</th></tr></thead>
+<tbody>
+<tr><td><b>SQLite</b></td><td>Самая распространённая встраиваемая база. Один файл, бэкап копией или <code>VACUUM INTO</code>. Flyway поддерживает. Ничего не надо ставить и обслуживать в мастерской.</td><td>Один писатель за раз. Только тот же компьютер, не сетевая папка. Диалект Hibernate от сообщества. Ограниченный <code>ALTER TABLE</code>. Нет DECIMAL: деньги в копейках.</td><td class="pick">MVP и фаза 2</td></tr>
+<tr><td><b>H2 (файл)</b></td><td>Диалект в ядре Hibernate, есть серверный режим.</td><td>Между минорными версиями ломалась совместимость файла: 2.1.214 → 2.2.220 требовал дамп и восстановление. Для данных клиентов это риск при каждом обновлении.</td><td class="pass">Нет</td></tr>
+<tr><td><b>HSQLDB</b></td><td>Встроенный и серверный режимы, стабильный.</td><td>Последний релиз 10.2024, маленькое сообщество, мало опыта с ним у агентов и у нас.</td><td class="pass">Нет</td></tr>
+<tr><td><b>Встроенный PostgreSQL</b> (zonky)</td><td>Та же база, что в будущем сервере.</td><td>Сам проект описывает себя как библиотеку для тестов. На Windows может требоваться VC++ runtime, отдельный процесс, порт, антивирус.</td><td class="pass">Нет</td></tr>
+<tr><td><b>Установленный PostgreSQL</b></td><td>Самый надёжный путь к сети и облаку.</td><td>Установщик, служба, пароли, обновления мажорных версий — администрирование в мастерской без админа.</td><td>Фаза 5, если будет продукт</td></tr>
+</tbody></table></div>
+
+<h3 style="margin-top:30px">Интеграции: в MVP ни одной внешней</h3>
+<div class="tw" style="margin-top:12px"><table class="stack">
+<thead><tr><th>Интеграция</th><th>Когда</th><th>Как</th><th>Почему так</th></tr></thead>
+<tbody>
+<tr><td>Принтеры</td><td>MVP</td><td>Системный принтер Windows: PDF для A4, <code>PrinterJob</code> для бирки</td><td>Не нужен драйвер конкретной модели. Термопринтер этикеток печатает как обычный принтер.</td></tr>
+<tr><td>Фото при приёме</td><td>MVP</td><td>Файлы с диска или из папки синхронизации телефона, копия в папке данных</td><td>Камера ПК неудобна. Снимок с планшета появится в фазе 2 через LAN.</td></tr>
+<tr><td>Мессенджеры</td><td>Фаза 2</td><td>Порт <code>NotificationChannel</code>, по адаптеру на канал: Telegram-бот (TelegramBots 10.3), WhatsApp Business, позже другие. Клиент подключается по QR с квитанции</td><td>Набор каналов зависит от рынка и включается в настройках мастерской. Ядро не знает, какие каналы есть.</td></tr>
+<tr><td>SMS</td><td>Фаза 2, по рынку</td><td>Тот же порт, адаптер к местному шлюзу (Twilio, SMS.ru и подобные)</td><td>Запасной канал для клиентов без мессенджера. Шлюз выбирается по стране.</td></tr>
+<tr><td>Фискализация</td><td>Фаза 3, по рынку</td><td>Порт <code>FiscalRegister</code>, адаптер под требования страны. Например, для 54-ФЗ — веб-сервер драйвера АТОЛ ДТО 10 (JSON-задания на <code>localhost:16732</code>)</td><td>Требования к кассам разные в каждой стране, а где-то их нет совсем. Подключаем адаптер только там, где это закон.</td></tr>
+</tbody></table></div>
+</div>
+</section>
+<section class="band" id="starter">
+<div class="wrap">
+<h2>JavaFX-стартер: оставляем свой, чиним девять мест и дописываем бутстрап</h2>
+<div class="cols">
+<div>
+<p>Готовой поддерживаемой интеграции JavaFX и Spring Boot 4 нет. FxWeaver — последний релиз 19.09.2024, автор называет его побочным проектом, совместимость с Boot 4 не подтверждена. mvvmFX не обновлялся с 2018 года. Документированный путь (Josh Long, статья BellSoft 2025 года) — это и есть то, что делает наш стартер: Spring в <code>init()</code>, сцена в <code>start()</code>, фабрика контроллеров из контекста.</p>
+<p>Стартер не знает ничего о Twister. Его переиспользуют <code>tw-app-desktop</code> сейчас, клиент LAN-сервера в фазе 2 и любой другой ваш JavaFX-проект. Веб-оболочка его не использует.</p>
+</div>
+<div class="tw"><table>
+<thead><tr><th></th><th>Свой стартер</th><th>FxWeaver</th></tr></thead>
+<tbody>
+<tr><td>Spring Boot 4.2</td><td class="pick">да, наш код</td><td class="pass">не подтверждено</td></tr>
+<tr><td>Последний релиз</td><td>—</td><td>09.2024</td></tr>
+<tr><td>Фоновые задачи, навигация</td><td class="pick">в стартере</td><td class="pass">нет</td></tr>
+<tr><td>i18n через MessageSource</td><td class="pick">есть</td><td class="pass">вручную</td></tr>
+<tr><td>Кэш экранов с TTL</td><td class="pick">есть</td><td class="pass">нет</td></tr>
+<tr><td>Объём</td><td>~250 строк</td><td>внешняя зависимость</td></tr>
+</tbody></table></div>
+</div>
+
+<h3>Что сейчас не так в коде стартера</h3>
+<div class="tw"><table class="stack">
+<thead><tr><th>Где</th><th>Проблема</th><th>Исправление</th></tr></thead>
+<tbody>
+<tr><td><code>resources/META-INF</code></td><td>Нет файла <code>AutoConfiguration.imports</code>: Boot не видит автоконфигурацию (#8).</td><td>Добавить файл с <code>JavaFxAutoConfiguration</code>.</td></tr>
+<tr><td><code>JavaFxConfiguration</code></td><td><code>@ComponentScan</code> внутри <code>@AutoConfiguration</code> подхватывает всё в пакете в обход условий и порядка.</td><td>Явные <code>@Bean</code> под <code>@ConditionalOnMissingBean</code>.</td></tr>
+<tr><td><code>JavaFxProperties</code></td><td>У вложенных <code>bundle</code> и <code>cache</code> нет <code>@DefaultValue</code>: без настроек это <code>null</code> и NPE при старте.</td><td><code>@DefaultValue</code> на вложенных записях.</td></tr>
+<tr><td><code>caffeineScreenProvider</code></td><td>Условие читает <code>twister.javafx.cache.enabled</code>, а поле называется <code>globalEnabled</code>. Чтобы включить кэш, нужны два разных свойства.</td><td>Одно свойство <code>cache.enabled</code>, одно место проверки.</td></tr>
+<tr><td><code>@FXController</code></td><td>Мета-аннотация <code>@Component</code> делает контроллеры singleton. Повторная загрузка FXML перезаписывает <code>@FXML</code>-поля того же объекта, два окна сметы делят состояние.</td><td><code>@FxView</code> с prototype scope.</td></tr>
+<tr><td><code>ScreenManager</code></td><td><code>setController(bean)</code> вместо фабрики: вложенные <code>fx:include</code> получают контроллеры не из Spring, <code>fx:controller</code> в FXML не работает.</td><td><code>setControllerFactory(context::getBean)</code>.</td></tr>
+<tr><td><code>ScreenProvider</code></td><td>Кэшируется только <code>Region</code>, контроллер теряется: закэшированному экрану нельзя передать id заказа.</td><td>Кэшировать <code>View&lt;C&gt;</code> (узел + контроллер).</td></tr>
+<tr><td><code>MessageSourceResourceBundle</code></td><td><code>getKeys()</code> пустой, на отсутствующий ключ летит <code>NoSuchMessageException</code> вместо <code>MissingResourceException</code>. Нарушен контракт <code>ResourceBundle</code>.</td><td>Ключи из бандла, <code>null</code> при отсутствии. <code>MessageSource</code> брать у Boot (<code>spring.messages.*</code>), а не создавать свой.</td></tr>
+<tr><td><code>build.gradle.kts</code></td><td><code>javafx { version = libs.versions.java }</code> — версия JavaFX взята из версии Java. Сейчас случайно совпадает (21), после перехода на Java 25 сломается.</td><td>Отдельная версия <code>javafx</code> в каталоге. Сейчас под этим именем лежит версия плагина 0.1.0.</td></tr>
+</tbody></table></div>
+
+<div class="cols" style="margin-top:22px">
+<div>
+<h3>Остаётся из текущего</h3>
+<ul class="clean">
+<li class="yes">Загрузка FXML через бины, идея аннотации на контроллере</li>
+<li class="yes">Мост i18n из <code>MessageSource</code> в <code>ResourceBundle</code> для <code>%key</code> в FXML</li>
+<li class="yes">Кэш экранов на Caffeine с TTL на экран</li>
+<li class="yes">Свойства как <code>record</code> с <code>@ConfigurationProperties</code></li>
+</ul>
+</div>
+<div>
+<h3>Добавляется</h3>
+<ul class="clean">
+<li class="yes"><code>SpringFxApplication</code> и <code>StageReadyEvent</code>: жизненный цикл</li>
+<li class="yes"><code>FxTasks</code>: работа вне FX-потока на виртуальных потоках</li>
+<li class="yes"><code>Navigator</code>, <code>Dialogs</code>, <code>Notifier</code>: экраны, модальные окна, тосты</li>
+<li class="yes"><code>FxErrorHandler</code>: необработанные ошибки в понятный диалог и лог</li>
+<li class="yes"><code>ThemeManager</code>: AtlantaFX и CSS-токены, светлая и тёмная тема</li>
+<li class="yes"><code>WindowState</code>: размер и положение окна между запусками</li>
+<li class="no">Убираем <code>@UIColumn</code> и <code>@Editable</code>: генерация таблиц по рефлексии остаётся в legacy</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="band alt" id="code">
+<div class="wrap">
+<h2>Код по слоям: эталон, на который ориентируются агенты</h2>
+<p>Примеры на одном сценарии: заказ, смета, согласование. Это ожидаемая форма кода, а не готовая реализация: имена и сигнатуры можно менять, правила зависимостей нельзя.</p>
+<div class="tabs" role="tablist" aria-label="Слои">
+<button role="tab" id="t-domain" aria-controls="p-domain" aria-selected="true">Домен</button>
+<button role="tab" id="t-app" aria-controls="p-app" aria-selected="false">Use cases</button>
+<button role="tab" id="t-store" aria-controls="p-store" aria-selected="false">Хранилище</button>
+<button role="tab" id="t-starter" aria-controls="p-starter" aria-selected="false">Стартер</button>
+<button role="tab" id="t-ui" aria-controls="p-ui" aria-selected="false">UI</button>
+<button role="tab" id="t-access" aria-controls="p-access" aria-selected="false">Доступ</button>
+<button role="tab" id="t-build" aria-controls="p-build" aria-selected="false">Сборка</button>
+<button role="tab" id="t-tests" aria-controls="p-tests" aria-selected="false">Тесты</button>
+</div>
+
+<div class="panel on" id="p-domain" role="tabpanel" aria-labelledby="t-domain">
+<div class="snip" data-file="tw-core · domain/shared/fsm/StateMachine.java" data-lang="java"><p class="why">Существующий движок из <code>tw-workflow</code> переезжает в домен и получает guards. Агрегат сам решает, можно ли переход, и UI спрашивает у него же, какие кнопки активны.</p><script type="text/plain">package com.twister.domain.shared.fsm;
+
+/**
+ * Table-driven state machine. Immutable and shared; the current state lives in the aggregate.
+ *
+ * @param <S> state type
+ * @param <E> event type
+ * @param <T> aggregate the guards inspect
+ */
+public final class StateMachine<S extends Enum<S>, E extends Enum<E>, T> {
+
+    private final Map<S, Map<E, Rule<S, T>>> rules;
+
+    StateMachine(Map<S, Map<E, Rule<S, T>>> rules) {
+        this.rules = rules;
+    }
+
+    public static <S extends Enum<S>, E extends Enum<E>, T> Builder<S, E, T> builder(Class<S> states) {
+        return new Builder<>(states);
+    }
+
+    /** Returns the next state or throws if the event is not allowed now. */
+    public S fire(T target, S current, E event) {
+        Rule<S, T> rule = Optional.ofNullable(rules.get(current))
+                .map(byEvent -> byEvent.get(event))
+                .orElseThrow(() -> new IllegalTransitionException(current, event));
+        rule.guard().violation(target).ifPresent(reason -> {
+            throw new GuardViolationException(event, reason);
+        });
+        return rule.to();
+    }
+
+    /** Events that would succeed right now; drives enabled buttons in the UI. */
+    public Set<E> available(T target, S current) {
+        return rules.getOrDefault(current, Map.of()).entrySet().stream()
+                .filter(entry -> entry.getValue().guard().violation(target).isEmpty())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    record Rule<S, T>(S to, Guard<T> guard) {}
+}
+
+/** A condition on the aggregate; returns an i18n key of the reason when the transition is blocked. */
+@FunctionalInterface
+public interface Guard<T> {
+    Optional<String> violation(T target);
+
+    static <T> Guard<T> always() {
+        return target -> Optional.empty();
+    }
+
+    static <T> Guard<T> require(Predicate<T> condition, String reasonKey) {
+        return target -> condition.test(target) ? Optional.empty() : Optional.of(reasonKey);
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-core · domain/order/OrderTransitions.java" data-lang="java"><p class="why">Вся схема статусов заказа из ADR 0005 в одном месте, рядом с guard-ами. Таблицу можно сверять с диаграммой <code>state-order.mmd</code> глазами.</p><script type="text/plain">package com.twister.domain.order;
+
+import static com.twister.domain.order.OrderEvent.*;
+import static com.twister.domain.order.OrderStatus.*;
+import static com.twister.domain.shared.fsm.Guard.require;
+
+final class OrderTransitions {
+
+    static final StateMachine<OrderStatus, OrderEvent, RepairOrder> MACHINE = StateMachine
+            .<OrderStatus, OrderEvent, RepairOrder>builder(OrderStatus.class)
+            .on(ACCEPTED, START_DIAGNOSIS).to(DIAGNOSIS)
+            .on(DIAGNOSIS, SUBMIT_ESTIMATE).to(APPROVAL)
+                .guard(require(RepairOrder::hasWorkItems, "order.estimate.empty"))
+            .on(DIAGNOSIS, NO_REPAIR_NEEDED).to(READY)
+            .on(APPROVAL, APPROVE_ESTIMATE).to(IN_PROGRESS)
+                .guard(require(RepairOrder::hasApproval, "order.estimate.notApproved"))
+            .on(IN_PROGRESS, WAIT_FOR_PARTS).to(WAITING_FOR_PARTS)
+            .on(WAITING_FOR_PARTS, PARTS_ARRIVED).to(IN_PROGRESS)
+            .on(IN_PROGRESS, FINISH).to(READY)
+                .guard(require(RepairOrder::allItemsDone, "order.items.notDone"))
+            .on(READY, HAND_OVER).to(HANDED_OVER)
+                .guard(require(RepairOrder::isPaid, "order.notPaid"))
+            .onAnyExcept(EnumSet.of(HANDED_OVER, CANCELLED), CANCEL).to(CANCELLED)
+            .build();
+
+    private OrderTransitions() {}
+}</script></div>
+
+<div class="snip" data-file="tw-core · domain/order/RepairOrder.java" data-lang="java"><p class="why">Агрегат без сеттеров. Изменение статуса всегда идёт через машину, пишет историю и копит событие. Велосипед известен только как <code>SubjectId</code>: граница вертикали.</p><script type="text/plain">package com.twister.domain.order;
+
+/** Repair order aggregate: work items, estimate, payments and the status history. */
+public final class RepairOrder {
+
+    private final OrderId id;
+    private final OrderNumber number;
+    private final CustomerId customerId;
+    private final SubjectId subjectId; // the bike; resolved by the bike package
+    private final String complaint;
+    private OrderStatus status;
+    private final List<WorkItem> items;
+    private Estimate estimate;
+    private final List<StatusChange<OrderStatus>> history;
+    private final long version;
+    private final List<DomainEvent> pendingEvents = new ArrayList<>();
+
+    /** Factory for a new order at intake. */
+    public static RepairOrder accept(
+            OrderNumber number, CustomerId customer, SubjectId subject, String complaint, Actor by, Instant at) {
+        var order = new RepairOrder(OrderId.newId(), number, customer, subject, complaint,
+                OrderStatus.ACCEPTED, new ArrayList<>(), Estimate.empty(), new ArrayList<>(), 0);
+        order.history.add(StatusChange.initial(OrderStatus.ACCEPTED, by.userId(), at));
+        order.pendingEvents.add(new OrderAccepted(order.id, number, at));
+        return order;
+    }
+
+    public WorkItem addWorkItem(ServiceRef service, Money labour, List<PartLine> parts) {
+        if (status != OrderStatus.DIAGNOSIS && status != OrderStatus.IN_PROGRESS) {
+            throw new DomainException("order.items.locked", status);
+        }
+        var item = WorkItem.create(service, labour, parts);
+        items.add(item);
+        estimate = estimate.recalculate(activeItems());
+        return item;
+    }
+
+    public void approveEstimate(Approval approval, Actor by, Instant at) {
+        estimate = estimate.approve(approval);
+        fire(OrderEvent.APPROVE_ESTIMATE, by, at);
+    }
+
+    public Set<OrderEvent> availableActions() {
+        return OrderTransitions.MACHINE.available(this, status);
+    }
+
+    private void fire(OrderEvent event, Actor by, Instant at) {
+        OrderStatus from = status;
+        status = OrderTransitions.MACHINE.fire(this, status, event);
+        history.add(new StatusChange<>(from, status, by.userId(), at));
+        pendingEvents.add(new OrderStatusChanged(id, from, status, at));
+    }
+
+    boolean hasWorkItems() { return !activeItems().isEmpty(); }
+    boolean hasApproval()  { return estimate.isApproved(); }
+    boolean allItemsDone() { return activeItems().stream().allMatch(WorkItem::isDone); }
+    boolean isPaid()       { return payments().covers(estimate.total()); }
+
+    /** Events raised since the last call; the use case publishes them after saving. */
+    public List<DomainEvent> pullEvents() {
+        var events = List.copyOf(pendingEvents);
+        pendingEvents.clear();
+        return events;
+    }
+
+    /** Memento for the persistence adapter: plain data, no behaviour. */
+    public Snapshot snapshot() { /* ... */ }
+    public static RepairOrder restore(Snapshot snapshot) { /* ... */ }
+}</script></div>
+
+<div class="snip" data-file="tw-core · domain/shared/Money.java, domain/bike/FrameNumber.java, domain/order/ApprovalPolicy.java" data-lang="java"><p class="why">Value objects проверяют себя в конструкторе. Деньги хранятся в копейках: в SQLite нет точного DECIMAL. Порог «без звонка» — доменная политика, а не <code>if</code> в контроллере.</p><script type="text/plain">package com.twister.domain.shared;
+
+/** Amount in minor units (kopecks). One currency per installation. */
+public record Money(long minor) implements Comparable<Money> {
+    public static final Money ZERO = new Money(0);
+
+    public Money {
+        if (minor < 0) throw new DomainException("money.negative", minor);
+    }
+
+    public static Money of(String amount) {
+        return new Money(new BigDecimal(amount).movePointRight(2).longValueExact());
+    }
+
+    public Money plus(Money other) { return new Money(Math.addExact(minor, other.minor)); }
+    public Money times(int quantity) { return new Money(Math.multiplyExact(minor, quantity)); }
+    public boolean lessThan(Money other) { return minor < other.minor; }
+    @Override public int compareTo(Money other) { return Long.compare(minor, other.minor); }
+}
+
+package com.twister.domain.bike;
+
+/** Frame serial as stamped on the bike, normalised for search. */
+public record FrameNumber(String value) {
+    public FrameNumber {
+        value = value.strip().toUpperCase(Locale.ROOT).replaceAll("\\s+", "");
+        if (value.isEmpty()) throw new DomainException("bike.frame.empty");
+    }
+}
+
+package com.twister.domain.order;
+
+/** Estimates below the threshold are approved without calling the customer. */
+public record ApprovalPolicy(Money noCallBelow) {
+    public Optional<Approval> autoApprove(Estimate estimate) {
+        return estimate.total().lessThan(noCallBelow)
+                ? Optional.of(Approval.automatic(estimate.total()))
+                : Optional.empty();
+    }
+}</script></div>
+</div>
+
+<div class="panel" id="p-app" role="tabpanel" aria-labelledby="t-app">
+<div class="snip" data-file="tw-workflow · order/ApproveEstimate.java" data-lang="java"><p class="why">Один сценарий — одна команда и один обработчик. Транзакция, права, загрузка, вызов агрегата, сохранение, публикация событий. Никакой логики статусов здесь нет, она в домене.</p><script type="text/plain">package com.twister.workflow.order;
+
+public record ApproveEstimate(OrderId orderId, ApprovalChannel channel, String approvedBy) {}
+
+@UseCase
+@RequiredArgsConstructor
+public class ApproveEstimateHandler {
+
+    private final OrderRepository orders;
+    private final AccessPolicy access;
+    private final CurrentActor actor;
+    private final Clock clock;
+    private final DomainEventPublisher events;
+
+    public OrderView handle(ApproveEstimate command) {
+        access.require(Permission.ORDER_APPROVE_ESTIMATE);
+        RepairOrder order = orders.get(command.orderId());
+        var approval = new Approval(command.channel(), command.approvedBy(), order.estimateTotal());
+        order.approveEstimate(approval, actor.current(), clock.instant());
+        orders.save(order);
+        events.publish(order.pullEvents());
+        return OrderView.of(order);
+    }
+}
+
+/** Application service boundary: a Spring bean with one transaction per call. */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Service
+@Transactional
+public @interface UseCase {}</script></div>
+
+<div class="snip" data-file="tw-workflow · order/OrderRepository.java, order/OrderQueries.java, shared/CurrentActor.java" data-lang="java"><p class="why">Порты на языке домена: свои <code>Page</code> и <code>Slice</code>, никаких типов Spring Data. Запись идёт через агрегат, чтение для доски и списков через плоские проекции (CQRS-lite), без загрузки всего агрегата.</p><script type="text/plain">package com.twister.workflow.order;
+
+public interface OrderRepository {
+    Optional<RepairOrder> find(OrderId id);
+
+    default RepairOrder get(OrderId id) {
+        return find(id).orElseThrow(() -> new NotFoundException("order", id));
+    }
+
+    /** Saves the aggregate; throws {@link StaleDataException} if someone saved it in between. */
+    void save(RepairOrder order);
+
+    OrderNumber nextNumber(Year year);
+}
+
+/** Read side for the board, lists and search. Returns flat views, never aggregates. */
+public interface OrderQueries {
+    List<BoardCard> board(BoardFilter filter);
+    Page<OrderSummary> search(OrderSearch search, PageRequest page);
+    OrderDetails details(OrderId id);
+}
+
+package com.twister.workflow.shared;
+
+/** Who performs the use case. Desktop: the signed-in user; LAN server later: the paired device user. */
+public interface CurrentActor {
+    Actor current();
+}
+
+public interface DomainEventPublisher {
+    void publish(List<DomainEvent> events);
+}
+
+/** Printable documents: intake receipt, bike tag, estimate, invoice. */
+public interface DocumentRenderer {
+    RenderedDocument render(DocumentRequest request);
+}</script></div>
+
+<div class="snip" data-file="tw-workflow · shared/SpringDomainEventPublisher.java, order/BoardRefresh.java" data-lang="java"><p class="why">Доменные события идут через Spring. Слушатели срабатывают после коммита: если транзакция откатилась, доска не покажет несуществующий статус. Вместо каскадов оркестратора остаётся одно правило в агрегате.</p><script type="text/plain">@Component
+@RequiredArgsConstructor
+class SpringDomainEventPublisher implements DomainEventPublisher {
+    private final ApplicationEventPublisher publisher;
+
+    @Override
+    public void publish(List<DomainEvent> events) {
+        events.forEach(publisher::publishEvent);
+    }
+}
+
+// tw-app-desktop: UI reacts only to committed changes
+@Component
+@RequiredArgsConstructor
+class BoardRefresh {
+    private final OrderBoardViewModel board;
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    void on(OrderStatusChanged event) {
+        Platform.runLater(() -> board.refresh(event.orderId()));
+    }
+}</script></div>
+</div>
+
+<div class="panel" id="p-store" role="tabpanel" aria-labelledby="t-store">
+<div class="snip" data-file="tw-persistence-api · order/JpaOrderRepository.java" data-lang="java"><p class="why">Адаптер порта. Сущность наружу не выходит: маппинг через snapshot агрегата. Версию сверяем явно: при копировании полей в загруженную сущность Hibernate иначе молча перезапишет чужие изменения.</p><script type="text/plain">package com.twister.persistence.order;
+
+@Repository
+@RequiredArgsConstructor
+class JpaOrderRepository implements OrderRepository {
+
+    private final RepairOrderJpa jpa;
+    private final OrderEntityMapper mapper;
+    private final OrderNumberSequence numbers;
+
+    @Override
+    public Optional<RepairOrder> find(OrderId id) {
+        return jpa.findById(id.value()).map(mapper::toSnapshot).map(RepairOrder::restore);
+    }
+
+    @Override
+    public void save(RepairOrder order) {
+        var snapshot = order.snapshot();
+        var entity = jpa.findById(snapshot.id()).orElseGet(RepairOrderEntity::new);
+        if (entity.getVersion() != null && entity.getVersion() != snapshot.version()) {
+            throw new StaleDataException("order", snapshot.id());
+        }
+        mapper.update(snapshot, entity);
+        jpa.save(entity);
+    }
+
+    @Override
+    public OrderNumber nextNumber(Year year) {
+        return new OrderNumber(year, numbers.next(year)); // 2026-0142
+    }
+}
+
+interface RepairOrderJpa extends JpaRepository<RepairOrderEntity, UUID>, JpaSpecificationExecutor<RepairOrderEntity> {}
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+interface OrderEntityMapper {
+    RepairOrder.Snapshot toSnapshot(RepairOrderEntity entity);
+    void update(RepairOrder.Snapshot snapshot, @MappingTarget RepairOrderEntity entity);
+}</script></div>
+
+<div class="snip" data-file="tw-persistence-api · order/RepairOrderEntity.java" data-lang="java"><p class="why">UUID как текст, деньги в копейках, статус строкой, <code>@Version</code> для оптимистичной блокировки. Позже, при переходе на PostgreSQL, сущность почти не меняется.</p><script type="text/plain">@Entity
+@Table(name = "repair_order")
+@Getter
+@Setter
+class RepairOrderEntity extends AuditableEntity {
+
+    @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(length = 36)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private String number;
+
+    @Column(name = "customer_id", nullable = false)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private UUID customerId;
+
+    @Column(name = "subject_id", nullable = false)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private UUID subjectId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
+    @Column(name = "estimate_total")
+    private Long estimateTotalMinor;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "position")
+    private List<WorkItemEntity> items = new ArrayList<>();
+
+    @Version
+    private Long version;
+}</script></div>
+
+<div class="snip" data-file="tw-persistence-api · resources/db/migration/V1__orders.sql" data-lang="sql"><p class="why">Миграции пишем руками, <code>ddl-auto: validate</code>. Таблицы STRICT, чтобы SQLite не принимал текст в числовую колонку.</p><script type="text/plain">-- V1__orders.sql
+CREATE TABLE repair_order (
+    id              TEXT    PRIMARY KEY,
+    number          TEXT    NOT NULL UNIQUE,
+    customer_id     TEXT    NOT NULL REFERENCES customer (id),
+    subject_id      TEXT    NOT NULL REFERENCES bike (id),
+    status          TEXT    NOT NULL,
+    complaint       TEXT,
+    estimate_total  INTEGER,                -- kopecks
+    approved_via    TEXT,
+    approved_by     TEXT,
+    created_at      TEXT    NOT NULL,       -- ISO-8601, UTC
+    created_by      TEXT    NOT NULL REFERENCES app_user (id),
+    version         INTEGER NOT NULL DEFAULT 0
+) STRICT;
+
+CREATE TABLE order_status_change (
+    id          INTEGER PRIMARY KEY,
+    order_id    TEXT    NOT NULL REFERENCES repair_order (id),
+    from_status TEXT,
+    to_status   TEXT    NOT NULL,
+    changed_by  TEXT    NOT NULL REFERENCES app_user (id),
+    changed_at  TEXT    NOT NULL
+) STRICT;
+
+CREATE INDEX order_status_idx ON repair_order (status);</script></div>
+
+<div class="snip" data-file="tw-app-desktop · resources/application.yml, tw-persistence-api · backup/SqliteBackup.java" data-lang="yaml"><p class="why">Одна база в папке данных пользователя. WAL позволяет читать, пока идёт запись. Бэкап — <code>VACUUM INTO</code> без остановки приложения: при старте, раз в день и при закрытии, хранится 14 копий.</p><script type="text/plain">twister:
+  data-dir: ${LOCALAPPDATA}/Twister
+  backup:
+    keep: 14
+    cron: "0 0 13 * * *"
+
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    url: jdbc:sqlite:${twister.data-dir}/twister.db?foreign_keys=on&journal_mode=WAL&busy_timeout=5000
+    hikari:
+      maximum-pool-size: 4
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    locations: classpath:db/migration
+
+# --- SqliteBackup.java ---
+# @Scheduled(cron = "${twister.backup.cron}")
+# void backup() {
+#     Path target = backupDir.resolve("twister-%s.db".formatted(LocalDateTime.now(clock).format(STAMP)));
+#     jdbc.execute("VACUUM INTO '" + target.toAbsolutePath() + "'");
+#     retention.keepNewest(backupDir, properties.keep());
+# }</script></div>
+</div>
+
+<div class="panel" id="p-starter" role="tabpanel" aria-labelledby="t-starter">
+<div class="snip" data-file="tw-fx-javafx-starter · SpringFxApplication.java, StageReadyEvent.java" data-lang="java"><p class="why">Недостающая часть стартера. Spring поднимается в <code>init()</code> (поток лаунчера, не FX), окно отдаётся приложению событием. Класс с <code>main</code> не должен наследовать <code>Application</code>, иначе jar с classpath падает с «JavaFX runtime components are missing».</p><script type="text/plain">package com.twister.fx.javafx;
+
+/** Starts Spring inside the JavaFX lifecycle and hands the primary stage over as an event. */
+public abstract class SpringFxApplication extends Application {
+
+    private ConfigurableApplicationContext context;
+
+    /** The {@code @SpringBootApplication} class of the assembly. */
+    protected abstract Class<?> springApplication();
+
+    @Override
+    public void init() {
+        context = new SpringApplicationBuilder(springApplication())
+                .headless(false)
+                .web(WebApplicationType.NONE)
+                .run(getParameters().getRaw().toArray(String[]::new));
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        Thread.setDefaultUncaughtExceptionHandler(context.getBean(FxErrorHandler.class));
+        context.publishEvent(new StageReadyEvent(primaryStage));
+    }
+
+    @Override
+    public void stop() {
+        context.close();
+    }
+}
+
+public record StageReadyEvent(Stage stage) {}
+
+// tw-app-desktop
+public final class Launcher {
+    public static void main(String[] args) {
+        Application.launch(TwisterFx.class, args);
+    }
+}
+
+public class TwisterFx extends SpringFxApplication {
+    @Override
+    protected Class<?> springApplication() {
+        return TwisterDesktopApplication.class;
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-fx-javafx-starter · FxView.java, ViewLoader.java" data-lang="java"><p class="why">Замена <code>@FXController</code> + <code>ScreenManager</code>. Контроллеры prototype, FXML-загрузчик получает фабрику контроллеров из контекста: работают <code>fx:controller</code> и вложенные <code>fx:include</code>. В кэше лежит пара «узел + контроллер», а не только узел.</p><script type="text/plain">package com.twister.fx.javafx.view;
+
+/** Marks a Spring-managed FXML controller. FXML defaults to {@code <SimpleName>.fxml} next to the class. */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public @interface FxView {
+    String fxml() default "";
+    boolean cached() default false;
+}
+
+public record View<C>(Parent root, C controller) {}
+
+@RequiredArgsConstructor
+public class ViewLoader {
+
+    private final ApplicationContext context;
+    private final ResourceBundle bundle;
+    private final ViewCache cache;
+
+    public <C> View<C> load(Class<C> controllerType) {
+        return cache.find(controllerType).orElseGet(() -> {
+            var loader = new FXMLLoader(fxmlOf(controllerType), bundle);
+            loader.setControllerFactory(context::getBean);
+            View<C> view = new View<>(loadRoot(loader, controllerType), loader.getController());
+            cache.put(controllerType, view);
+            return view;
+        });
+    }
+
+    private static URL fxmlOf(Class<?> type) {
+        var annotation = type.getAnnotation(FxView.class);
+        if (annotation == null) {
+            throw new IllegalArgumentException(type.getSimpleName() + " is not annotated with @FxView");
+        }
+        var path = annotation.fxml().isEmpty() ? type.getSimpleName() + ".fxml" : annotation.fxml();
+        return Objects.requireNonNull(type.getResource(path), () -> "FXML not found: " + path);
+    }
+
+    private static Parent loadRoot(FXMLLoader loader, Class<?> type) {
+        try {
+            return loader.load();
+        } catch (IOException e) {
+            throw new ViewLoadException(type, e);
+        }
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-fx-javafx-starter · FxTasks.java" data-lang="java"><p class="why">Правило: FX-поток не ждёт базу. Работа идёт в виртуальном потоке, результат и ошибка возвращаются в FX-поток. Одно место вместо разбросанных <code>Platform.runLater</code>.</p><script type="text/plain">package com.twister.fx.javafx.concurrent;
+
+public class FxTasks implements AutoCloseable {
+
+    private final ExecutorService background = Executors.newVirtualThreadPerTaskExecutor();
+
+    /** Runs {@code work} off the FX thread; callbacks run on the FX thread. */
+    public <T> CompletableFuture<T> run(Supplier<T> work, Consumer<T> onSuccess, Consumer<Throwable> onError) {
+        return CompletableFuture.supplyAsync(work, background).whenComplete((result, error) ->
+                Platform.runLater(() -> {
+                    if (error == null) onSuccess.accept(result);
+                    else onError.accept(unwrap(error));
+                }));
+    }
+
+    private static Throwable unwrap(Throwable error) {
+        return error instanceof CompletionException && error.getCause() != null ? error.getCause() : error;
+    }
+
+    @Override
+    public void close() {
+        background.close();
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-fx-javafx-starter · JavaFxAutoConfiguration.java + META-INF/spring/…AutoConfiguration.imports" data-lang="java"><p class="why">Автоконфигурация объявляет бины явно, без <code>@ComponentScan</code>. Всё, что приложение может подменить, под <code>@ConditionalOnMissingBean</code>. Файл imports закрывает #8.</p><script type="text/plain">@AutoConfiguration
+@EnableConfigurationProperties(JavaFxProperties.class)
+public class JavaFxAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    ResourceBundle fxResourceBundle(MessageSource messages, JavaFxProperties properties) {
+        return new MessageSourceResourceBundle(messages, properties.locale());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    ViewCache viewCache(JavaFxProperties properties) {
+        return properties.cache().enabled() ? new CaffeineViewCache(properties.cache()) : ViewCache.none();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    ViewLoader viewLoader(ApplicationContext context, ResourceBundle fxResourceBundle, ViewCache cache) {
+        return new ViewLoader(context, fxResourceBundle, cache);
+    }
+
+    @Bean(destroyMethod = "close")
+    @ConditionalOnMissingBean
+    FxTasks fxTasks() {
+        return new FxTasks();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    Navigator navigator(ViewLoader views) {
+        return new StackNavigator(views);
+    }
+}
+
+@ConfigurationProperties("twister.javafx")
+public record JavaFxProperties(
+        @DefaultValue("ru_RU") Locale locale,
+        @DefaultValue Cache cache) {          // @DefaultValue on nested records: no NPE without config
+
+    public record Cache(@DefaultValue("false") boolean enabled, @DefaultValue("1h") Duration ttl) {}
+}
+
+# src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+com.twister.fx.javafx.JavaFxAutoConfiguration</script></div>
+</div>
+
+<div class="panel" id="p-ui" role="tabpanel" aria-labelledby="t-ui">
+<div class="snip" data-file="tw-app-desktop · order/EstimateView.fxml" data-lang="xml"><p class="why">FXML только раскладка и ключи i18n. Стиль из CSS-токенов дизайна v1, логики нет.</p><script type="text/plain"><BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.twister.desktop.order.EstimateView" styleClass="estimate">
+    <center>
+        <TableView fx:id="items" styleClass="work-items">
+            <columns>
+                <TableColumn fx:id="service" text="%estimate.column.service"/>
+                <TableColumn fx:id="parts" text="%estimate.column.parts"/>
+                <TableColumn fx:id="total" text="%estimate.column.total" styleClass="numeric"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <HBox styleClass="action-bar">
+            <Label fx:id="sum" styleClass="estimate-sum"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="channel" promptText="%estimate.channel"/>
+            <TextField fx:id="approvedBy" promptText="%estimate.approvedBy"/>
+            <Button fx:id="approve" text="%estimate.approve" onAction="#onApprove" defaultButton="true"/>
+        </HBox>
+    </bottom>
+</BorderPane></script></div>
+
+<div class="snip" data-file="tw-app-desktop · order/EstimateView.java" data-lang="java"><p class="why">Контроллер тонкий: связывает узлы со свойствами view model. Его можно не тестировать отдельно.</p><script type="text/plain">package com.twister.desktop.order;
+
+@FxView
+@RequiredArgsConstructor
+public class EstimateView {
+
+    private final EstimateViewModel model;
+
+    @FXML private TableView<WorkItemRow> items;
+    @FXML private TableColumn<WorkItemRow, String> service;
+    @FXML private TableColumn<WorkItemRow, String> parts;
+    @FXML private TableColumn<WorkItemRow, Money> total;
+    @FXML private Label sum;
+    @FXML private ComboBox<ApprovalChannel> channel;
+    @FXML private TextField approvedBy;
+    @FXML private Button approve;
+
+    @FXML
+    void initialize() {
+        items.setItems(model.items());
+        service.setCellValueFactory(row -> row.getValue().serviceProperty());
+        parts.setCellValueFactory(row -> row.getValue().partsProperty());
+        total.setCellValueFactory(row -> row.getValue().totalProperty());
+        total.setCellFactory(MoneyCell.forTable());
+        sum.textProperty().bind(model.sumText());
+        channel.setItems(model.channels());
+        channel.valueProperty().bindBidirectional(model.channel());
+        approvedBy.textProperty().bindBidirectional(model.approvedBy());
+        approve.disableProperty().bind(model.canApprove().not());
+    }
+
+    @FXML
+    void onApprove() {
+        model.approve();
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-app-desktop · order/EstimateViewModel.java" data-lang="java"><p class="why">Состояние экрана и вызовы use cases. Тестируется обычным JUnit без запуска окна: свойства JavaFX работают и без FX-потока.</p><script type="text/plain">@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@RequiredArgsConstructor
+public class EstimateViewModel {
+
+    private final ApproveEstimateHandler approveEstimate;
+    private final OrderQueries queries;
+    private final AccessPolicy access;
+    private final FxTasks tasks;
+    private final Notifier notifier;
+
+    private final ObservableList<WorkItemRow> items = FXCollections.observableArrayList();
+    private final ObjectProperty<ApprovalChannel> channel = new SimpleObjectProperty<>();
+    private final StringProperty approvedBy = new SimpleStringProperty("");
+    private final StringProperty sumText = new SimpleStringProperty("");
+    private final BooleanProperty busy = new SimpleBooleanProperty();
+    private final BooleanProperty awaitingApproval = new SimpleBooleanProperty();
+    private OrderId orderId;
+
+    public void open(OrderId id) {
+        orderId = id;
+        tasks.run(() -> queries.details(id), this::show, notifier::error);
+    }
+
+    public BooleanBinding canApprove() {
+        return awaitingApproval
+                .and(channel.isNotNull())
+                .and(approvedBy.isNotEmpty())
+                .and(busy.not())
+                .and(Bindings.createBooleanBinding(() -> access.allows(Permission.ORDER_APPROVE_ESTIMATE)));
+    }
+
+    public void approve() {
+        busy.set(true);
+        var command = new ApproveEstimate(orderId, channel.get(), approvedBy.get().strip());
+        tasks.run(() -> approveEstimate.handle(command),
+                view -> { busy.set(false); notifier.success("estimate.approved", view.number()); },
+                error -> { busy.set(false); notifier.error(error); });
+    }
+
+    private void show(OrderDetails details) {
+        items.setAll(details.items().stream().map(WorkItemRow::of).toList());
+        sumText.set(MoneyFormat.format(details.estimateTotal()));
+        awaitingApproval.set(details.availableActions().contains(OrderEvent.APPROVE_ESTIMATE));
+    }
+    // accessors for the view omitted
+}</script></div>
+
+<div class="snip" data-file="tw-app-desktop · reference/PartsScreen.java" data-lang="java"><p class="why">Справочники — одна заготовка экрана-таблицы (Template Method). Колонки описаны кодом на строке UI, а не аннотациями <code>@UIColumn</code> на доменных классах, как в legacy.</p><script type="text/plain">@FxView(fxml = "/fxml/crud-table.fxml")
+public class PartsScreen extends CrudScreen<PartRow> {
+
+    public PartsScreen(PartCatalog catalog) {
+        super(catalog::search, catalog::save, catalog::archive);
+    }
+
+    @Override
+    protected List<Column<PartRow, ?>> columns() {
+        return List.of(
+                text("parts.sku", PartRow::sku),
+                text("parts.name", PartRow::name),
+                text("parts.brand", PartRow::brand),
+                money("parts.price", PartRow::price),
+                number("parts.onHand", PartRow::onHand));
+    }
+
+    @Override
+    protected Class<? extends EditDialog<PartRow>> editor() {
+        return PartDialog.class;
+    }
+}</script></div>
+</div>
+
+<div class="panel" id="p-access" role="tabpanel" aria-labelledby="t-access">
+<div class="snip" data-file="tw-core · domain/access/Role.java, Permission.java, Actor.java" data-lang="java"><p class="why">Роли фиксированные, права — перечисление. Проверка в use case, а не только скрытая кнопка: когда появится планшет, правила уже на месте.</p><script type="text/plain">package com.twister.domain.access;
+
+public enum Permission {
+    ORDER_CREATE, ORDER_APPROVE_ESTIMATE, ORDER_HAND_OVER, ORDER_CANCEL,
+    WORK_ITEM_UPDATE, PAYMENT_TAKE, PAYMENT_REFUND, DISCOUNT_GIVE,
+    PRICE_EDIT, STOCK_RECEIVE, STOCK_ADJUST, REPORTS_VIEW, USERS_MANAGE, SETTINGS_EDIT
+}
+
+public enum Role {
+    OWNER(EnumSet.allOf(Permission.class)),
+    FRONT_DESK(EnumSet.of(ORDER_CREATE, ORDER_APPROVE_ESTIMATE, ORDER_HAND_OVER, ORDER_CANCEL,
+            WORK_ITEM_UPDATE, PAYMENT_TAKE, STOCK_RECEIVE)),
+    MECHANIC(EnumSet.of(WORK_ITEM_UPDATE, STOCK_RECEIVE));
+
+    private final Set<Permission> permissions;
+
+    Role(Set<Permission> permissions) {
+        this.permissions = Set.copyOf(permissions);
+    }
+
+    public boolean allows(Permission permission) {
+        return permissions.contains(permission);
+    }
+}
+
+/** The user on whose behalf a use case runs. */
+public record Actor(UserId userId, String displayName, Role role) {
+    public boolean can(Permission permission) {
+        return role.allows(permission);
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-workflow · access/AccessPolicy.java, tw-app-desktop · session/DesktopSession.java" data-lang="java"><p class="why">Сессия десктопа — реализация порта <code>CurrentActor</code>. На LAN-сервере будет вторая реализация (токен устройства → пользователь), а use cases не изменятся.</p><script type="text/plain">@Component
+@RequiredArgsConstructor
+public class AccessPolicy {
+    private final CurrentActor actor;
+
+    public void require(Permission permission) {
+        Actor current = actor.current();
+        if (!current.can(permission)) {
+            throw new AccessDeniedException(current.userId(), permission);
+        }
+    }
+
+    public boolean allows(Permission permission) {
+        return actor.current().can(permission);
+    }
+}
+
+// tw-app-desktop
+@Component
+class DesktopSession implements CurrentActor {
+    private final AtomicReference<Actor> signedIn = new AtomicReference<>();
+
+    @Override
+    public Actor current() {
+        return Optional.ofNullable(signedIn.get()).orElseThrow(NotSignedInException::new);
+    }
+
+    void signIn(Actor actor) { signedIn.set(actor); }
+    void lock() { signedIn.set(null); }   // idle timeout or "switch user"
+}</script></div>
+
+<div class="snip" data-file="tw-workflow · access/SignInWithPinHandler.java" data-lang="java"><p class="why">PIN хранится хэшем BCrypt из <code>spring-security-crypto</code>, без остального Spring Security (Argon2 там требует BouncyCastle). Неудачная попытка должна сохраниться, поэтому исключение не откатывает транзакцию.</p><script type="text/plain">public record SignInWithPin(UserId userId, char[] pin) {}
+
+@UseCase
+@Transactional(noRollbackFor = BadCredentialsException.class) // keep the failed-attempt counter
+@RequiredArgsConstructor
+public class SignInWithPinHandler {
+
+    private final UserAccountRepository users;
+    private final PasswordEncoder encoder;   // PasswordEncoderFactories.createDelegatingPasswordEncoder(): BCrypt
+    private final Clock clock;
+
+    public Actor handle(SignInWithPin command) {
+        UserAccount account = users.findActive(command.userId()).orElseThrow(BadCredentialsException::new);
+        Instant now = clock.instant();
+        account.ensureNotLocked(now);                       // 5 failures -> locked for 1 minute
+        try {
+            if (!encoder.matches(CharBuffer.wrap(command.pin()), account.pinHash())) {
+                account.registerFailure(now);
+                users.save(account);
+                throw new BadCredentialsException();
+            }
+        } finally {
+            Arrays.fill(command.pin(), '\0');
+        }
+        account.registerSuccess(now);
+        users.save(account);
+        return account.toActor();
+    }
+}</script></div>
+</div>
+
+<div class="panel" id="p-build" role="tabpanel" aria-labelledby="t-build">
+<div class="snip" data-file="settings.gradle.kts" data-lang="kotlin"><p class="why">Только пять модулей. Плагины и веб исключены до своих фаз, папки остаются. Общие настройки в convention-плагине, а не копией в каждом модуле.</p><script type="text/plain">pluginManagement {
+    includeBuild("build-logic")
+}
+
+rootProject.name = "twister"
+
+include(
+    "tw-core",
+    "tw-workflow",
+    "tw-persistence-api",
+    "tw-fx-javafx-starter",
+    "tw-app-desktop",
+)
+// Parked until their phase (ADR 0004): tw-app-web, tw-fx-plugin-api, tw-fx-plugin-excel, tw-fx-plugin-web-sync</script></div>
+
+<div class="snip" data-file="build-logic/src/main/kotlin/twister.java-conventions.gradle.kts" data-lang="kotlin"><p class="why">Toolchain, Spotless, Jacoco и тесты в одном месте. Позже сюда же ляжет проверка на кириллицу.</p><script type="text/plain">plugins {
+    `java-library`
+    jacoco
+    id("com.diffplug.spotless")
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(JAVA_VERSION) }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules { rule { element = "CLASS"; limit { minimum = "0.8".toBigDecimal() } } }
+}
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        palantirJavaFormat()
+        removeUnusedImports()
+    }
+}
+
+tasks.named("check") { dependsOn("spotlessCheck", "jacocoTestCoverageVerification") }</script></div>
+
+<div class="snip" data-file="tw-app-desktop/build.gradle.kts" data-lang="kotlin"><p class="why"><code>runtimeOnly</code> на хранилище — главная строка файла. Упаковка в установщик Windows тоже здесь.</p><script type="text/plain">plugins {
+    id("twister.java-conventions")
+    id("org.springframework.boot")
+    id("org.openjfx.javafxplugin")
+    id("org.beryx.runtime")
+}
+
+dependencies {
+    implementation(project(":tw-fx-javafx-starter"))
+    implementation(project(":tw-workflow"))
+    runtimeOnly(project(":tw-persistence-api"))   // screens cannot import JPA classes
+
+    testImplementation(libs.bundles.testing)
+    testImplementation(libs.archunit)
+    testImplementation(libs.testfx)
+}
+
+javafx {
+    version = libs.versions.javafx.get()
+    modules("javafx.controls", "javafx.fxml")
+}
+
+application {
+    mainClass = "com.twister.desktop.Launcher"
+}
+
+runtime {
+    options = listOf("--strip-debug", "--no-header-files", "--no-man-pages")
+    jpackage {
+        imageName = "Twister"
+        installerType = "msi"
+        installerOptions = listOf("--win-menu", "--win-shortcut", "--win-dir-chooser", "--win-upgrade-uuid", WIN_UPGRADE_UUID)
+    }
+}</script></div>
+</div>
+
+<div class="panel" id="p-tests" role="tabpanel" aria-labelledby="t-tests">
+<div class="snip" data-file="tw-core · test/order/RepairOrderTest.java" data-lang="java"><p class="why">Домен тестируется без Spring и без базы. Тест читается как правило мастерской.</p><script type="text/plain">class RepairOrderTest {
+
+    @Test
+    void handOverIsBlockedUntilPaid() {
+        RepairOrder order = anOrder().ready().withEstimate(Money.of("2500")).unpaid().build();
+
+        assertThatThrownBy(() -> order.handOver(FRONT_DESK, NOW))
+                .isInstanceOf(GuardViolationException.class)
+                .hasFieldOrPropertyWithValue("reason", "order.notPaid");
+    }
+
+    @Test
+    void orderIsReadyWhenEveryActiveItemIsDone() {
+        RepairOrder order = anOrder().inProgress()
+                .withItem(done()).withItem(cancelled()).withItem(done())
+                .build();
+
+        order.finish(MECHANIC, NOW);
+
+        assertThat(order.status()).isEqualTo(OrderStatus.READY);
+        assertThat(order.pullEvents()).hasAtLeastOneElementOfType(OrderStatusChanged.class);
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-workflow · test/order/IntakeToHandOverScenarioTest.java" data-lang="java"><p class="why">Сценарий целиком на фейках портов в памяти. Это критерий готовности #10.</p><script type="text/plain">class IntakeToHandOverScenarioTest {
+
+    private final InMemoryOrders orders = new InMemoryOrders();
+    private final FixedClock clock = FixedClock.at("2027-04-12T10:00:00Z");
+    private final TestSession session = TestSession.signedInAs(Role.FRONT_DESK);
+    private final Workflow workflow = Workflow.wire(orders, session, clock); // handlers built by hand, no Spring
+
+    @Test
+    void bikeGoesFromIntakeToHandOver() {
+        OrderId id = workflow.acceptBike(intakeOf("Ivan Petrov", "WTU123456")).orderId();
+        workflow.startDiagnosis(id);
+        workflow.addWorkItem(id, service("chain-replace"), part("KMC-X11", 1));
+        workflow.submitEstimate(id);
+        workflow.approveEstimate(new ApproveEstimate(id, ApprovalChannel.PHONE, "Ivan Petrov"));
+        session.switchTo(Role.MECHANIC);
+        workflow.completeAllItems(id);
+        session.switchTo(Role.FRONT_DESK);
+        workflow.takePayment(id, Money.of("3200"));
+        workflow.handOver(id);
+
+        assertThat(orders.get(id).status()).isEqualTo(OrderStatus.HANDED_OVER);
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-persistence-api · test/order/JpaOrderRepositoryTest.java" data-lang="java"><p class="why">Адаптер проверяется на настоящем SQLite-файле во временной папке с теми же миграциями, что в проде. Контейнер не нужен.</p><script type="text/plain">@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({JpaOrderRepository.class, OrderEntityMapperImpl.class})
+class JpaOrderRepositoryTest {
+
+    @TempDir
+    static Path dir;
+
+    @DynamicPropertySource
+    static void sqlite(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", () -> "jdbc:sqlite:" + dir.resolve("test.db") + "?foreign_keys=on");
+    }
+
+    @Autowired JpaOrderRepository repository;
+
+    @Test
+    void staleSaveIsRejected() {
+        RepairOrder order = TestOrders.accepted();
+        repository.save(order);
+        RepairOrder first = repository.get(order.id());
+        RepairOrder second = repository.get(order.id());
+        first.startDiagnosis(FRONT_DESK, NOW);
+        repository.save(first);
+
+        second.cancel(FRONT_DESK, NOW, "customer.changedMind");
+        assertThatThrownBy(() -> repository.save(second)).isInstanceOf(StaleDataException.class);
+    }
+}</script></div>
+
+<div class="snip" data-file="tw-app-desktop · test/ArchitectureTest.java" data-lang="java"><p class="why">Границы внутри модулей. Первые два правила — те, без которых через полгода получится каша.</p><script type="text/plain">@AnalyzeClasses(packages = "com.twister", importOptions = ImportOption.DoNotIncludeTests.class)
+class ArchitectureTest {
+
+    @ArchTest
+    static final ArchRule domainIsPlainJava = noClasses()
+            .that().resideInAPackage("com.twister.domain..")
+            .should().dependOnClassesThat()
+            .resideInAnyPackage("org.springframework..", "jakarta.persistence..", "javafx..", "lombok..");
+
+    @ArchTest
+    static final ArchRule verticalBoundary = noClasses()   // ADR 0005
+            .that().resideInAnyPackage("..order..", "..stock..", "..billing..", "..shared.fsm..")
+            .should().dependOnClassesThat().resideInAPackage("..bike..");
+
+    @ArchTest
+    static final ArchRule screensUseUseCases = noClasses()
+            .that().resideInAPackage("com.twister.desktop..")
+            .should().dependOnClassesThat().resideInAnyPackage("com.twister.persistence..", "org.springframework.data..");
+
+    @ArchTest
+    static final ArchRule viewModelsAreNotSingletons = classes()
+            .that().haveSimpleNameEndingWith("ViewModel")
+            .should().beAnnotatedWith(Scope.class);
+}</script></div>
+
+<div class="snip" data-file="tw-app-desktop · test/ui/EstimateViewSmokeTest.java" data-lang="java"><p class="why">Один-два smoke-теста на ключевые экраны через TestFX. TestFX не обновлялся с февраля 2024 года, поэтому основная проверка UI — тесты view model, а для CI позже — встроенная headless-платформа JavaFX 26+.</p><script type="text/plain">@ExtendWith(ApplicationExtension.class)
+class EstimateViewSmokeTest {
+
+    private final EstimateViewModel model = TestViewModels.estimateAwaitingApproval();
+
+    @Start
+    void start(Stage stage) {
+        var view = TestViews.load(EstimateView.class, model);
+        stage.setScene(new Scene(view.root(), 900, 600));
+        stage.show();
+    }
+
+    @Test
+    void approveIsDisabledUntilChannelChosen(FxRobot robot) {
+        robot.clickOn("#approvedBy").write("Ivan Petrov");
+        assertThat(robot.lookup("#approve").queryButton().isDisabled()).isTrue();
+
+        robot.clickOn("#channel").clickOn("Phone");
+        assertThat(robot.lookup("#approve").queryButton().isDisabled()).isFalse();
+    }
+}</script></div>
+</div>
+</div>
+</section>
+<section class="band" id="flow">
+<div class="wrap">
+<h2>Сквозной сценарий: «согласовать смету» проходит все слои за 11 шагов</h2>
+<p>Приёмщик позвонил клиенту, выбрал «Телефон», вписал имя и нажал «Согласовать». Каждый шаг помечен слоем, в котором он выполняется.</p>
+<ol class="flow">
+<li><span class="chip c-tl">FX-поток</span><span><code>EstimateView.onApprove()</code> передаёт нажатие в view model. Кнопка уже была активна только при выполненных условиях: <code>canApprove()</code>.</span></li>
+<li><span class="chip c-tl">FX-поток</span><span><code>EstimateViewModel.approve()</code> ставит <code>busy</code>, собирает команду <code>ApproveEstimate</code> и отдаёт её в <code>FxTasks</code>.</span></li>
+<li><span class="chip c-tl">Виртуальный поток</span><span>Вызов <code>ApproveEstimateHandler.handle()</code>. Прокси Spring открывает транзакцию (<code>@UseCase</code>).</span></li>
+<li><span class="chip c-or">Use case</span><span><code>AccessPolicy.require(ORDER_APPROVE_ESTIMATE)</code>: текущий пользователь из <code>DesktopSession</code>.</span></li>
+<li><span class="chip c-bl">Хранилище</span><span><code>JpaOrderRepository.get()</code>: сущность → snapshot → <code>RepairOrder.restore()</code>.</span></li>
+<li><span class="chip c-dm">Домен</span><span><code>order.approveEstimate()</code>: смета фиксирует способ, кто и сумму, затем <code>fire(APPROVE_ESTIMATE)</code>.</span></li>
+<li><span class="chip c-dm">Домен</span><span><code>StateMachine.fire()</code> проверяет guard <code>hasApproval</code>, возвращает <code>IN_PROGRESS</code>. Агрегат пишет историю и копит <code>OrderStatusChanged</code>.</span></li>
+<li><span class="chip c-bl">Хранилище</span><span><code>save()</code> сверяет версию, обновляет сущность. Hibernate пишет <code>UPDATE … WHERE version = ?</code>.</span></li>
+<li><span class="chip c-or">Use case</span><span><code>events.publish(order.pullEvents())</code>, коммит. Только после коммита срабатывают <code>@TransactionalEventListener(AFTER_COMMIT)</code>.</span></li>
+<li><span class="chip c-tl">FX-поток</span><span><code>BoardRefresh</code> через <code>Platform.runLater</code> перерисовывает карточку на доске. В фазе 2 тот же слушатель отправит событие на планшеты по WebSocket.</span></li>
+<li><span class="chip c-tl">FX-поток</span><span>Колбэк <code>FxTasks</code> снимает <code>busy</code> и показывает «Смета согласована, заказ 2026-0142». Ошибка guard-а или <code>StaleDataException</code> приходит сюда же и показывается понятным текстом по ключу i18n.</span></li>
+</ol>
+</div>
+</section>
+
+<section class="band alt" id="patterns">
+<div class="wrap">
+<h2>Паттерны: где каждый стоит и какую проблему текущего кода закрывает</h2>
+<p>Список не для того, чтобы применить всё. Каждый пункт привязан к конкретному месту и к проблеме из анализа кода.</p>
+<div class="tw" style="margin-top:16px"><table class="stack">
+<thead><tr><th>Паттерн</th><th>Слой и место</th><th>Зачем здесь</th></tr></thead>
+<tbody>
+<tr><td><b>Ports and Adapters</b></td><td><span class="chip c-or">tw-workflow</span> порты, <span class="chip c-bl">persistence</span> и <span class="chip c-tl">UI</span> адаптеры</td><td>Смена SQLite на PostgreSQL или десктопа на REST не трогает домен. Сейчас 11 DAO-портов без единой реализации и с типами Spring Data в сигнатурах.</td></tr>
+<tr><td><b>Aggregate</b></td><td><span class="chip c-dm">tw-core</span> <code>RepairOrder</code> + <code>WorkItem</code></td><td>Инварианты в одном месте: «готов, когда все активные пункты выполнены». Заменяет каскады оркестратора, три из пяти которых сломаны.</td></tr>
+<tr><td><b>State Machine (табличная) + Guard</b></td><td><span class="chip c-dm">tw-core</span> <code>OrderTransitions</code></td><td>Схема статусов читается как таблица и сверяется с диаграммой. Guard-ы дают и проверку, и список доступных кнопок.</td></tr>
+<tr><td><b>Value Object</b></td><td><span class="chip c-dm">tw-core</span> <code>Money</code>, <code>FrameNumber</code>, <code>Phone</code>, <code>OrderNumber</code>, типизированные id</td><td>Нормализация и проверка один раз. Нельзя перепутать id клиента и заказа.</td></tr>
+<tr><td><b>Factory Method</b></td><td><span class="chip c-dm">tw-core</span> <code>RepairOrder.accept()</code>, <code>WorkItem.create()</code></td><td>Новый агрегат всегда в корректном начальном состоянии и с первой записью истории.</td></tr>
+<tr><td><b>Domain Events + Observer</b></td><td><span class="chip c-dm">tw-core</span> <code>pullEvents()</code> → Spring events → слушатели <code>AFTER_COMMIT</code></td><td>Доска, печать квитанции, а в фазе 2 уведомления и планшеты подписываются на события, а не встраиваются в use case.</td></tr>
+<tr><td><b>Command + Handler</b></td><td><span class="chip c-or">tw-workflow</span> <code>ApproveEstimate</code> / <code>…Handler</code></td><td>Маленький класс на сценарий вместо сервисов на сущность. Тот же обработчик потом вызовет REST-контроллер планшета.</td></tr>
+<tr><td><b>CQRS-lite</b></td><td><span class="chip c-or">tw-workflow</span> <code>OrderQueries</code>, <span class="chip c-bl">persistence</span> проекции</td><td>Доска и поиск читают плоские строки одним запросом, без загрузки агрегатов и N+1.</td></tr>
+<tr><td><b>Repository + Specification</b></td><td><span class="chip c-bl">persistence</span> <code>JpaSpecificationExecutor</code></td><td>Готовые спецификации фильтров из текущего кода остаются, но живут за портом.</td></tr>
+<tr><td><b>Memento (Snapshot)</b></td><td><span class="chip c-dm">tw-core</span> <code>RepairOrder.Snapshot</code> ↔ <span class="chip c-bl">MapStruct</span></td><td>Домен без сеттеров и JPA-аннотаций, а MapStruct маппит записи. Решает циклы и пустые мапперы из анализа.</td></tr>
+<tr><td><b>Optimistic Lock</b></td><td><span class="chip c-bl">persistence</span> <code>@Version</code> + явная сверка</td><td>Две открытые карточки одного заказа уже возможны на одном ПК. С планшетами это станет обычным случаем.</td></tr>
+<tr><td><b>Unit of Work</b></td><td><span class="chip c-or">tw-workflow</span> транзакция на use case</td><td>Одна транзакция на сценарий. Хак с <code>@Lazy self</code> в оркестраторе больше не нужен.</td></tr>
+<tr><td><b>Strategy</b></td><td><span class="chip c-dm">tw-core</span> <code>ApprovalPolicy</code>, <span class="chip c-or">порт</span> <code>DocumentRenderer</code></td><td>Порог «без звонка» и формат документов меняются без правки сценариев. В фазе 5 это кандидаты в точки расширения.</td></tr>
+<tr><td><b>MVVM (Presentation Model)</b></td><td><span class="chip c-tl">tw-app-desktop</span> View (FXML + контроллер) / ViewModel</td><td>Логика экрана тестируется без окна. Контроллер только связывает свойства.</td></tr>
+<tr><td><b>Template Method</b></td><td><span class="chip c-tl">tw-app-desktop</span> <code>CrudScreen&lt;R&gt;</code></td><td>Шесть справочников на одной заготовке. Идея <code>DefaultTabScreen</code> из legacy, но без рефлексии по доменным полям.</td></tr>
+<tr><td><b>Mediator (Navigator)</b></td><td><span class="chip c-tl">starter</span> <code>Navigator</code></td><td>Экраны не знают друг о друге и не держат ссылки на <code>Stage</code>.</td></tr>
+<tr><td><b>Cache (Flyweight-подобный)</b></td><td><span class="chip c-tl">starter</span> <code>ViewCache</code></td><td>Тяжёлые экраны (доска) не пересобираются при каждом переключении. Кэшируется пара «узел + контроллер».</td></tr>
+</tbody></table></div>
+<p class="small mute" style="margin-top:12px">Чего не берём сейчас: Saga, Outbox, Event Sourcing, Plugin/SPI, BPMN. Outbox понадобится в фазе 2, когда появятся внешние уведомления, которые нельзя терять при сбое.</p>
+</div>
+</section>
+
+<section class="band" id="users">
+<div class="wrap">
+<h2>Пользователи: в MVP три роли и PIN на общем ПК, токены устройств в фазе 2</h2>
+<p>Сейчас в коде <code>User</code> с логином, паролем и ролями <code>ADMIN</code>, <code>WORKER</code>, <code>ACCOUNTANT</code>, а проверок прав нет. Для мастерской на одном ПК логин с паролем слишком медленный: люди меняются у стойки по десять раз в день. Предлагаю выбор пользователя плиткой и PIN, автоблокировку при простое и проверку прав в use cases.</p>
+
+<div class="tw" style="margin-top:16px"><table class="matrix">
+<thead><tr><th>Право</th><th>Владелец</th><th>Приёмка</th><th>Механик</th></tr></thead>
+<tbody>
+<tr><td>Принять велосипед, создать заказ</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
+<tr><td>Согласовать смету, отменить заказ</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
+<tr><td>Работы: начать, выполнить, добавить запчасть</td><td class="y">да</td><td class="y">да</td><td class="y">да</td></tr>
+<tr><td>Принять оплату, выдать велосипед</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
+<tr><td>Возврат денег, скидка</td><td class="y">да</td><td class="o">—</td><td class="o">—</td></tr>
+<tr><td>Приход запчастей на склад</td><td class="y">да</td><td class="y">да</td><td class="y">да</td></tr>
+<tr><td>Корректировка остатков, цены и прайс</td><td class="y">да</td><td class="o">—</td><td class="o">—</td></tr>
+<tr><td>Отчёты, пользователи, настройки, бэкап</td><td class="y">да</td><td class="o">—</td><td class="o">—</td></tr>
+</tbody></table></div>
+<p class="small mute" style="margin-top:8px">Текущие роли: <code>ADMIN</code> → владелец, <code>WORKER</code> → механик, <code>ACCOUNTANT</code> убираем, его права у владельца. Приёмка — новая роль.</p>
+
+<div class="cols3" style="margin-top:26px">
+<div class="phase"><h3 style="margin-top:0">MVP, в текущий скоуп</h3><ul class="clean">
+<li class="yes">Мастер первого запуска: владелец, его пароль и код восстановления на печать</li>
+<li class="yes">Экран выбора пользователя, PIN из 4–6 цифр, хэш BCrypt</li>
+<li class="yes">Блокировка после 5 ошибок на минуту, автоблокировка при простое (по умолчанию 10 минут)</li>
+<li class="yes">«Сменить пользователя» в один клик, не закрывая окна</li>
+<li class="yes">Три фиксированные роли, права проверяются в use case, кнопки скрываются по тем же правам</li>
+<li class="yes">Кто сделал: <code>created_by</code>, история статусов, оплаты, движения склада</li>
+<li class="yes">Владелец сбрасывает PIN и деактивирует пользователя (без удаления, история остаётся)</li>
+<li class="yes">Мастер пункта работ — пользователь с ролью «механик»</li>
+</ul></div>
+<div class="phase p2"><h3 style="margin-top:0">Фаза 2: планшеты и LAN</h3><ul class="clean">
+<li class="later">Сопряжение устройства по QR, токен устройства, отзыв из настроек</li>
+<li class="later">Вход механика на планшете своим PIN, «мои работы»</li>
+<li class="later">Spring Security на REST и WebSocket: токен → <code>Actor</code>, вторая реализация <code>CurrentActor</code></li>
+<li class="later">Права в push-событиях: планшет получает только свои данные</li>
+<li class="later">Журнал входов по устройствам</li>
+</ul></div>
+<div class="phase p3"><h3 style="margin-top:0">Фазы 3–5</h3><ul class="clean">
+<li class="later">Лимит скидки по роли, возврат только с подтверждением владельца</li>
+<li class="later">Кассовая смена на пользователя (вместе с 54-ФЗ)</li>
+<li class="later">Сдельная оплата механика по закрытым работам</li>
+<li class="later">Редактор ролей и прав (фаза 5)</li>
+<li class="later">Несколько мастерских, облачные аккаунты (фаза 5)</li>
+</ul></div>
+</div>
+<div class="note"><b>Почему не Spring Security в десктопе.</b> Его контекст привязан к потоку, а у нас FX-поток и виртуальные потоки. Пришлось бы включать глобальный режим, который сломается, как только в том же процессе появится LAN-сервер с чужими запросами. Свой порт <code>CurrentActor</code> на 20 строк решает задачу сейчас. В фазе 2 Spring Security встанет только на HTTP-сторону и будет класть <code>Actor</code> в тот же порт. Из Spring Security в MVP берём только <code>spring-security-crypto</code> для хэшей.</div>
+</div>
+</section>
+<section class="band alt" id="next">
+<div class="wrap">
+<h2>Что дальше: как эталон ложится на вехи M1–M3</h2>
+<div class="cols3" style="margin-top:14px">
+<div class="phase"><h3 style="margin-top:0">M1 · 07.12–27.12</h3><p class="small mute">Зелёная сборка на новом стеке</p>
+<div class="issue"><b>#6 #7 #8</b><span>Автоконфигурации, падающие тесты, регистрация стартера</span></div>
+<div class="issue"><b>new</b><span>Java 25, Spring Boot 4.2, Gradle 9.9, отдельная версия JavaFX</span></div>
+<div class="issue"><b>new</b><span><code>build-logic</code>: convention-плагин, ArchUnit-правила</span></div>
+<div class="issue"><b>new</b><span>Стартер: бутстрап, <code>@FxView</code>, <code>FxTasks</code>, навигация; окно-заглушка стартует</span></div>
+</div>
+<div class="phase p2"><h3 style="margin-top:0">M2 · 11.01–31.01</h3><p class="small mute">Домен и хранилище</p>
+<div class="issue"><b>#9 #10</b><span>Две стейт-машины, агрегат заказа, граница <code>bike</code></span></div>
+<div class="issue"><b>new</b><span>ADR: SQLite как встроенная база; миграции V1, адаптеры портов, бэкап</span></div>
+<div class="issue"><b>new</b><span>Пользователи, роли, PIN, <code>AccessPolicy</code></span></div>
+<div class="issue"><b>new</b><span>Сценарный тест «приём → выдача» на фейках и на SQLite</span></div>
+</div>
+<div class="phase p3"><h3 style="margin-top:0">M3 · 01.02–28.03</h3><p class="small mute">Полный десктоп</p>
+<div class="issue"><b>new</b><span>Оболочка, доска заказов, карточка, приём, смета по дизайну v1</span></div>
+<div class="issue"><b>new</b><span>Справочники на <code>CrudScreen</code>, склад, оплата, выдача</span></div>
+<div class="issue"><b>new</b><span>Документы: квитанция, бирка с QR, смета, счёт</span></div>
+<div class="issue"><b>new</b><span>MSI-установщик, проверка версии, восстановление из бэкапа</span></div>
+</div>
+</div>
+<p style="margin-top:18px">Задачи с пометкой <b>new</b> пока не заведены в GitHub. Порядок внутри вехи важен: стартер до экранов, ADR базы до адаптеров, роли до экранов с кнопками.</p>
+</div>
+</section>
+
+<footer class="band">
+<div class="wrap">
+<h3 style="margin-top:0">Источники версий и фактов</h3>
+<p class="small">Проверено 21.11.2026:
+<a href="https://endoflife.date/spring-boot">Spring Boot EOL</a> ·
+<a href="https://github.com/spring-projects/spring-boot/releases">Spring Boot releases</a> ·
+<a href="https://docs.spring.io/spring-boot/4.2/reference/features/developing-auto-configuration.html">Boot 4.2: auto-configuration</a> ·
+<a href="https://spring.io/blog/2025/10/28/modularizing-spring-boot">Modularizing Spring Boot</a> ·
+<a href="https://endoflife.date/oracle-jdk">JDK LTS</a> ·
+<a href="https://gluonhq.com/products/javafx/">JavaFX releases</a> ·
+<a href="https://github.com/rgielen/javafx-weaver">FxWeaver</a> ·
+<a href="https://bell-sw.com/blog/creating-modern-desktop-apps-with-javafx-and-spring-boot/">BellSoft: JavaFX + Spring Boot</a> ·
+<a href="https://github.com/mkpaz/atlantafx">AtlantaFX</a> ·
+<a href="https://github.com/palexdev/MaterialFX">MaterialFX</a> ·
+<a href="https://github.com/beryx/badass-runtime-plugin">Badass Runtime</a> ·
+<a href="https://hydraulic.dev/pricing.html">Conveyor pricing</a> ·
+<a href="https://github.com/TestFX/TestFX">TestFX</a> ·
+<a href="https://openjfx.io/highlights/26">JavaFX 26 headless</a> ·
+<a href="https://docs.hibernate.org/orm/7.2/dialect">Hibernate dialects</a> ·
+<a href="https://www2.sqlite.org/wal.html">SQLite WAL</a> ·
+<a href="https://documentation.red-gate.com/fd/sqlite-277579331.html">Flyway SQLite</a> ·
+<a href="https://groups.google.com/g/h2-database/c/-HI2ubSAD-k">H2 file upgrade</a> ·
+<a href="https://github.com/zonkyio/embedded-postgres">embedded-postgres</a> ·
+<a href="https://www.liquibase.com/blog/liquibase-community-for-the-future-fsl">Liquibase FSL</a> ·
+<a href="https://docs.spring.io/spring-security/reference/7.0/servlet/authentication/architecture.html">Spring Security context</a> ·
+<a href="https://github.com/openhtmltopdf/openhtmltopdf">openhtmltopdf</a> ·
+<a href="https://github.com/rubenlagus/TelegramBots">TelegramBots</a> ·
+<a href="https://habr.com/en/articles/457684">ATOL web server</a></p>
+<p class="small">Twister · эталон архитектуры MVP · 21.11.2026 · связанные документы: ADR 0004–0006, <code>tw-docs/notes/2026-11-15-*</code>, issues #6–#10.</p>
+</div>
+</footer>
+<script>
+{
+const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const words = s => new Set(s.split(' '));
+const KW = {
+  java: words('package import public private protected final static class record interface enum extends implements return new if else throw throws try catch finally for while default void boolean long int char var this super null true false switch case instanceof abstract'),
+  kotlin: words('plugins val var fun include id dependencies implementation runtimeOnly testImplementation java tasks javafx application runtime jpackage spotless pluginManagement includeBuild rootProject listOf limit rule violationRules toolchain'),
+  sql: words('CREATE TABLE PRIMARY KEY NOT NULL UNIQUE REFERENCES DEFAULT INTEGER TEXT INDEX ON STRICT')
+};
+const RX = {
+  java: /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])')|(@[A-Za-z_]\w*)|(\b\d[\d_]*L?\b)|(\b[A-Za-z_]\w*\b)/g,
+  sql: /(--[^\n]*)|('[^'\n]*')|(@@@)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g,
+  yaml: /(#[^\n]*)|("(?:\\.|[^"\\\n])*")|(\$\{[^}\n]*\})|(\b\d+\b)|(^[ \t]*[\w.-]+(?=:))/gm,
+  xml: /(<!--[\s\S]*?-->)|("[^"\n]*")|(<\/?[\w:.]+|\/?>)|(%[\w.]+)/g
+};
+RX.kotlin = RX.java;
+const hl = (src, lang) => {
+  const re = RX[lang] || RX.java, kw = KW[lang] || KW.java;
+  re.lastIndex = 0;
+  let out = '', i = 0, m;
+  while ((m = re.exec(src))) {
+    if (!m[0]) { re.lastIndex++; continue; }
+    out += esc(src.slice(i, m.index));
+    let cls = '';
+    if (m[1]) cls = 'c';
+    else if (m[2]) cls = 's';
+    else if (m[3]) cls = lang === 'xml' ? 'k' : 'a';
+    else if (m[4]) cls = lang === 'xml' ? 'a' : 'n';
+    else if (m[5]) cls = lang === 'yaml' ? 'k' : (kw.has(lang === 'sql' ? m[5].toUpperCase() : m[5]) ? 'k' : '');
+    out += cls ? '<span class="' + cls + '">' + esc(m[0]) + '</span>' : esc(m[0]);
+    i = re.lastIndex;
+  }
+  return out + esc(src.slice(i));
+};
+
+document.querySelectorAll('.snip').forEach((box, n) => {
+  const raw = box.querySelector('script').textContent.replace(/^\n+|\s+$/g, '');
+  const head = document.createElement('header');
+  head.innerHTML = '<span>' + esc(box.dataset.file) + '</span><button class="copy" type="button" id="copy-' + n + '">Copy</button>';
+  box.prepend(head);
+  const pre = document.createElement('pre');
+  pre.innerHTML = '<code>' + hl(raw, box.dataset.lang) + '</code>';
+  box.append(pre);
+  const btn = head.querySelector('button');
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(raw); btn.textContent = 'Copied'; }
+    catch (e) { btn.textContent = 'Select text'; }
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+  });
+});
+
+const tabs = [...document.querySelectorAll('[role=tab]')];
+const select = tab => {
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on', on);
+  });
+};
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => select(t));
+  t.addEventListener('keydown', e => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (d) { const next = tabs[(i + d + tabs.length) % tabs.length]; select(next); next.focus(); }
+  });
+});
+select(tabs[0]);
+
+const svg = document.getElementById('wheelSvg');
+const left = [
+  ['Use cases', '← экраны и view models'],
+  ['Запросы чтения', '← доска, списки, поиск'],
+  ['CurrentActor', '→ DesktopSession, PIN'],
+  ['DocumentRenderer', '→ Thymeleaf + openhtmltopdf']
+];
+const right = [
+  ['OrderRepository', '→ JPA, SQLite'],
+  ['Customer, Bike, Stock', '→ JPA, SQLite'],
+  ['OrderQueries', '→ проекции JPA'],
+  ['BackupStore', '→ VACUUM INTO']
+];
+const T = (x, y, s, o = {}) => '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" font-size="' + (o.size || 14) + '" font-weight="' + (o.w || 400) + '" fill="' + (o.fill || 'var(--ink)') + '" text-anchor="' + (o.a || 'start') + '"' + (o.plain ? ' style="stroke:none"' : '') + '>' + esc(s) + '</text>';
+const wheel = (W, H) => {
+  const cx = W / 2, cy = H / 2 + 6, R = Math.min(H * 0.4, W * 0.19);
+  const rh = R * 0.3, rr = R * 0.64;
+  let g = '';
+  const spokes = (list, base, step, side) => list.forEach((p, k) => {
+    const ang = (base + k * step) * Math.PI / 180, c = Math.cos(ang), s = Math.sin(ang);
+    g += '<line x1="' + (cx + c * rh) + '" y1="' + (cy + s * rh) + '" x2="' + (cx + c * R) + '" y2="' + (cy + s * R) + '" stroke="var(--ink)" stroke-width="1.5" stroke-opacity=".55"/>';
+    g += '<circle cx="' + (cx + c * rr) + '" cy="' + (cy + s * rr) + '" r="4" fill="var(--or)"/>';
+    const lx = cx + c * (R + 18), ly = cy + s * (R + 18);
+    const a = side < 0 ? 'end' : 'start';
+    g += T(lx, ly - 2, p[0], { w: 600, a });
+    g += T(lx, ly + 15, p[1], { size: 13, fill: 'var(--mute)', a });
+  });
+  g += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rr + '" fill="var(--orS)" stroke="var(--or)" stroke-width="2"/>';
+  spokes(left, 214.5, -23, -1);
+  spokes(right, -34.5, 23, 1);
+  const arc = (from, to, col) => {
+    const p = a => [cx + Math.cos(a * Math.PI / 180) * R, cy + Math.sin(a * Math.PI / 180) * R];
+    const [x1, y1] = p(from), [x2, y2] = p(to);
+    return '<path d="M' + x1 + ' ' + y1 + ' A' + R + ' ' + R + ' 0 0 1 ' + x2 + ' ' + y2 + '" fill="none" stroke="' + col + '" stroke-width="' + Math.max(10, R * 0.09) + '" stroke-linecap="butt"/>';
+  };
+  g += arc(92, 268, 'var(--tl)') + arc(-88, 88, 'var(--bl)');
+  g += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rh + '" fill="var(--dm)"/>';
+  g += T(cx, cy - 2, 'tw-core', { w: 650, size: 15, a: 'middle', fill: 'var(--bg)', plain: true });
+  g += T(cx, cy + 15, 'домен', { size: 13, a: 'middle', fill: 'var(--bg)', plain: true });
+  g += T(cx, cy - rr + 22, 'tw-workflow', { w: 650, a: 'middle', fill: 'var(--or)' });
+  g += T(cx, cy + rr - 12, 'use cases · порты', { size: 13, a: 'middle', fill: 'var(--or)' });
+  g += T(cx - R * 0.55, cy - R - 16, 'tw-app-desktop + starter', { w: 650, a: 'end', fill: 'var(--tl)' });
+  g += T(cx + R * 0.55, cy - R - 16, 'tw-persistence-api', { w: 650, a: 'start', fill: 'var(--bl)' });
+  g += T(cx - R * 0.55, cy + R + 30, 'ведущие и UI-адаптеры', { size: 13, a: 'end', fill: 'var(--mute)' });
+  g += T(cx + R * 0.55, cy + R + 30, 'ведомые адаптеры', { size: 13, a: 'start', fill: 'var(--mute)' });
+  return g;
+};
+const stacked = (W, H) => {
+  const rows = [
+    ['tw-app-desktop + starter', 'экраны, view models, сессия, печать', 'var(--tlS)', 'var(--tl)'],
+    ['tw-workflow', 'use cases, порты, права, транзакции', 'var(--orS)', 'var(--or)'],
+    ['tw-core', 'агрегаты, стейт-машины, события', 'var(--dmS)', 'var(--ink)'],
+    ['tw-persistence-api', 'JPA, SQLite, Flyway, бэкап', 'var(--blS)', 'var(--bl)']
+  ];
+  const gap = 26, x = 8, w = W - 52, h = (H - 24 - gap * 3) / 4;
+  let g = '<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker></defs>';
+  rows.forEach((r, k) => {
+    const y = 12 + k * (h + gap);
+    g += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="10" fill="' + r[2] + '" stroke="' + r[3] + '" stroke-width="1.5"/>';
+    g += T(x + 14, y + h / 2 - 3, r[0], { w: 650, fill: r[3] });
+    g += T(x + 14, y + h / 2 + 16, r[1], { size: 13, fill: 'var(--mute)' });
+  });
+  const mid = k => 12 + k * (h + gap);
+  g += '<line x1="' + (W / 2) + '" y1="' + (mid(0) + h) + '" x2="' + (W / 2) + '" y2="' + (mid(1) - 2) + '" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ar)"/>';
+  g += '<line x1="' + (W / 2) + '" y1="' + (mid(1) + h) + '" x2="' + (W / 2) + '" y2="' + (mid(2) - 2) + '" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ar)"/>';
+  const rx = x + w + 18;
+  g += '<path d="M' + (x + w) + ' ' + (mid(3) + h / 2) + ' H' + rx + ' V' + (mid(1) + h / 2) + ' H' + (x + w + 3) + '" fill="none" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ar)"/>';
+  return g;
+};
+const draw = () => {
+  const W = svg.clientWidth, H = svg.clientHeight;
+  if (!W || !H) return;
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.innerHTML = W < 640 ? stacked(W, H) : wheel(W, H);
+};
+const wheelObserver = new ResizeObserver(draw);
+wheelObserver.observe(svg);
+draw();
+}
+</script>
+</body>
+</html>

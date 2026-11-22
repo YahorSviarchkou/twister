@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — токены дизайн-системы</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="tw" style="width: 1600px; height: 1800px; padding: 48px; display: flex; flex-direction: column; gap: 36px; overflow: hidden">
+  <div class="row between start">
+    <div class="col g4">
+      <span class="t-cap">Twister · дизайн-система 1.0</span>
+      <h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -.02em">Токены</h1>
+      <span class="sub" style="max-width: 820px">Петрольный акцент на нейтралях с лёгким сине-зелёным подтоном. Без градиентов и декора: цвет работает только на статусы, фокус и главное действие экрана.</span>
+    </div>
+    <div class="col g4" style="align-items: flex-end"><span class="t-label">Имена в JavaFX CSS</span><span class="num t-sm">.root { -tw-accent: #136B6E; }</span><span class="num t-sm">.root.dark { -tw-accent: #3AA5A4; }</span></div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+    <sc-for list="{{themes}}" as="th" hint-placeholder-count="2">
+      <section class="{{th.cls}}" style="border-radius: 6px; border: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 16px">
+        <div class="row g8"><i class="{{th.ic}}"></i><span class="t-h2">{{th.t}}</span></div>
+        <sc-for list="{{th.groups}}" as="g">
+          <div class="col g8">
+            <span class="t-cap">{{g.t}}</span>
+            <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px">
+              <sc-for list="{{g.items}}" as="c">
+                <div class="col g4"><div class="swatch" style="background: {{c.v}}"></div><span class="num" style="font-size: 11px; line-height: 14px">{{c.n}}</span><span class="num muted" style="font-size: 11px; line-height: 14px">{{c.hex}}</span></div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+    </sc-for>
+  </div>
+
+  <section class="col g12">
+    <div class="row g12"><h2 class="t-h1" style="margin: 0">Статусы</h2><span class="sub">Одна палитра на три уровня. Всегда цвет + иконка + текст; семейство задаёт смысл, а не конкретный статус.</span></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th style="width: 180px">Семейство</th><th>Заказ</th><th>Задача</th><th>Пункт работ</th><th style="width: 200px">Токены fg / bg / border</th><th style="width: 230px" class="c">Тёмная тема</th></tr></thead>
+        <tbody>
+          <sc-for list="{{fam}}" as="f" hint-placeholder-count="7">
+            <tr>
+              <td><span class="strong">{{f.t}}</span><br><span class="t-sm muted">{{f.d}}</span></td>
+              <td><div class="row g6 wrap"><sc-for list="{{f.o}}" as="s"><span class="{{f.cls}}"><i class="{{s.ic}}"></i>{{s.t}}</span></sc-for></div></td>
+              <td><div class="row g6 wrap"><sc-for list="{{f.k}}" as="s"><span class="{{f.cls}}"><i class="{{s.ic}}"></i>{{s.t}}</span></sc-for></div></td>
+              <td><div class="row g6 wrap"><sc-for list="{{f.p}}" as="s"><span class="{{f.cls}}"><i class="{{s.ic}}"></i>{{s.t}}</span></sc-for></div></td>
+              <td class="num t-sm muted" style="font-size: 11px">{{f.hex}}</td>
+              <td class="dark c" style="background: var(--surface)"><div class="row g6 wrap" style="justify-content: center"><sc-for list="{{f.all}}" as="s"><span class="{{f.cls}}"><i class="{{s.ic}}"></i>{{s.t}}</span></sc-for></div></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: 1.55fr 1fr; gap: 24px">
+    <section class="col g12">
+      <div class="row g12"><h2 class="t-h1" style="margin: 0">Типографика</h2><span class="sub">IBM Plex Sans · Sans Condensed · Mono — TTF, OFL, кириллица</span></div>
+      <div class="tbl-wrap">
+        <table class="tbl compact">
+          <thead><tr><th style="width: 120px">Токен</th><th style="width: 110px">Размер / строка</th><th style="width: 140px">Начертание</th><th>Пример</th></tr></thead>
+          <tbody>
+            <sc-for list="{{type}}" as="t" hint-placeholder-count="9">
+              <tr><td class="num">{{t.n}}</td><td class="num">{{t.s}}</td><td class="t-sm sub">{{t.w}}</td><td><span class="{{t.cls}}">{{t.ex}}</span></td></tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <div class="banner info"><i class="ic ic-info"></i><span>JavaFX не умеет включать OpenType-фичи (tnum), поэтому все числа, суммы, номера и даты набираются отдельным семейством IBM Plex Mono — цифры гарантированно одной ширины и столбцы в таблицах не «пляшут». Разделитель тысяч — неразрывный пробел: <span class="money">12 450 ₽</span>, <span class="money">1 200 ₽</span>. Символ и позиция валюты берутся из настроек.</span></div>
+    </section>
+    <section class="col g24">
+      <div class="col g12">
+        <h2 class="t-h1" style="margin: 0">Отступы · сетка 4/8</h2>
+        <div class="col g6">
+          <sc-for list="{{space}}" as="s" hint-placeholder-count="8">
+            <div class="row g12"><span class="num t-sm" style="width: 70px">{{s.n}}</span><span style="height: 12px; width: {{s.w}}; background: var(--accent); border-radius: 2px"></span><span class="t-sm muted">{{s.d}}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="col g12">
+        <h2 class="t-h1" style="margin: 0">Радиусы</h2>
+        <div class="row g16 start">
+          <sc-for list="{{radii}}" as="r" hint-placeholder-count="5">
+            <div class="col g6" style="width: 104px"><div style="height: 56px; border: 1.5px solid var(--border-strong); background: var(--surface-2); border-radius: {{r.v}}"></div><span class="num t-sm">{{r.n}}</span><span class="t-sm muted" style="font-size: 12px; line-height: 16px">{{r.d}}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="col g12">
+        <h2 class="t-h1" style="margin: 0">Тени</h2>
+        <div class="row g16 start">
+          <sc-for list="{{shadows}}" as="s" hint-placeholder-count="3">
+            <div class="col g6" style="flex: 1"><div style="height: 56px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: {{s.v}}"></div><span class="num t-sm">{{s.n}} · {{s.d}}</span><span class="num muted" style="font-size: 10px; line-height: 14px">{{s.fx}}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="col g8">
+        <h2 class="t-h1" style="margin: 0">Размеры</h2>
+        <dl class="kv" style="grid-template-columns: 220px 1fr; margin: 0">
+          <dt>Высота контролов</dt><dd class="num">28 · 32 (по умолч.) · 40</dd>
+          <dt>Строка таблицы</dt><dd class="num">30 компактная · 36 обычная</dd>
+          <dt>Боковое меню</dt><dd class="num">232 / 56 свёрнутое</dd>
+          <dt>Верхняя панель · статус-бар</dt><dd class="num">52 · 28</dd>
+          <dt>Фокус</dt><dd>обводка 2 px <span class="num">-tw-focus</span>, отступ 2 px</dd>
+          <dt>Длина подписей</dt><dd>кнопки и колонки без фиксированной ширины, запас +30% под EN/RU</dd>
+        </dl>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1600,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const L = { bg:'#F2F5F5', surface:'#FFFFFF', 'surface-2':'#F7F9F9', 'surface-3':'#EAF0F0', hover:'#EEF3F3', sel:'#DCEDED', border:'#D3DDDD', 'border-strong':'#AFC0C0', text:'#122022', 'text-2':'#3F5153', 'text-3':'#596B6D', accent:'#136B6E', 'accent-hover':'#0D5659', 'accent-soft':'#DCEEEE', 'accent-text':'#0E5E61', focus:'#1A8A8E', danger:'#B42318', warn:'#8A4B00', ok:'#1C6B35', 'nav-bg':'#143234', 'nav-active':'#24504F', 'nav-text':'#C6D9D8', 'nav-muted':'#8FABAA', slot:'#D9480F' };
+    const D = { bg:'#0D1415', surface:'#141E1F', 'surface-2':'#182324', 'surface-3':'#1F2B2D', hover:'#1D2A2B', sel:'#163B3C', border:'#2A393B', 'border-strong':'#3D5153', text:'#E1EBEB', 'text-2':'#ADBEBF', 'text-3':'#8B9D9E', accent:'#3AA5A4', 'accent-hover':'#55B8B7', 'accent-soft':'#163A3B', 'accent-text':'#6CC7C5', focus:'#5CC2C0', danger:'#E5534B', warn:'#F0BE73', ok:'#7FCF97', 'nav-bg':'#091112', 'nav-active':'#173434', 'nav-text':'#B9CBCB', 'nav-muted':'#7F9696', slot:'#FF7A3D' };
+    const G = [['Нейтральные', ['bg','surface','surface-2','surface-3','hover','sel','border','border-strong','text','text-2','text-3']], ['Акцент и сигналы', ['accent','accent-hover','accent-soft','accent-text','focus','danger','warn','ok']], ['Навигация и служебные', ['nav-bg','nav-active','nav-text','nav-muted','slot']]];
+    const mkTheme = (t, cls, ic, H) => ({ t, cls, ic, groups: G.map(g => ({ t: g[0], items: g[1].map(n => ({ n: '-tw-' + n, v: 'var(--' + n + ')', hex: H[n] })) })) });
+    const themes = [mkTheme('Светлая (основная)', 'tw', 'ic ic-sun', L), mkTheme('Тёмная', 'tw dark', 'ic ic-moon', D)];
+    const s = (t, ic) => ({ t, ic: 'ic ic-' + ic });
+    const fam = [
+      { t: 'Нейтральный', d: 'создано, ещё не начато', cls: 'chip s-neu', o: [s('Новый','st-new')], k: [s('Создана','st-new')], p: [s('Создан','st-new')], hex: '#45525A / #EDF0F1 / #C9D2D4' },
+      { t: 'Синий', d: 'принято, идёт работа', cls: 'chip s-blu', o: [s('Принят','st-accept')], k: [s('В работе','st-work')], p: [s('В работе','st-work')], hex: '#1C4E8F / #E4EDFA / #B5CAEC' },
+      { t: 'Фиолетовый', d: 'осмотр, решение не принято', cls: 'chip s-vio', o: [], k: [s('Диагностика','st-diag')], p: [], hex: '#673A8A / #F1E8F7 / #D6C1E5' },
+      { t: 'Янтарный', d: 'ждём кого-то снаружи', cls: 'chip s-amb', o: [s('Ждёт оплаты','st-pay')], k: [], p: [s('Ждёт запчасти','st-wait')], hex: '#844700 / #FDF0DB / #EECB91' },
+      { t: 'Зелёный', d: 'сделано, можно дальше', cls: 'chip s-grn', o: [], k: [s('Готова','st-ready'), s('Готова · без ремонта','st-skip')], p: [s('Готов','st-ready')], hex: '#1A6633 / #E2F3E7 / #B2D9BE' },
+      { t: 'Графит', d: 'архив, изменений нет', cls: 'chip s-cls', o: [s('Закрыт','st-closed')], k: [], p: [], hex: '#FFFFFF / #3A4749 / —' },
+      { t: 'Красный', d: 'отказ или отмена', cls: 'chip s-red', o: [s('Отклонён','st-cancel')], k: [s('Отменена','st-cancel')], p: [s('Отменён','st-cancel')], hex: '#A11A11 / #FCE7E5 / #F0BBB5' },
+    ].map(f => ({ ...f, all: [...f.o, ...f.k, ...f.p].slice(0, 2) }));
+    const type = [
+      { n: 'display', s: '24 / 32', w: 'Sans SemiBold', cls: 't-display', ex: 'Заказ № 1047' },
+      { n: 'h1', s: '20 / 28', w: 'Sans SemiBold', cls: 't-h1', ex: 'Приём оплаты' },
+      { n: 'h2', s: '16 / 24', w: 'Sans SemiBold', cls: 't-h2', ex: 'Жалоба, оценка и срок' },
+      { n: 'h3', s: '14 / 20', w: 'Sans SemiBold', cls: 't-h3', ex: 'Переборка задней втулки' },
+      { n: 'body', s: '14 / 20', w: 'Sans Regular', cls: 't-body', ex: 'Не переключаются передние звёзды, цепь слетает.' },
+      { n: 'table', s: '13 / 18', w: 'Sans Regular', cls: 't-sm', ex: 'Цепь Shimano CN-HG54, 116 зв. · на складе 6' },
+      { n: 'th', s: '12 / 16', w: 'Sans Condensed SemiBold', cls: 'cond strong t-sm', ex: 'Наличие на складе · Резерв · Доступно' },
+      { n: 'label', s: '12 / 16', w: 'Sans Medium', cls: 't-label', ex: 'Плановый срок' },
+      { n: 'caption', s: '11 / 14 · +6%', w: 'Sans SemiBold, ПРОПИСНЫЕ', cls: 't-cap', ex: 'Каталоги' },
+      { n: 'num', s: '13–14', w: 'Mono Medium', cls: 'money', ex: '№ 1047 · 18.11.2026 · 12 450 ₽' },
+      { n: 'num-xl', s: '22 / 28', w: 'Mono SemiBold', cls: 'money t-h1', ex: '6 490 ₽' },
+    ];
+    const space = [[4,'иконка ↔ текст в чипе'],[8,'между контролами'],[12,'внутри карточки, колонки канбана'],[16,'внутри панелей'],[20,'боковые поля диалога'],[24,'поля контента страницы'],[32,'между группами'],[48,'поля листа']].map(x => ({ n: 'space-' + x[0], w: (x[0] * 4) + 'px', d: x[1] }));
+    const radii = [['r-0','0','таблица внутри рамки'],['r-3','3px','чипы, kbd'],['r-4','4px','кнопки, поля, карточки'],['r-6','6px','поповеры, диалоги, колонки'],['r-full','50%','аватары, точки']].map(r => ({ n: r[0], v: r[1], d: r[2] }));
+    const shadows = [
+      { n: 'sh-1', d: 'карточка', v: 'var(--sh-1)', fx: 'dropshadow(gaussian, rgba(12,32,34,.08), 2, 0, 0, 1)' },
+      { n: 'sh-2', d: 'поповер, тост', v: 'var(--sh-2)', fx: 'dropshadow(gaussian, rgba(12,32,34,.14), 16, 0, 0, 4)' },
+      { n: 'sh-3', d: 'диалог', v: 'var(--sh-3)', fx: 'dropshadow(gaussian, rgba(12,32,34,.22), 36, 0, 0, 12)' },
+    ];
+    return { themes, fam, type, space, radii, shadows };
+  }
+}
+</script>
+</body>
+</html>

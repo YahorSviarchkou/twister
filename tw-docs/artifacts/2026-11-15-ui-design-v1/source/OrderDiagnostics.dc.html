@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — заказ № 1047, диагностика</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <dc-import name="OrderHeader" v="diag" hint-size="100%,236px"></dc-import>
+    <div class="content" style="flex-direction: row; gap: 20px; padding: 16px 24px 20px">
+      <div class="col g16 grow" style="min-height: 0">
+        <section class="panel col">
+          <div class="ph-head"><span class="t-h3">Осмотр по узлам</span><span class="t-sm muted">Пётр Лебедев · начато <span class="num">12.11 14:02</span></span></div>
+          <table class="tbl compact">
+            <thead><tr><th style="width: 200px">Узел</th><th style="width: 330px">Состояние</th><th>Замечание</th></tr></thead>
+            <tbody>
+              <sc-for list="{{nodes}}" as="n" hint-placeholder-count="8">
+                <tr>
+                  <td class="strong">{{n.t}}</td>
+                  <td><div class="seg" role="radiogroup" aria-label="{{n.t}}"><button class="{{n.c0}}" style="height: 26px">Норма</button><button class="{{n.c1}}" style="height: 26px">Износ</button><button class="{{n.c2}}" style="height: 26px">Ремонт</button></div></td>
+                  <td class="sub">{{n.note}}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </section>
+        <div class="field"><label for="dn">Заметки мастера</label><textarea id="dn" class="input" rows="3">Клиент жалуется на скрип при педалировании — источник каретка (люфт, сухие подшипники). Задняя втулка: люфт и хруст, конусы целые. Цепь вытянута, кассета пока в допуске. Задняя покрышка стёрта — предложить замену.</textarea></div>
+        <section class="panel col">
+          <div class="ph-head"><span class="t-h3">Рекомендованные работы</span><span class="badge">6</span><div class="grow"></div><button class="btn btn-sm"><i class="ic ic-plus"></i>Добавить из прайса</button></div>
+          <table class="tbl compact">
+            <thead><tr><th>Услуга</th><th>Запчасти</th><th class="r" style="width: 110px">Работа</th><th class="r" style="width: 110px">Запчасти</th><th style="width: 44px"></th></tr></thead>
+            <tbody>
+              <sc-for list="{{recs}}" as="r" hint-placeholder-count="6">
+                <tr><td class="strong">{{r.t}}</td><td class="sub">{{r.p}}</td><td class="r money" style="font-weight: 400">{{r.l}}</td><td class="r money" style="font-weight: 400">{{r.pp}}</td><td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Убрать"><i class="ic ic-x s14"></i></button></td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div class="row end g24" style="padding: 10px 16px; border-top: 1px solid var(--border)"><span class="t-sm sub">Работы <span class="money">3 600 ₽</span></span><span class="t-sm sub">Запчасти <span class="money">5 840 ₽</span></span><span class="t-sm sub">Диагностика <span class="money">800 ₽</span></span><span>Ориентир для клиента <span class="money" style="font-size: 16px; font-weight: 600">≈ 10 240 ₽</span></span></div>
+        </section>
+      </div>
+      <aside class="col g16" style="width: 460px; flex: none">
+        <section class="panel col">
+          <div class="ph-head"><span class="t-h3">Решение</span><span class="req t-sm muted">обязательно</span></div>
+          <div class="col g12" style="padding: 16px" role="radiogroup" aria-label="Решение по ремонту">
+            <button class="tile on" role="radio" aria-checked="true" style="gap: 6px">
+              <span class="row g8"><i class="ic ic-st-work accent-text"></i><span class="strong">Ремонтировать</span><span class="kbd" style="margin-left: auto">1</span></span>
+              <span class="t-sm sub">Задача → «В работе». Из рекомендаций создадутся 6 пунктов, запчасти в наличии будут зарезервированы.</span>
+            </button>
+            <button class="tile" role="radio" aria-checked="false" style="gap: 6px">
+              <span class="row g8"><i class="ic ic-st-skip sub"></i><span class="strong">Ремонт не нужен</span><span class="kbd" style="margin-left: auto">2</span></span>
+              <span class="t-sm sub">Задача → «Готова · без ремонта», заказ → «Ждёт оплаты». Счёт только за диагностику — <span class="money">800 ₽</span>.</span>
+            </button>
+          </div>
+        </section>
+        <section class="panel col g12" style="padding: 16px">
+          <span class="t-h3">Согласование с клиентом</span>
+          <label class="check"><input type="checkbox" checked>Клиент согласовал работы</label>
+          <div class="row g12">
+            <div class="field grow"><label>Как</label><div class="input"><i class="ic ic-phone"></i><span class="grow">Звонок</span><i class="ic ic-chev-d s14"></i></div></div>
+            <div class="field" style="width: 170px"><label>Когда</label><div class="input"><input class="num" value="12.11 15:05" aria-label="Когда"></div></div>
+          </div>
+          <div class="field"><label>Комментарий</label><input class="input" value="Согласен на всё, по покрышке подумает" aria-label="Комментарий"></div>
+        </section>
+        <div class="banner info"><i class="ic ic-info"></i><span>«Завершить диагностику» (<span class="kbd">Ctrl+]</span>) сохранит отчёт и переведёт задачу по выбранному решению. Отчёт печатается вместе со счётом.</span></div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const nodes = [['Цепь',2,'Растяжение 0,75 % при норме до 0,5 %'],['Кассета',1,'Износ умеренный, менять не нужно'],['Переключатели',2,'Задний не дотягивает на 1–2 звезду, трос разлохмачен'],['Каретка',2,'Люфт, скрип под нагрузкой'],['Задняя втулка',2,'Люфт, хруст подшипников'],['Тормоза',0,'Колодки 2,1 мм, диски ровные'],['Колёса и покрышки',1,'Задняя покрышка: протектор стёрт ~70 %'],['Рулевая и вилка',0,'Без замечаний']]
+      .map(n => ({ t: n[0], note: n[2], c0: n[1] === 0 ? 'on' : '', c1: n[1] === 1 ? 'on' : '', c2: n[1] === 2 ? 'on' : '' }));
+    const recs = [['Замена цепи','Цепь Shimano CN-HG54 × 1',450,2190],['Замена троса переключателя','Трос Jagwire Basics 2300 мм × 1',250,190],['Настройка переключателей','—',500,0],['Переборка задней втулки','Подшипник 6000-2RS × 2',1200,360],['Замена каретки','Каретка Shimano BB-UN300 × 1',900,1650],['Замена покрышки','Покрышка Kenda K1153 29×2,10 × 1',300,1450]]
+      .map(r => ({ t: r[0], p: r[1], l: m(r[2]), pp: r[3] ? m(r[3]) : '—' }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { nodes, recs, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — лист компонентов</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1600px; height: 3000px; padding: 48px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+  <div class="col g4">
+    <span class="t-cap">Twister · дизайн-система 1.0</span>
+    <h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -.02em">Компоненты</h1>
+    <span class="sub">Каждый компонент — стандартный контрол JavaFX со styleClass: Button, TextField, ComboBox, TableView, TabPane, ListView, Dialog.</span>
+  </div>
+
+  <section class="col g12">
+    <h2 class="t-h1" style="margin: 0">Кнопки</h2>
+    <div class="panel" style="padding: 20px; display: grid; grid-template-columns: 200px repeat(4, minmax(0, 1fr)); row-gap: 14px; column-gap: 16px; align-items: center">
+      <span></span><span class="t-cap">Обычное</span><span class="t-cap">Наведение</span><span class="t-cap">Фокус с клавиатуры</span><span class="t-cap">Недоступно</span>
+      <span class="t-label">Основная · одна на экран</span>
+      <span><button class="btn btn-primary"><i class="ic ic-check"></i>Создать заказ</button></span>
+      <span><button class="btn btn-primary is-hover"><i class="ic ic-check"></i>Создать заказ</button></span>
+      <span><button class="btn btn-primary is-focus"><i class="ic ic-check"></i>Создать заказ<span class="kbd">Ctrl+S</span></button></span>
+      <span><button class="btn is-disabled" disabled><i class="ic ic-check"></i>Создать заказ</button></span>
+      <span class="t-label">Вторичная</span>
+      <span><button class="btn"><i class="ic ic-print"></i>Печать</button></span>
+      <span><button class="btn is-hover"><i class="ic ic-print"></i>Печать</button></span>
+      <span><button class="btn is-focus"><i class="ic ic-print"></i>Печать</button></span>
+      <span><button class="btn is-disabled" disabled><i class="ic ic-print"></i>Печать</button></span>
+      <span class="t-label">Призрачная · в тулбарах</span>
+      <span><button class="btn btn-ghost">Отмена</button></span>
+      <span><button class="btn btn-ghost is-hover">Отмена</button></span>
+      <span><button class="btn btn-ghost is-focus">Отмена</button></span>
+      <span><button class="btn btn-ghost is-disabled" disabled>Отмена</button></span>
+      <span class="t-label">Опасная · подтверждение</span>
+      <span class="row g8"><button class="btn btn-danger">Отклонить заказ</button><button class="btn btn-danger-o"><i class="ic ic-st-cancel"></i>Отклонить</button></span>
+      <span><button class="btn btn-danger is-hover">Отклонить заказ</button></span>
+      <span><button class="btn btn-danger is-focus">Отклонить заказ</button></span>
+      <span><button class="btn is-disabled" disabled>Отклонить заказ</button></span>
+      <span class="t-label">Иконка · всегда с тултипом</span>
+      <span class="row g8"><button class="btn btn-icon" aria-label="Обновить"><i class="ic ic-refresh"></i></button><button class="btn btn-ghost btn-icon" aria-label="Ещё"><i class="ic ic-more"></i></button><button class="btn btn-sm btn-icon" aria-label="Печать"><i class="ic ic-print"></i></button></span>
+      <span class="row g8"><button class="btn btn-icon is-hover" aria-label="Обновить"><i class="ic ic-refresh"></i></button></span>
+      <span class="row g8" style="position: relative"><button class="btn btn-icon is-focus" aria-label="Обновить"><i class="ic ic-refresh"></i></button><span class="tip">Обновить<span class="kbd">F5</span></span></span>
+      <span><button class="btn btn-icon is-disabled" disabled aria-label="Обновить"><i class="ic ic-refresh"></i></button></span>
+      <span class="t-label">Размеры 28 · 32 · 40</span>
+      <span class="row g8" style="grid-column: span 4"><button class="btn btn-sm">Маленькая 28</button><button class="btn">Обычная 32</button><button class="btn btn-lg btn-primary">Крупная 40 — оплата</button><span class="t-sm muted" style="margin-left: 16px">EN: «Create order» / RU: «Создать заказ» — ширина по содержимому, минимум 88 px</span></span>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Поля ввода</h2>
+      <div class="panel" style="padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+        <div class="field"><label>Фамилия</label><input class="input" value="Смирнов" aria-label="Фамилия"></div>
+        <div class="field"><label class="req">Модель</label><div class="input is-focus"><input value="Big.Nine 3" aria-label="Модель"></div><span class="hint">Фокус: рамка и мягкое кольцо</span></div>
+        <div class="field"><label class="req">Телефон</label><div class="input err"><i class="ic ic-phone"></i><input class="num" value="+7 916 204-55" aria-invalid="true" aria-label="Телефон"></div><span class="errmsg"><i class="ic ic-alert s14"></i>Не хватает 2 цифр: формат +7 XXX XXX-XX-XX</span></div>
+        <div class="field"><label>Цена</label><div class="input"><input class="num" value="1 200" aria-label="Цена"><span class="sfx">₽</span></div><span class="hint">Моноширинные цифры, выравнивание по правому краю в таблицах</span></div>
+        <div class="field"><label>Поиск</label><div class="input"><i class="ic ic-search"></i><input placeholder="Найти запчасть" aria-label="Поиск"><span class="kbd">Ctrl+F</span></div></div>
+        <div class="field"><label>Номер заказа</label><div class="input dis"><span class="num">будет присвоен</span><i class="ic ic-lock s14" style="margin-left: auto"></i></div></div>
+        <div class="field" style="grid-column: span 2"><label>Заметки мастера</label><textarea class="input" rows="2" aria-label="Заметки">Люфт задней втулки, на конусах выработки нет.</textarea></div>
+      </div>
+    </section>
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Выпадающий список с поиском</h2>
+      <div class="panel row start g24" style="padding: 20px; height: 100%">
+        <div class="col g16" style="width: 260px">
+          <div class="field"><label>Бренд · закрыт</label><div class="input"><span class="grow">Shimano</span><i class="ic ic-chev-d s14"></i></div></div>
+          <div class="field"><label>Без значения</label><div class="input"><span class="grow ph">Выберите тип</span><i class="ic ic-chev-d s14"></i></div></div>
+          <span class="hint">Ввод с клавиатуры сразу фильтрует список; ↑↓ — выбор, Enter — подтвердить, Esc — закрыть.</span>
+        </div>
+        <div class="field grow" style="position: relative"><label>Услуга из прайса · открыт</label>
+          <div class="input is-focus"><i class="ic ic-search"></i><input value="замен" aria-label="Услуга" aria-expanded="true"><i class="ic ic-chev-u s14"></i></div>
+          <div class="pop" role="listbox" style="margin-top: 4px">
+            <div class="mhead">Трансмиссия</div>
+            <div class="mi active" role="option"><span><mark>Замен</mark>а цепи</span><span class="money sub" style="margin-left: auto; font-weight: 400">450 ₽</span></div>
+            <div class="mi" role="option"><span><mark>Замен</mark>а кассеты</span><span class="money sub" style="margin-left: auto; font-weight: 400">400 ₽</span></div>
+            <div class="mi" role="option"><span><mark>Замен</mark>а каретки</span><span class="money sub" style="margin-left: auto; font-weight: 400">900 ₽</span><i class="ic ic-check accent-text"></i></div>
+            <div class="mhead">Колёса</div>
+            <div class="mi" role="option"><span><mark>Замен</mark>а покрышки</span><span class="money sub" style="margin-left: auto; font-weight: 400">300 ₽</span></div>
+            <div class="msep"></div>
+            <div class="mi" style="color: var(--accent-text)"><i class="ic ic-plus" style="color: var(--accent-text)"></i>Добавить в прайс «замен…»</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="col g12">
+    <h2 class="t-h1" style="margin: 0">Чипы статусов и метки</h2>
+    <div class="panel" style="padding: 20px; display: grid; grid-template-columns: 160px minmax(0, 1fr); row-gap: 14px; align-items: center">
+      <sc-for list="{{levels}}" as="l" hint-placeholder-count="3">
+        <span class="t-label">{{l.t}}</span>
+        <div class="row g8 wrap"><sc-for list="{{l.items}}" as="s"><span class="{{s.cls}}"><i class="{{s.ic}}"></i>{{s.t}}</span></sc-for><sc-if value="{{l.arrow}}" hint-placeholder-val="{{ false }}"><span class="t-sm muted" style="margin-left: 12px">{{l.arrow}}</span></sc-if></div>
+      </sc-for>
+      <span class="t-label">Прочие метки</span>
+      <div class="row g12 wrap">
+        <span class="chip lg s-blu"><i class="ic ic-st-accept"></i>Крупный 26 — в шапке</span>
+        <span class="badge">17</span><span class="badge acc">2</span><span class="badge red">3</span>
+        <span class="pill-due"><i class="ic ic-clock s12"></i>18.11</span><span class="pill-due today"><i class="ic ic-clock s12"></i>сегодня</span><span class="pill-due over"><i class="ic ic-clock s12"></i>просрочен 2 дн.</span>
+        <span class="row g6 t-sm"><span class="dot ok"></span>в наличии</span><span class="row g6 t-sm"><span class="dot warn"></span>мало</span><span class="row g6 t-sm"><span class="dot bad"></span>нет</span>
+        <span class="qtag">Тормоза</span><span class="qtag on">Переключатели</span>
+        <span class="row g6"><span class="av a1">ПЛ</span><span class="av a2">СМ</span><span class="av a3">ИВ</span><span class="av a4">АК</span></span>
+      </div>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px">
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Степпер этапов</h2>
+      <div class="panel col g24" style="padding: 20px">
+        <sc-for list="{{steppers}}" as="sp" hint-placeholder-count="3">
+          <div class="col g8"><span class="t-label">{{sp.t}}</span>
+            <ol class="stepper g" style="margin: 0; padding: 0; list-style: none">
+              <sc-for list="{{sp.steps}}" as="s"><li class="{{s.cls}}"><div class="bar"></div><span class="sl"><i class="{{s.ic}}" style="width: 14px; height: 14px"></i>{{s.t}}</span></li></sc-for>
+            </ol>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Вкладки и переключатели</h2>
+      <div class="panel col g16" style="padding: 0 20px 20px">
+        <nav class="tabs" style="margin: 0 -20px; padding: 0 8px">
+          <a class="tab"><i class="ic ic-st-diag"></i>Диагностика</a>
+          <a class="tab on"><i class="ic ic-wrench"></i>Работы<span class="badge">6</span></a>
+          <a class="tab is-focus"><i class="ic ic-receipt"></i>Счёт</a>
+          <a class="tab"><i class="ic ic-history"></i>История</a>
+          <a class="tab slot" data-slot="order.tab"><i class="ic ic-camera"></i>Фото<span class="badge">3</span></a>
+        </nav>
+        <span class="t-sm muted">Активная — подчёркивание акцентом 2 px; вкладка плагина ничем не отличается. Ctrl+1…5 переключают вкладки.</span>
+        <div class="row g16 wrap">
+          <div class="seg"><button class="on"><i class="ic ic-board"></i>Канбан</button><button><i class="ic ic-list"></i>Таблица</button></div>
+          <span class="row g8"><button class="switch on" role="switch" aria-checked="true" aria-label="Включено"></button><span class="t-sm">Включён</span></span>
+          <span class="row g8"><button class="switch" role="switch" aria-checked="false" aria-label="Выключено"></button><span class="t-sm">Выключен</span></span>
+          <label class="check"><input type="checkbox" checked>Флажок</label>
+          <label class="check"><input type="radio" checked>Радио</label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="col g12">
+    <h2 class="t-h1" style="margin: 0">Таблица</h2>
+    <div class="row start g24">
+      <div class="tbl-wrap grow" style="position: relative; overflow: visible">
+        <div class="row g8" style="height: 48px; padding: 0 12px; border-bottom: 1px solid var(--border)">
+          <div class="input" style="width: 260px; height: 30px"><i class="ic ic-search"></i><input placeholder="Поиск по таблице" aria-label="Поиск"></div>
+          <span class="t-sm muted">Выделено: 1</span>
+          <div class="grow"></div>
+          <button class="btn btn-sm slot" data-slot="toolbar.action"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+          <button class="btn btn-sm btn-icon" aria-label="Колонки" title="Настроить колонки"><i class="ic ic-gear"></i></button>
+        </div>
+        <table class="tbl">
+          <thead><tr><th style="width: 36px"><input type="checkbox" aria-label="Выбрать все" style="accent-color: var(--accent)"></th><th>№ <i class="ic ic-sort"></i></th><th>Клиент <i class="ic ic-sort"></i></th><th>Велосипед</th><th>Статус</th><th class="sorted">Срок <i class="ic ic-arr-up"></i></th><th class="r">Сумма <i class="ic ic-sort"></i></th></tr></thead>
+          <tbody>
+            <tr class="over"><td><input type="checkbox" aria-label="Выбрать" style="accent-color: var(--accent)"></td><td class="num">1043</td><td>Морозова Елена</td><td>Stels Navigator 500</td><td><span class="chip s-amb"><i class="ic ic-st-wait"></i>Ждёт запчасти</span></td><td><span class="pill-due over"><i class="ic ic-clock s12"></i>13.11</span></td><td class="r money">5 340 ₽</td></tr>
+            <tr class="hov"><td><input type="checkbox" aria-label="Выбрать" style="accent-color: var(--accent)"></td><td class="num">1045</td><td>Соколов Михаил</td><td>Trek Marlin 5</td><td><span class="chip s-blu"><i class="ic ic-st-work"></i>В работе</span></td><td><span class="pill-due today"><i class="ic ic-clock s12"></i>сегодня</span></td><td class="r money">3 900 ₽</td></tr>
+            <tr class="sel"><td><input type="checkbox" checked aria-label="Выбрать" style="accent-color: var(--accent)"></td><td class="num">1047</td><td>Смирнов Андрей Викторович</td><td>Merida Big.Nine 300</td><td><span class="chip s-amb"><i class="ic ic-st-wait"></i>Ждёт запчасти</span></td><td class="num">18.11</td><td class="r money">8 490 ₽</td></tr>
+            <tr><td><input type="checkbox" aria-label="Выбрать" style="accent-color: var(--accent)"></td><td class="num">1050</td><td>Никитина Анна</td><td>Merida Crossway 100</td><td><span class="chip s-vio"><i class="ic ic-st-diag"></i>Диагностика</span></td><td class="num">17.11</td><td class="r money">800 ₽</td></tr>
+          </tbody>
+        </table>
+        <div class="pager"><span>1–25 из <span class="num">61</span></span><div class="grow"></div><span>Строк:</span><div class="input" style="width: 64px; height: 28px"><span class="num">25</span><i class="ic ic-chev-d s12" style="margin-left: auto"></i></div><button class="pg" aria-label="Назад"><i class="ic ic-chev-l s14"></i></button><button class="pg on">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg" aria-label="Вперёд"><i class="ic ic-chev-r s14"></i></button></div>
+        <div class="pop" role="menu" style="position: absolute; left: 520px; top: 206px; width: 300px; z-index: 6">
+          <div class="mi"><i class="ic ic-external"></i>Открыть заказ<span class="kbd">Enter</span></div>
+          <div class="mi active"><i class="ic ic-arr-r"></i>Следующий статус: «В работе»<span class="kbd">Ctrl+]</span></div>
+          <div class="mi dis" title="Недоступно в статусе «Ждёт запчасти»"><i class="ic ic-st-ready"></i>Отметить готовым<span class="t-sm" style="margin-left: auto">недоступно</span></div>
+          <div class="mi"><i class="ic ic-print"></i>Печать квитанции<span class="kbd">Ctrl+P</span></div>
+          <div class="msep"></div>
+          <div class="mi slot" data-slot="context.action"><i class="ic ic-sheet"></i>Экспорт в Excel<span class="kbd">Ctrl+E</span></div>
+          <div class="msep"></div>
+          <div class="mi danger"><i class="ic ic-st-cancel"></i>Отклонить заказ…</div>
+        </div>
+      </div>
+      <div class="col g8 t-sm sub" style="width: 300px">
+        <span class="t-h3" style="color: var(--text)">Поведение</span>
+        <span>Заголовок кликабелен; активная сортировка — стрелка акцентом, остальные — двойная серая.</span>
+        <span>Выделенная строка: заливка <span class="num">-tw-sel</span> и полоса 3 px слева.</span>
+        <span>Просроченная строка: розоватый фон и красная плашка срока.</span>
+        <span>Контекстное меню показывает только допустимые переходы; недоступные — серым с причиной.</span>
+        <span>Плагины добавляют пункты в меню и кнопки в тулбар через тот же API.</span>
+      </div>
+    </div>
+  </section>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Модальный диалог</h2>
+      <div style="position: relative; height: 340px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border)">
+        <div class="scrim">
+          <div class="dialog" role="dialog" aria-label="Списание запчасти" style="width: 460px">
+            <div class="dlg-h"><span class="t-h1">Списание запчасти</span><div class="grow"></div><button class="btn btn-ghost btn-sm btn-icon" aria-label="Закрыть"><i class="ic ic-x"></i></button></div>
+            <div class="dlg-b">
+              <div class="field"><label class="req">Запчасть</label><div class="input"><i class="ic ic-box"></i><span class="grow">Цепь KMC X9, 116 зв.</span><span class="t-sm muted">доступно <span class="num">3</span></span></div></div>
+              <div class="row g12"><div class="field" style="width: 120px"><label class="req">Количество</label><input class="input num" value="1" aria-label="Количество"></div><div class="field grow"><label class="req">Причина</label><div class="input"><span class="grow">Брак поставщика</span><i class="ic ic-chev-d s14"></i></div></div></div>
+            </div>
+            <div class="dlg-f"><button class="btn btn-ghost">Отмена<span class="kbd">Esc</span></button><button class="btn btn-primary">Списать<span class="kbd">Ctrl+Enter</span></button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="col g12">
+      <h2 class="t-h1" style="margin: 0">Тосты и подсказки</h2>
+      <div class="col g12" style="padding: 20px; background: var(--surface-3); border-radius: 6px; height: 340px">
+        <div class="toast ok" role="status"><i class="ic ic-st-ready s20"></i><div class="col grow g4"><span class="t-title">Заказ № 1055 создан</span><span>Квитанция приёма отправлена на печать.</span></div><button class="tl">Открыть</button><button class="btn btn-ghost btn-sm btn-icon x" aria-label="Закрыть" style="color: #9DB2B3"><i class="ic ic-x s14"></i></button></div>
+        <div class="toast warn" role="status"><i class="ic ic-alert s20"></i><div class="col grow g4"><span class="t-title">Действие недоступно</span><span>«Выставить счёт» — только когда задача «Готова». Сейчас: «В работе».</span></div></div>
+        <div class="toast err" role="alert"><i class="ic ic-st-cancel s20"></i><div class="col grow g4"><span class="t-title">Не удалось сохранить</span><span>Нет связи с базой. Изменения в черновике.</span></div><button class="tl">Повторить</button></div>
+        <div class="row g12"><span class="tip">Новый заказ<span class="kbd">Ctrl+N</span></span><span class="tip">Следующий статус<span class="kbd">Ctrl+]</span></span></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="col g12">
+    <h2 class="t-h1" style="margin: 0">Боковая навигация · развёрнута и свёрнута</h2>
+    <div class="row start g32">
+      <div style="height: 640px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border)"><dc-import name="Sidebar" active="orders" h="{{navH}}" hint-size="232px,640px"></dc-import></div>
+      <div style="height: 640px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border)"><dc-import name="Sidebar" active="orders" collapsed="{{yes}}" h="{{navH}}" hint-size="56px,640px"></dc-import></div>
+      <div class="col g8 t-sm sub" style="max-width: 520px">
+        <span class="t-h3" style="color: var(--text)">Правила</span>
+        <span>Тёмно-петрольная колонка в обеих темах: отделяет навигацию от рабочей области, не споря со статусами.</span>
+        <span>Свёрнутое меню (56 px) по <span class="kbd">Ctrl+B</span>, автоматически — ниже 1440 px ширины окна. Подписи переезжают в тултипы, счётчики — в точку.</span>
+        <span>Плагин добавляет пункт в группу «Работа» или «Каталоги» — тот же компонент, своя иконка из набора.</span>
+        <span>Активный пункт: заливка, полоса слева, жирный текст — читается и без цвета.</span>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1600,"height":3000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const c = (t, f, ic) => ({ t, cls: 'chip s-' + f, ic: 'ic ic-' + ic });
+    const levels = [
+      { t: 'Заказ', items: [c('Новый','neu','st-new'), c('Принят','blu','st-accept'), c('Ждёт оплаты','amb','st-pay'), c('Закрыт','cls','st-closed'), c('Отклонён','red','st-cancel')], arrow: 'Новый → Принят → Ждёт оплаты → Закрыт; из Новый/Принят → Отклонён' },
+      { t: 'Задача', items: [c('Создана','neu','st-new'), c('Диагностика','vio','st-diag'), c('В работе','blu','st-work'), c('Готова','grn','st-ready'), c('Готова · без ремонта','grn','st-skip'), c('Отменена','red','st-cancel')], arrow: 'путь «ремонт не нужен»: Диагностика → Готова' },
+      { t: 'Пункт работ', items: [c('Создан','neu','st-new'), c('Ждёт запчасти','amb','st-wait'), c('В работе','blu','st-work'), c('Готов','grn','st-ready'), c('Отменён','red','st-cancel')], arrow: 'Создан → (Ждёт запчасти) → В работе → Готов' },
+    ];
+    const st = (names, cur, extra) => names.map((n, i) => {
+      const e = (extra || {})[i];
+      return { t: n[0], ic: 'ic ic-' + (e === 'rej' ? 'st-cancel' : e === 'skip' ? 'st-skip' : i < cur ? 'check' : n[1]), cls: 'step' + (e ? ' ' + e : i < cur ? ' done' : i === cur ? ' cur' : '') };
+    });
+    const N = [['Новый','st-new'],['Принят','st-accept'],['Диагностика','st-diag'],['В работе','st-work'],['Ждёт оплаты','st-pay'],['Закрыт','st-closed']];
+    const steppers = [
+      { t: 'Обычный путь · текущий этап «В работе»', steps: st(N, 3) },
+      { t: 'Ремонт не нужен · счёт только за диагностику', steps: st(N, 4, { 3: 'skip' }) },
+      { t: 'Отклонён из «Принят»', steps: st([['Новый','st-new'],['Принят','st-accept'],['Отклонён','st-cancel']], 2, { 2: 'rej' }) },
+    ];
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { levels, steppers, navH: 640, yes: true, rootCls: 'tw' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+%% Sequence 1: bike intake at the front desk.
+sequenceDiagram
+  actor Desk as Front desk
+  participant Shell as JavaFX shell
+  participant Kernel
+  participant Store as Storage
+  participant Bus as Event bus
+  participant Print as Print plugin
+  participant Printer
+
+  Desk->>Shell: customer phone
+  Shell->>Kernel: find customer
+  Kernel->>Store: search by phone
+  Store-->>Kernel: customer and bikes
+  Shell->>Kernel: create order (complaint, photos, due date)
+  Kernel->>Store: save, status Accepted
+  Kernel-->>Shell: order number
+  Kernel->>Bus: OrderAccepted (after commit)
+  Bus->>Print: event
+  Print->>Printer: intake receipt and bike tag with QR
+  Shell-->>Desk: order number, printing

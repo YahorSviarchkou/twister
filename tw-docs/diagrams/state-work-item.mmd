@@ -1,0 +1,12 @@
+%% Proposed work item state machine (ADR 0005).
+stateDiagram-v2
+  [*] --> Created
+  Created --> InProgress: start work
+  Created --> WaitingForParts: part not in stock
+  WaitingForParts --> InProgress: parts arrived
+  InProgress --> Done: finish work
+  Created --> Cancelled
+  WaitingForParts --> Cancelled
+  InProgress --> Cancelled
+  Done --> [*]
+  Cancelled --> [*]

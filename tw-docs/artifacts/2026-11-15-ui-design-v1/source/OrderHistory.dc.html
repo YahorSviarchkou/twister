@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — заказ № 1047, история</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" search="{{yes}}" hint-size="100%,52px"></dc-import>
+    <dc-import name="OrderHeader" v="history" hint-size="100%,236px"></dc-import>
+    <div class="content" style="flex-direction: row; gap: 24px; padding: 16px 24px 0">
+      <aside class="col g16" style="width: 260px; flex: none">
+        <div class="col g6"><span class="flabel">Уровень</span>
+          <sc-for list="{{levels}}" as="l"><label class="check t-sm"><input type="checkbox" checked="{{l.on}}">{{l.t}}<span class="num muted" style="margin-left: auto">{{l.n}}</span></label></sc-for>
+        </div>
+        <div class="hr"></div>
+        <div class="field"><label>Кто</label><div class="input"><span class="grow">Все пользователи</span><i class="ic ic-chev-d s14"></i></div></div>
+        <div class="hr"></div>
+        <span class="t-sm muted">История неизменяема: записи создаёт система при каждом переходе статуса, оплате и приходе запчастей.</span>
+      </aside>
+      <div class="col grow" style="min-height: 0; overflow: hidden; max-width: 1100px">
+        <sc-for list="{{days}}" as="d" hint-placeholder-count="4">
+          <div class="row g12" style="padding: 8px 0 6px"><span class="t-cap">{{d.t}}</span><div class="hr grow"></div></div>
+          <sc-for list="{{d.ev}}" as="e">
+            <div class="row start g16" style="padding: 7px 0">
+              <span class="num muted t-sm" style="width: 44px; padding-top: 3px">{{e.time}}</span>
+              <div class="col" style="align-items: center; width: 14px; padding-top: 6px"><span class="{{e.dot}}"></span></div>
+              <span class="lvl" style="width: 64px; padding-top: 5px">{{e.lvl}}</span>
+              <div class="col g4 grow">
+                <div class="row g8 wrap">
+                  <span class="strong t-sm">{{e.what}}</span>
+                  <sc-if value="{{e.from}}" hint-placeholder-val="{{ true }}"><span class="{{e.from.cls}}"><i class="{{e.from.ic}}"></i>{{e.from.t}}</span><i class="ic ic-arr-r s14 muted"></i></sc-if>
+                  <sc-if value="{{e.to}}" hint-placeholder-val="{{ true }}"><span class="{{e.to.cls}}"><i class="{{e.to.ic}}"></i>{{e.to.t}}</span></sc-if>
+                </div>
+                <sc-if value="{{e.note}}" hint-placeholder-val="{{ false }}"><span class="t-sm sub">{{e.note}}</span></sc-if>
+              </div>
+              <span class="row g6 t-sm sub" style="width: 150px; padding-top: 2px"><span class="{{e.avCls}}">{{e.av}}</span>{{e.who}}</span>
+            </div>
+          </sc-for>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = { nw:['Новый','neu','st-new'], acc:['Принят','blu','st-accept'], pay:['Ждёт оплаты','amb','st-pay'], cr:['Создана','neu','st-new'], dg:['Диагностика','vio','st-diag'], wk:['В работе','blu','st-work'], rd:['Готова','grn','st-ready'],
+      pc:['Создан','neu','st-new'], pw:['Ждёт запчасти','amb','st-wait'], pk:['В работе','blu','st-work'], pd:['Готов','grn','st-ready'], px:['Отменён','red','st-cancel'] };
+    const ch = k => k ? { t: S[k][0], cls: 'chip s-' + S[k][1], ic: 'ic ic-' + S[k][2] } : null;
+    const U = { 'АК': ['А. Котов', 'av a4'], 'ПЛ': ['П. Лебедев', 'av a1'], 'Σ': ['Система', 'av'] };
+    const e = (time, lvl, what, from, to, who, note) => ({ time, lvl, what, from: ch(from), to: ch(to), who: U[who][0], av: who, avCls: U[who][1], note: note || '',
+      dot: 'dot ' + (lvl === 'оплата' ? 'ok' : 'neu') });
+    const days = [
+      { t: 'Вторник, 17 ноября', ev: [
+        e('16:50','заказ','Заказ','acc','pay','АК','Выставлен счёт СЧ-2026-0412 на 8 490 ₽'),
+        e('16:45','задача','Задача','wk','rd','ПЛ'),
+        e('16:40','пункт','5 · Замена каретки','pk','pd','ПЛ'),
+        e('15:30','пункт','4 · Переборка задней втулки','pk','pd','ПЛ'),
+        e('11:05','пункт','4 · Переборка задней втулки','pw','pk','Σ','Приход по накладной № 318: Подшипник 6000-2RS × 4 — резерв 2 шт.') ]},
+      { t: 'Воскресенье, 15 ноября', ev: [ e('12:10','пункт','3 · Настройка переключателей','pk','pd','ПЛ') ]},
+      { t: 'Пятница, 13 ноября', ev: [
+        e('11:20','пункт','6 · Замена покрышки','pc','px','АК','Клиент отказался — купит покрышку сам'),
+        e('09:05','пункт','4 · Переборка задней втулки','pc','pw','ПЛ','Нет на складе: Подшипник 6000-2RS, нужно 2') ]},
+      { t: 'Четверг, 12 ноября', ev: [
+        e('16:40','оплата','Аванс 2 000 ₽ · наличные',null,null,'АК'),
+        e('15:10','задача','Задача','dg','wk','ПЛ','Решение диагностики: ремонтировать. Согласовано по телефону в 15:05'),
+        e('14:02','задача','Задача','cr','dg','ПЛ'),
+        e('10:31','заказ','Заказ','nw','acc','АК','Создана задача, мастер — П. Лебедев'),
+        e('10:24','заказ','Заказ создан',null,'nw','АК','Приём: Merida Big.Nine 300, жалоба «скрип при педалировании, люфт втулки»') ]},
+    ];
+    const levels = [{ t: 'Заказ', n: 4, on: true }, { t: 'Задача', n: 4, on: true }, { t: 'Пункты работ', n: 11, on: true }, { t: 'Оплаты', n: 1, on: true }, { t: 'Склад и резервы', n: 1, on: false }];
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { days, levels, yes: true, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

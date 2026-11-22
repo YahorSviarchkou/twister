@@ -1,0 +1,31 @@
+%% C4 level 3: components of the desktop app. tw-api is shared by all components and is not drawn.
+flowchart TB
+  desk(["Front desk"])
+  mobile["Mobile web client<br/>tablet browser"]
+  subgraph app[Desktop app]
+    shell["JavaFX shell<br/>tw-shell-javafx · desk screens"]
+    rest["API and tablet pages<br/>tw-rest + tw-shell-web"]
+    kernel["Kernel · tw-kernel<br/>intake, orders, stock, invoices, payment"]
+    bus["Extension registry and event bus<br/>UI contributions, subscriptions"]
+    engine["Status engine<br/>state machines + history"]
+    store["Storage adapters<br/>tw-store-jpa"]
+    plugins["Plugins<br/>telegram · print · fiscal · excel"]
+  end
+  db[("SQLite<br/>file on the PC")]
+  ext["Telegram · cash register · printers"]
+
+  desk -- "works" --> shell
+  mobile -- "REST + WebSocket" --> rest
+  shell -- "use cases" --> kernel
+  rest -- "use cases" --> kernel
+  kernel -- "transitions" --> engine
+  kernel -- "ports" --> store
+  kernel -- "events after commit" --> bus
+  bus -- "subscriptions" --> plugins
+  store -- "JPA" --> db
+  plugins -- "HTTPS, drivers" --> ext
+
+  classDef ours fill:#d4e4fb,stroke:#3a6fc4
+  classDef external fill:#f4f5f7,stroke:#9aa3ad
+  class shell,rest,kernel,bus,engine,store,plugins ours
+  class mobile,db,ext external

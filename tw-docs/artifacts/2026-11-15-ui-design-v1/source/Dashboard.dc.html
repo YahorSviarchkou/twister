@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — сводка</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="dash" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" notif="{{yes}}" hint-size="100%,52px"></dc-import>
+    <div class="content" style="padding: 0 24px 20px; gap: 16px">
+      <div class="row g12" style="padding-top: 16px">
+        <h1 class="t-display" style="margin: 0">Сводка</h1><span class="sub">воскресенье, 15 ноября</span>
+        <div class="grow"></div>
+        <div class="seg"><button class="on">Сегодня</button><button>Неделя</button><button>Месяц</button></div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px">
+        <div class="kpi"><span class="t-label">Активных заказов</span><span class="v">13</span><span class="t-sm muted">3 новых · 3 диагностика · 4 в работе</span></div>
+        <div class="kpi" style="border-color: var(--s-red-bd)"><span class="t-label row g6"><i class="ic ic-clock s14 danger-text"></i>Просрочено</span><span class="v danger-text">2</span><span class="t-sm muted">№ 1043, № 1049</span></div>
+        <div class="kpi"><span class="t-label row g6"><i class="ic ic-st-wait s14 warn-text"></i>Ждут запчасти</span><span class="v">2</span><span class="t-sm muted">по одному пришли сегодня</span></div>
+        <div class="kpi"><span class="t-label row g6"><i class="ic ic-st-pay s14"></i>Ждут оплаты</span><span class="v">7 080 ₽</span><span class="t-sm muted">3 заказа</span></div>
+        <div class="kpi"><span class="t-label row g6"><i class="ic ic-cash s14"></i>Выручка сегодня</span><span class="v">9 750 ₽</span><span class="t-sm muted">2 оплаты · карта 7 150, нал. 2 600</span></div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; flex: 1 1 auto; min-height: 0">
+        <section class="panel col">
+          <div class="ph-head"><i class="ic ic-calendar sub"></i><span class="t-h3">Срок сегодня и просроченные</span><span class="badge">4</span></div>
+          <table class="tbl compact"><tbody>
+            <sc-for list="{{due}}" as="d" hint-placeholder-count="4">
+              <tr class="{{d.cls}}"><td class="num strong" style="width: 70px">{{d.n}}</td><td><div class="col"><span>{{d.c}}</span><span class="t-sm muted">{{d.b}}</span></div></td><td><span class="{{d.st.cls}}"><i class="{{d.st.ic}}"></i>{{d.st.t}}</span></td><td class="r"><span class="{{d.dueCls}}"><i class="ic ic-clock s12"></i>{{d.due}}</span></td></tr>
+            </sc-for>
+          </tbody></table>
+        </section>
+        <section class="panel col">
+          <div class="ph-head"><i class="ic ic-users sub"></i><span class="t-h3">Загрузка мастеров</span></div>
+          <div class="col g16" style="padding: 16px">
+            <sc-for list="{{masters}}" as="m" hint-placeholder-count="2">
+              <div class="col g6">
+                <div class="row g8"><span class="{{m.av}}">{{m.i}}</span><span class="strong">{{m.n}}</span><span class="grow"></span><span class="num t-sm sub">{{m.c}} заказов · {{m.h}}</span></div>
+                <div class="row g4" style="height: 10px"><sc-for list="{{m.seg}}" as="s"><span style="height: 10px; border-radius: 2px; flex: {{s.f}}; background: {{s.c}}" title="{{s.t}}"></span></sc-for></div>
+              </div>
+            </sc-for>
+            <div class="row g16 t-sm muted wrap"><span class="row g6"><span class="dot" style="background: var(--s-vio-fg)"></span>Диагностика</span><span class="row g6"><span class="dot" style="background: var(--s-blu-fg)"></span>В работе</span><span class="row g6"><span class="dot" style="background: var(--s-amb-fg)"></span>Ждёт запчасти</span></div>
+          </div>
+        </section>
+        <section class="panel col slot" data-slot="dashboard.block">
+          <div class="ph-head"><i class="ic ic-cloud sub"></i><span class="t-h3">Веб-заявки</span><span class="badge acc">2</span><div class="grow"></div><button class="link t-sm">Все заявки</button></div>
+          <div class="col">
+            <div class="row g12" style="padding: 12px 16px; border-bottom: 1px solid var(--border)"><div class="col grow"><span class="strong">Кравцов Денис</span><span class="t-sm sub">«Восьмёрка на заднем колесе» · удобно завтра после 18</span><span class="t-sm muted num">+7 921 555-02-14 · 2 ч назад</span></div><a href="IntakeNew.dc.html" class="btn btn-sm">Создать заказ</a></div>
+            <div class="row g12" style="padding: 12px 16px"><div class="col grow"><span class="strong">Лаптева Ксения</span><span class="t-sm sub">«ТО детского велосипеда» · Stels Pilot 170</span><span class="t-sm muted num">+7 916 300-71-29 · 5 ч назад</span></div><button class="btn btn-sm">Создать заказ</button></div>
+          </div>
+          <div class="grow"></div>
+          <div class="row g6 t-sm muted" style="padding: 10px 16px; border-top: 1px solid var(--border)"><span class="dot ok"></span>Плагин «Синхронизация с веб-версией»</div>
+        </section>
+        <section class="panel col">
+          <div class="ph-head"><i class="ic ic-box sub"></i><span class="t-h3">Ждут запчасти</span></div>
+          <table class="tbl compact"><tbody>
+            <tr><td class="num strong" style="width: 70px">1043</td><td><div class="col"><span>Цепь KMC X9, кассета CS-HG200</span><span class="t-sm ok-text">пришли сегодня 10:40 · зарезервировано</span></div></td><td class="r"><a class="btn btn-sm" href="OrderWorks.dc.html">В работу</a></td></tr>
+            <tr><td class="num strong">1047</td><td><div class="col"><span>Подшипник 6000-2RS × 2</span><span class="t-sm warn-text">ожидается 17.11 · ВелоОпт</span></div></td><td class="r"><button class="btn btn-sm is-disabled" disabled title="Запчасти ещё не пришли">В работу</button></td></tr>
+          </tbody></table>
+        </section>
+        <section class="panel col">
+          <div class="ph-head"><i class="ic ic-alert sub"></i><span class="t-h3">Низкий остаток</span><div class="grow"></div><a class="link t-sm" href="Stock.dc.html">Склад</a></div>
+          <table class="tbl compact"><tbody>
+            <sc-for list="{{low}}" as="l" hint-placeholder-count="4"><tr><td>{{l.n}}</td><td class="{{l.cls}}" style="width: 120px"><span class="row g6 end"><span class="t-sm">{{l.t}}</span><span class="num strong">{{l.a}}</span></span></td></tr></sc-for>
+          </tbody></table>
+        </section>
+        <section class="panel col">
+          <div class="ph-head"><i class="ic ic-cash sub"></i><span class="t-h3">Оплаты сегодня</span><div class="grow"></div><span class="money">9 750 ₽</span></div>
+          <table class="tbl compact"><tbody>
+            <tr><td class="num sub" style="width: 60px">12:15</td><td>№ 1040 · Тихонова Вера</td><td><span class="row g6 sub"><i class="ic ic-cash s14"></i>наличные</span></td><td class="r money">2 600 ₽</td></tr>
+            <tr><td class="num sub">10:42</td><td>№ 1039 · Григорьев Павел</td><td><span class="row g6 sub"><i class="ic ic-card s14"></i>карта</span></td><td class="r money">7 150 ₽</td></tr>
+          </tbody></table>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = { w: { t: 'В работе', cls: 'chip s-blu', ic: 'ic ic-st-work' }, d: { t: 'Диагностика', cls: 'chip s-vio', ic: 'ic ic-st-diag' }, n: { t: 'Новый', cls: 'chip s-neu', ic: 'ic ic-st-new' } };
+    const due = [['1043','Морозова Елена','Stels Navigator 500','w','−2 дн.','over'],['1049','Волков Игорь Петрович','Cube Aim Pro 29','d','−1 дн.','over'],['1054','Белова Мария','Format 1413','n','сегодня','today'],['1045','Соколов Михаил','Trek Marlin 5','w','сегодня','today']]
+      .map(d => ({ n: d[0], c: d[1], b: d[2], st: S[d[3]], due: d[4], dueCls: 'pill-due ' + d[5], cls: d[5] === 'over' ? 'over' : '' }));
+    const seg = (d, w, p) => [{ f: d, c: 'var(--s-vio-fg)', t: 'Диагностика: ' + d }, { f: w, c: 'var(--s-blu-fg)', t: 'В работе: ' + w }, { f: p, c: 'var(--s-amb-fg)', t: 'Ждёт запчасти: ' + p }].filter(s => s.f > 0).concat([{ f: 6 - d - w - p, c: 'var(--surface-3)', t: 'Свободно' }]);
+    const masters = [{ n: 'Пётр Лебедев', i: 'ПЛ', av: 'av a1', c: 5, h: '≈ 9 ч работ', seg: seg(2, 2, 1) }, { n: 'Сергей Макаров', i: 'СМ', av: 'av a2', c: 4, h: '≈ 6 ч работ', seg: seg(1, 2, 1) }];
+    const low = [['Подшипник 6000-2RS 10×26×8','нет',0,'zero danger-text'],['Педали VP-536','в резерве',0,'zero danger-text'],['Кассета Shimano CS-HG200','мало',1,'low warn-text'],['Каретка Shimano BB-UN300','мало',2,'low warn-text']]
+      .map(l => ({ n: l[0], t: l[1], a: l[2], cls: 'r ' + l[3] }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { due, masters, low, yes: true, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

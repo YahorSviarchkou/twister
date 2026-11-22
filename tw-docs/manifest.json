@@ -1,0 +1,396 @@
+{
+  "title": "Twister docs",
+  "home": "readme",
+  "sections": [
+    {
+      "id": "start",
+      "title": "Start here"
+    },
+    {
+      "id": "notes",
+      "title": "Notes"
+    },
+    {
+      "id": "adr",
+      "title": "Decisions (ADR)"
+    },
+    {
+      "id": "diagrams",
+      "title": "Diagrams"
+    },
+    {
+      "id": "artifacts",
+      "title": "Artifacts"
+    }
+  ],
+  "docs": [
+    {
+      "id": "readme",
+      "title": "About these docs",
+      "type": "md",
+      "section": "start",
+      "path": "README.md",
+      "date": "2026-11-21",
+      "tags": [
+        "howto"
+      ]
+    },
+    {
+      "id": "note-codebase-analysis",
+      "title": "Codebase analysis",
+      "type": "md",
+      "section": "notes",
+      "path": "notes/2026-11-15-codebase-analysis.md",
+      "date": "2026-11-15",
+      "tags": [
+        "analysis",
+        "modules",
+        "bugs"
+      ]
+    },
+    {
+      "id": "note-product-rethink",
+      "title": "Product rethink and phases",
+      "type": "md",
+      "section": "notes",
+      "path": "notes/2026-11-15-product-rethink.md",
+      "date": "2026-11-15",
+      "status": "Proposal",
+      "tags": [
+        "product",
+        "roadmap"
+      ]
+    },
+    {
+      "id": "note-extension-architecture",
+      "title": "Extension architecture",
+      "type": "md",
+      "section": "notes",
+      "path": "notes/2026-11-15-extension-architecture.md",
+      "date": "2026-11-15",
+      "status": "Proposal",
+      "tags": [
+        "architecture",
+        "plugins",
+        "wifi"
+      ]
+    },
+    {
+      "id": "note-ui-design-v1",
+      "title": "UI design v1",
+      "type": "md",
+      "section": "notes",
+      "path": "notes/2026-11-15-ui-design-v1.md",
+      "date": "2026-11-15",
+      "tags": [
+        "ui",
+        "design"
+      ]
+    },
+    {
+      "id": "adr-index",
+      "title": "ADR index",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/README.md",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "adr-0001",
+      "title": "0001 Record architecture decisions",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0001-record-architecture-decisions.md",
+      "date": "2026-11-21",
+      "status": "Accepted"
+    },
+    {
+      "id": "adr-0002",
+      "title": "0002 Documentation as code in tw-docs",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0002-docs-as-code-in-tw-docs.md",
+      "date": "2026-11-21",
+      "status": "Accepted"
+    },
+    {
+      "id": "adr-0003",
+      "title": "0003 English as the project language",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0003-english-as-project-language.md",
+      "date": "2026-11-21",
+      "status": "Accepted"
+    },
+    {
+      "id": "adr-0004",
+      "title": "0004 Build-time plugin composition",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0004-build-time-plugin-composition.md",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "tags": [
+        "plugins"
+      ]
+    },
+    {
+      "id": "adr-0005",
+      "title": "0005 Merge task into order",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0005-merge-task-into-order.md",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "tags": [
+        "domain",
+        "workflow"
+      ]
+    },
+    {
+      "id": "adr-0006",
+      "title": "0006 Desktop hosts a LAN server",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0006-desktop-hosts-lan-server.md",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "tags": [
+        "wifi",
+        "tablet"
+      ]
+    },
+    {
+      "id": "adr-0007",
+      "title": "0007 Git workflow and commit conventions",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0007-git-workflow-and-commit-conventions.md",
+      "date": "2026-11-21",
+      "status": "Superseded",
+      "tags": [
+        "git"
+      ]
+    },
+    {
+      "id": "adr-0008",
+      "title": "0008 GitHub Issues as the task tracker",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0008-github-issues-as-tracker.md",
+      "date": "2026-11-21",
+      "status": "Accepted",
+      "tags": [
+        "git",
+        "issues"
+      ]
+    },
+    {
+      "id": "adr-template",
+      "title": "ADR template",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0000-template.md"
+    },
+    {
+      "id": "dia-modules-current",
+      "title": "Modules: current",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/modules-current.mmd",
+      "date": "2026-11-15",
+      "description": "Gradle module graph on branch exp",
+      "tags": [
+        "modules"
+      ]
+    },
+    {
+      "id": "dia-modules-target",
+      "title": "Modules: target",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/modules-target.mmd",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "description": "Layers from ADR 0004",
+      "tags": [
+        "modules",
+        "plugins"
+      ]
+    },
+    {
+      "id": "dia-c4-1",
+      "title": "C4 · 1 System context",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/c4-1-context.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "c4"
+      ]
+    },
+    {
+      "id": "dia-c4-2",
+      "title": "C4 · 2 Containers",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/c4-2-containers.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "c4"
+      ]
+    },
+    {
+      "id": "dia-c4-3",
+      "title": "C4 · 3 Desktop components",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/c4-3-desktop-components.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "c4"
+      ]
+    },
+    {
+      "id": "dia-state-order",
+      "title": "State: order",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/state-order.mmd",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "id": "dia-state-work-item",
+      "title": "State: work item",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/state-work-item.mmd",
+      "date": "2026-11-21",
+      "status": "Proposed",
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "id": "dia-seq-1",
+      "title": "Sequence · 1 Bike intake",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/seq-1-bike-intake.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "sequence"
+      ]
+    },
+    {
+      "id": "dia-seq-2",
+      "title": "Sequence · 2 Tablet pairing",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/seq-2-tablet-pairing.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "sequence",
+        "wifi"
+      ]
+    },
+    {
+      "id": "dia-seq-3",
+      "title": "Sequence · 3 Finish a job from the tablet",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/seq-3-finish-job-from-tablet.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "sequence"
+      ]
+    },
+    {
+      "id": "dia-seq-4",
+      "title": "Sequence · 4 Estimate approval",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/seq-4-estimate-approval.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "sequence"
+      ]
+    },
+    {
+      "id": "dia-seq-5",
+      "title": "Sequence · 5 Handover and payment",
+      "type": "mermaid",
+      "section": "diagrams",
+      "path": "diagrams/seq-5-handover-and-payment.mmd",
+      "date": "2026-11-15",
+      "tags": [
+        "sequence",
+        "fiscal"
+      ]
+    },
+    {
+      "id": "art-project-map",
+      "title": "Project map",
+      "type": "html",
+      "section": "artifacts",
+      "path": "artifacts/2026-11-15-project-map/index.html",
+      "date": "2026-11-15",
+      "lang": "ru",
+      "source": "https://claude.ai/artifact/QsgHxYMRFqBpwmmGGvL2P6",
+      "description": "Interactive analysis of the codebase",
+      "tags": [
+        "analysis"
+      ]
+    },
+    {
+      "id": "art-rethink-board",
+      "title": "Rethink whiteboard",
+      "type": "board",
+      "section": "artifacts",
+      "path": "artifacts/2026-11-15-rethink-board/board.json",
+      "date": "2026-11-15",
+      "lang": "ru",
+      "source": "https://claude.ai/artifact/19HvSDfC3njcGjTJ2E7ksj",
+      "description": "Rethink, phases, extension architecture, C4 and sequences",
+      "tags": [
+        "product",
+        "architecture"
+      ]
+    },
+    {
+      "id": "art-ui-design-v1",
+      "title": "UI design v1 (sources)",
+      "type": "md",
+      "section": "artifacts",
+      "path": "artifacts/2026-11-15-ui-design-v1/README.md",
+      "date": "2026-11-15",
+      "lang": "ru",
+      "source": "https://claude.ai/artifact/AJTesZt4JMRCbm2r5AYeK7",
+      "tags": [
+        "ui",
+        "design"
+      ]
+    },
+    {
+      "id": "art-mvp-architecture",
+      "title": "MVP architecture (reference)",
+      "type": "html",
+      "section": "artifacts",
+      "path": "artifacts/2026-11-21-mvp-architecture/index.html",
+      "date": "2026-11-21",
+      "lang": "ru",
+      "status": "Proposal",
+      "source": "https://claude.ai/artifact/HY9dB9bSekPYmw9aELQB1J",
+      "description": "Target modules, technologies, JavaFX starter review, code per layer, patterns, roles",
+      "tags": [
+        "architecture",
+        "mvp",
+        "javafx"
+      ]
+    }
+  ]
+}

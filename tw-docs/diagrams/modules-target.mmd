@@ -1,0 +1,32 @@
+%% Target module layout proposed in ADR 0004. Everything depends only on layers below.
+flowchart TB
+  subgraph assemblies[Assemblies]
+    a1["app-desktop-standalone<br/>kernel + store-jpa SQLite + shell-javafx + rest"]
+    a2["app-server<br/>kernel + store-jpa Postgres + rest + shell-web"]
+    a3["app-desktop-client<br/>shell-javafx + store-remote"]
+  end
+  subgraph shells[Shells and inputs]
+    s1[tw-shell-javafx]
+    s2[tw-shell-web]
+    s3[tw-rest]
+  end
+  subgraph stores[Storage adapters]
+    d1["tw-store-jpa<br/>SQLite or Postgres"]
+    d2["tw-store-remote<br/>same ports over REST"]
+  end
+  subgraph plugins[Plugins]
+    p1[telegram]
+    p2[print]
+    p3[excel]
+    p4[fiscal]
+  end
+  kernel["tw-kernel<br/>use cases, state machines, extension registry, event bus"]
+  api["tw-api<br/>domain, ports, events, extension points · plain Java"]
+
+  assemblies --> shells
+  assemblies --> stores
+  assemblies --> plugins
+  shells --> kernel
+  kernel --> api
+  stores --> api
+  plugins --> api

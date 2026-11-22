@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — предпросмотр печати</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="tw" style="width: 1920px; height: 1080px; position: relative; overflow: hidden">
+  <dc-import name="Invoice" slots="{{ false }}" hint-size="1920px,1080px"></dc-import>
+  <div class="scrim">
+    <div class="dialog" role="dialog" aria-label="Предпросмотр печати" style="width: 1560px; height: 960px">
+      <div class="dlg-h" style="border-bottom: 1px solid var(--border); padding-bottom: 14px">
+        <i class="ic ic-print s20 sub"></i><span class="t-h1">Печать: счёт <span class="num">СЧ-2026-0412</span></span>
+        <div class="grow"></div>
+        <button class="btn btn-ghost btn-icon" aria-label="Закрыть" title="Закрыть · Esc"><i class="ic ic-x"></i></button>
+      </div>
+      <div class="row start" style="flex: 1 1 auto; min-height: 0">
+        <div class="col g20" style="width: 340px; flex: none; padding: 20px; gap: 20px; border-right: 1px solid var(--border); height: 100%">
+          <div class="col g8"><span class="flabel">Документ</span>
+            <label class="check"><input type="radio" name="doc" checked>Счёт</label>
+            <label class="check"><input type="radio" name="doc">Квитанция об оплате</label>
+            <label class="check"><input type="radio" name="doc">Квитанция приёма</label>
+            <label class="check"><input type="radio" name="doc">Акт выполненных работ</label>
+          </div>
+          <div class="hr"></div>
+          <div class="col g12"><span class="flabel">Форматы и принтеры</span>
+            <div class="panel col g8" style="padding: 12px">
+              <label class="check strong"><input type="checkbox" checked>A4 — для клиента</label>
+              <div class="input" style="height: 30px"><i class="ic ic-print"></i><span class="grow t-sm">HP LaserJet M111w</span><i class="ic ic-chev-d s14"></i></div>
+              <div class="row g8"><span class="t-sm muted">Копий</span><input class="input num" value="1" style="width: 56px; height: 28px" aria-label="Копий A4"></div>
+            </div>
+            <div class="panel col g8" style="padding: 12px">
+              <label class="check strong"><input type="checkbox" checked>Лента 80 мм — в кассу</label>
+              <div class="input" style="height: 30px"><i class="ic ic-print"></i><span class="grow t-sm">Xprinter XP-80C</span><i class="ic ic-chev-d s14"></i></div>
+              <span class="hint">Ширина печати 72 мм, 48 символов в строке</span>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <div class="col g8"><span class="flabel">Показать в документе</span>
+            <label class="check t-sm"><input type="checkbox" checked>Заметки мастера по диагностике</label>
+            <label class="check t-sm"><input type="checkbox" checked>Остаток к оплате</label>
+            <label class="check t-sm"><input type="checkbox">Логотип мастерской</label>
+          </div>
+        </div>
+        <div class="row start g32" style="flex: 1 1 auto; height: 100%; background: var(--surface-3); padding: 24px 32px; justify-content: center; overflow: hidden">
+          <div class="col g8" style="align-items: center">
+            <span class="t-label">A4 · 210 × 297 мм · страница 1 из 1</span>
+            <div class="paper" style="width: 560px; height: 792px; padding: 36px 40px; font-size: 10px; line-height: 14px; display: flex; flex-direction: column; gap: 12px">
+              <div style="display: flex; justify-content: space-between">
+                <div><div style="font-size: 14px; font-weight: 700">Велосервис «Спица»</div><div style="color: #555">ИП Котов А. С. · ИНН [ИНН]<br>г. Москва, ул. Лесная, 14 · +7 495 120-44-80</div></div>
+                <div style="text-align: right; color: #555">Заказ № 1047<br>Мастер: Лебедев П.</div>
+              </div>
+              <div style="border-top: 2px solid #111; padding-top: 10px"><div style="font-size: 16px; font-weight: 700">Счёт № <span class="num">СЧ-2026-0412</span> от <span class="num">17.11.2026</span></div></div>
+              <div style="display: grid; grid-template-columns: 90px 1fr; row-gap: 2px"><span style="color: #555">Заказчик</span><span>Смирнов Андрей Викторович, +7 916 204-55-17</span><span style="color: #555">Велосипед</span><span>Merida Big.Nine 300, 2021, горный</span></div>
+              <table style="width: 100%; border-collapse: collapse; font-size: 10px">
+                <thead><tr style="border-bottom: 1px solid #111"><th style="text-align: left; padding: 4px 0">Наименование</th><th style="text-align: right">Кол-во</th><th style="text-align: right">Цена</th><th style="text-align: right">Сумма</th></tr></thead>
+                <tbody>
+                  <sc-for list="{{a4}}" as="r" hint-placeholder-count="12">
+                    <tr style="border-bottom: 1px solid #ddd"><td style="{{r.st}}">{{r.t}}</td><td class="num" style="text-align: right">{{r.q}}</td><td class="num" style="text-align: right">{{r.p}}</td><td class="num" style="text-align: right">{{r.s}}</td></tr>
+                  </sc-for>
+                </tbody>
+              </table>
+              <div style="margin-left: auto; width: 220px; display: grid; grid-template-columns: 1fr auto; row-gap: 3px">
+                <span>Итого</span><span class="num" style="text-align: right; font-weight: 600">8 490 ₽</span>
+                <span>Оплачено (аванс 12.11)</span><span class="num" style="text-align: right">2 000 ₽</span>
+                <span style="font-weight: 700; font-size: 12px; border-top: 1px solid #111; padding-top: 4px">К оплате</span><span class="num" style="text-align: right; font-weight: 700; font-size: 12px; border-top: 1px solid #111; padding-top: 4px">6 490 ₽</span>
+              </div>
+              <div style="color: #555">Сумма прописью: шесть тысяч четыреста девяносто рублей 00 копеек.<br>Заметка мастера: люфт задней втулки — заменены подшипники; каретка с износом, заменена.</div>
+              <div style="flex: 1"></div>
+              <div style="display: flex; justify-content: space-between; color: #555"><span>Исполнитель ____________ / Котов А. С.</span><span>Заказчик ____________ / Смирнов А. В.</span></div>
+            </div>
+          </div>
+          <div class="col g8" style="align-items: center">
+            <span class="t-label">Лента 80 мм · масштаб 1:1</span>
+            <div class="paper" style="width: 302px; padding: 14px 15px 24px; font-size: 11px; line-height: 15px">
+              <div style="text-align: center; font-weight: 700; font-size: 13px">ВЕЛОСЕРВИС «СПИЦА»</div>
+              <div style="text-align: center; color: #444">ул. Лесная, 14 · +7 495 120-44-80</div>
+              <div style="border-top: 1px dashed #888; margin: 8px 0"></div>
+              <div style="font-weight: 700">СЧЁТ <span class="num">СЧ-2026-0412</span></div>
+              <div class="num">17.11.2026 · заказ 1047</div>
+              <div>Смирнов А. В. · Merida Big.Nine 300</div>
+              <div style="border-top: 1px dashed #888; margin: 8px 0"></div>
+              <sc-for list="{{tape}}" as="r" hint-placeholder-count="10">
+                <div style="display: flex; gap: 6px"><span style="flex: 1">{{r.t}}</span><span class="num">{{r.s}}</span></div>
+                <sc-if value="{{r.q}}" hint-placeholder-val="{{ false }}"><div class="num" style="color: #555; padding-left: 8px">{{r.q}}</div></sc-if>
+              </sc-for>
+              <div style="border-top: 1px dashed #888; margin: 8px 0"></div>
+              <div style="display: flex"><span style="flex: 1">ИТОГО</span><span class="num">8 490 ₽</span></div>
+              <div style="display: flex"><span style="flex: 1">Оплачено</span><span class="num">2 000 ₽</span></div>
+              <div style="display: flex; font-weight: 700; font-size: 14px; margin-top: 4px"><span style="flex: 1">К ОПЛАТЕ</span><span class="num">6 490 ₽</span></div>
+              <div style="border-top: 1px dashed #888; margin: 8px 0"></div>
+              <div style="text-align: center; color: #444">Спасибо! Гарантия на работы 30 дней.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dlg-f">
+        <span class="t-sm muted" style="margin-right: auto">Шаблоны документов настраиваются в «Настройки → Печать»</span>
+        <button class="btn btn-ghost">Отмена<span class="kbd">Esc</span></button>
+        <button class="btn"><i class="ic ic-download"></i>Сохранить PDF</button>
+        <button class="btn btn-primary"><i class="ic ic-print"></i>Печать на 2 принтера<span class="kbd">Ctrl+P</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const f = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const rows = [['Диагностика велосипеда', 1, 800], ['Замена цепи', 1, 450], ['Замена троса переключателя', 1, 250], ['Настройка переключателей', 1, 500], ['Переборка задней втулки', 1, 1200], ['Замена каретки', 1, 900],
+      ['Цепь Shimano CN-HG54', 1, 2190], ['Трос Jagwire Basics 2300 мм', 1, 190], ['Подшипник 6000-2RS', 2, 180], ['Каретка Shimano BB-UN300', 1, 1650]];
+    const head = t => ({ t, q: '', p: '', s: '', st: 'padding: 6px 0 2px; font-weight: 700' });
+    const r = x => ({ t: x[0], q: String(x[1]), p: f(x[2]), s: f(x[1] * x[2]), st: 'padding: 3px 0 3px 8px' });
+    const a4 = [head('Диагностика'), r(rows[0]), head('Работы'), ...rows.slice(1, 6).map(r), head('Запчасти'), ...rows.slice(6).map(r)];
+    const tape = rows.map(x => ({ t: x[0], s: f(x[1] * x[2]), q: x[1] > 1 ? x[1] + ' × ' + f(x[2]) : '' }));
+    return { a4, tape };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+%% C4 level 2: containers. Dashed: later growth option.
+flowchart LR
+  desk(["Front desk"])
+  mech(["Mechanic"])
+  subgraph twister[Twister system]
+    mobile["Mobile web client<br/>HTML + htmx, tablet browser<br/>mechanic's jobs, photos"]
+    app["Desktop app<br/>Java 21, JavaFX, Spring Boot<br/>desk shell, kernel, embedded HTTP server, plugins<br/>one process on the PC"]
+    db[("Database<br/>SQLite + Flyway<br/>file on the PC, backup")]
+    cloud["Cloud server · later<br/>Spring Boot, Postgres<br/>customer status, remote access"]
+  end
+  tg["Telegram Bot API"]
+  fiscal["Cash register and fiscal data operator"]
+  printers["Printers<br/>80 mm roll, A4, labels"]
+
+  mech -- "at the stand" --> mobile
+  desk -- "at the desk" --> app
+  mobile -- "REST + WebSocket over Wi-Fi" --> app
+  app -- "JPA" --> db
+  app -- "HTTPS" --> tg
+  app -- "receipt" --> fiscal
+  app -- "print" --> printers
+  app -. "later: thin client via store-remote" .-> cloud
+
+  classDef ours fill:#d4e4fb,stroke:#3a6fc4
+  classDef later fill:transparent,stroke:#3a6fc4,stroke-dasharray: 5 4
+  classDef external fill:#f4f5f7,stroke:#9aa3ad
+  class mobile,app,db ours
+  class cloud later
+  class tg,fiscal,printers external

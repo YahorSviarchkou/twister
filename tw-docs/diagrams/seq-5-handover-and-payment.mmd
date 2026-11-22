@@ -1,0 +1,19 @@
+%% Sequence 5: handover and payment with a fiscal receipt.
+sequenceDiagram
+  actor Desk as Front desk
+  participant Shell as JavaFX shell
+  participant Kernel
+  participant Store as Storage
+  participant Fiscal as Fiscal plugin
+  participant Register as Cash register
+
+  Desk->>Shell: hand over, card payment
+  Shell->>Kernel: hand over order
+  Kernel->>Fiscal: TransitionGuard: may go to Handed over?
+  Fiscal->>Register: print receipt
+  Register-->>Fiscal: fiscal sign
+  Fiscal-->>Kernel: allowed
+  Kernel->>Store: payment, order -> Handed over
+  Kernel-->>Shell: done
+  Shell-->>Desk: receipt, warranty
+  Note over Kernel,Register: If the register does not answer, the guard vetoes the transition:<br/>the order stays Ready and the desk sees a clear error.

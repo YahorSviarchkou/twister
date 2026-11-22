@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twister docs</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="Documents">
+    <div class="brand">
+      <a href="#" class="brand-name">Twister docs</a>
+      <button type="button" id="theme-toggle" class="theme-btn" title="Toggle light / dark theme">Theme</button>
+    </div>
+    <label class="search">
+      <span class="visually-hidden">Search documents</span>
+      <input id="search" type="search" placeholder="Search title, tag, text" autocomplete="off">
+    </label>
+    <nav id="doc-list"></nav>
+    <footer class="sidebar-foot">Sources live in <code>tw-docs/</code>. Edit files, not this page.</footer>
+  </aside>
+
+  <main class="main">
+    <header class="doc-head" id="doc-head" hidden>
+      <div class="doc-head-text">
+        <h1 id="doc-title"></h1>
+        <div class="doc-meta" id="doc-meta"></div>
+      </div>
+      <div class="doc-actions" id="doc-actions"></div>
+    </header>
+    <section id="doc-body" class="doc-body" aria-live="polite"></section>
+  </main>
+</div>
+
+<script src="vendor/marked-15.0.12.umd.js"></script>
+<script src="vendor/mermaid-11.16.1.min.js"></script>
+<script src="app/board.js"></script>
+<script src="app/app.js"></script>
+</body>
+</html>

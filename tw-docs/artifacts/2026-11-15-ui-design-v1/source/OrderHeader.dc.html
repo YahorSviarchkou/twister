@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Шапка карточки заказа</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="tw-c" style="font-family: 'IBM Plex Sans', sans-serif; color: var(--text); background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 24px 0; display: flex; flex-direction: column; gap: 12px">
+  <div class="row between t-sm">
+    <div class="row g6 muted"><a class="link" href="Main.dc.html" style="font-weight: 400">Заказы</a><i class="ic ic-chev-r s12"></i><span class="num">№ 1047</span></div>
+    <span class="muted">Создан <span class="num">12.11.2026 10:24</span> · приёмщик А. Котов</span>
+  </div>
+  <div class="row g16">
+    <h1 class="t-display" style="margin: 0">Заказ <span class="num" style="font-weight: 600">№ 1047</span></h1>
+    <div class="row g6"><span class="lvl">заказ</span><span class="{{o.cls}}"><i class="{{o.ic}}"></i>{{o.t}}</span></div>
+    <div class="row g6"><span class="lvl">задача</span><span class="{{tk.cls}}"><i class="{{tk.ic}}"></i>{{tk.t}}</span></div>
+    <div class="grow"></div>
+    <sc-if value="{{isWorks}}" hint-placeholder-val="{{ true }}">
+      <span class="t-sm muted row g6"><i class="ic ic-info s14"></i>Задачу можно закрыть, когда все пункты готовы: осталось 3</span>
+      <button class="btn is-disabled" disabled aria-disabled="true" title="Недоступно: 3 пункта не готовы · Ctrl+]"><i class="ic ic-st-ready"></i>Задача готова<span class="kbd">Ctrl+]</span></button>
+      <button class="btn"><i class="ic ic-print"></i>Печать<i class="ic ic-chev-d s14"></i></button>
+    </sc-if>
+    <sc-if value="{{isDiag}}" hint-placeholder-val="{{ false }}">
+      <button class="btn btn-danger-o"><i class="ic ic-st-cancel"></i>Отклонить заказ</button>
+      <button class="btn btn-primary" title="Завершить диагностику · Ctrl+]"><i class="ic ic-check"></i>Завершить диагностику<span class="kbd">Ctrl+]</span></button>
+    </sc-if>
+    <sc-if value="{{isPay}}" hint-placeholder-val="{{ false }}">
+      <button class="btn" title="Печать счёта · Ctrl+P"><i class="ic ic-print"></i>Печать счёта<span class="kbd">Ctrl+P</span></button>
+      <button class="btn btn-primary" title="Принять оплату · Ctrl+Enter"><i class="ic ic-cash"></i>Принять оплату<span class="kbd">Ctrl+Enter</span></button>
+    </sc-if>
+    <button class="btn btn-icon" aria-label="Ещё действия" title="Ещё действия"><i class="ic ic-more"></i></button>
+  </div>
+  <div style="display: grid; grid-template-columns: 1.3fr 1.4fr .9fr .9fr .9fr; gap: 0; border: 1px solid var(--border); border-radius: 4px; background: var(--surface-2)">
+    <div class="col" style="padding: 8px 14px; border-right: 1px solid var(--border)"><span class="t-label">Клиент</span><a class="link" href="Clients.dc.html" style="color: var(--text)">Смирнов Андрей Викторович</a><span class="t-sm sub num">+7 916 204-55-17</span></div>
+    <div class="col" style="padding: 8px 14px; border-right: 1px solid var(--border)"><span class="t-label">Велосипед</span><span class="strong">Merida Big.Nine 300 · 2021</span><span class="t-sm sub">Горный (МТБ) · Германия · рама L, чёрно-зелёный</span></div>
+    <div class="col" style="padding: 8px 14px; border-right: 1px solid var(--border)"><span class="t-label">Плановый срок</span><span class="num strong">18.11.2026</span><span class="t-sm sub">{{dueNote}}</span></div>
+    <div class="col" style="padding: 8px 14px; border-right: 1px solid var(--border)"><span class="t-label">Мастер</span><span class="row g6"><span class="av a1">ПЛ</span><span class="strong">Пётр Лебедев</span></span></div>
+    <div class="col" style="padding: 8px 14px"><span class="t-label">Сумма заказа</span><span class="money strong" style="font-size: 16px">{{sum}}</span><span class="t-sm sub">аванс <span class="money" style="font-weight: 400">2 000 ₽</span></span></div>
+  </div>
+  <ol class="stepper g" aria-label="Этапы заказа" style="margin: 2px 0 0; padding: 0; list-style: none">
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+      <li class="{{s.cls}}" aria-current="{{s.cur}}"><div class="bar"></div><span class="sl"><i class="{{s.ic}}" style="width: 14px; height: 14px"></i>{{s.t}}</span><span class="sd">{{s.d}}</span></li>
+    </sc-for>
+  </ol>
+  <nav class="tabs" aria-label="Разделы заказа" style="margin: 0 -24px; padding: 0 16px; border-bottom: 0">
+    <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+      <a href="{{t.href}}" class="{{t.cls}}" data-slot="{{t.slot}}" title="{{t.tip}}"><i class="{{t.ic}}"></i>{{t.t}}<sc-if value="{{t.n}}" hint-placeholder-val="{{ false }}"><span class="badge">{{t.n}}</span></sc-if></a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"v":{"editor":"enum","options":["works","diag","invoice","history"],"default":"works"},"$preview":{"width":1688,"height":236}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.v ?? 'works';
+    const C = {
+      acc: { t: 'Принят', cls: 'chip lg s-blu', ic: 'ic ic-st-accept' },
+      pay: { t: 'Ждёт оплаты', cls: 'chip lg s-amb', ic: 'ic ic-st-pay' },
+      diag: { t: 'Диагностика', cls: 'chip lg s-vio', ic: 'ic ic-st-diag' },
+      work: { t: 'В работе', cls: 'chip lg s-blu', ic: 'ic ic-st-work' },
+      ready: { t: 'Готова', cls: 'chip lg s-grn', ic: 'ic ic-st-ready' },
+    };
+    const late = v === 'invoice' || v === 'history';
+    const o = late ? C.pay : C.acc;
+    const tk = v === 'diag' ? C.diag : late ? C.ready : C.work;
+    const names = [['Новый','st-new','12.11 10:24'],['Принят','st-accept','12.11 10:31'],['Диагностика','st-diag','12.11 15:10'],['В работе','st-work', late ? '17.11 16:45' : 'с 12.11 15:10'],['Ждёт оплаты','st-pay', late ? 'с 17.11 16:50' : ''],['Закрыт','st-closed','']];
+    const curIdx = v === 'diag' ? 2 : late ? 4 : 3;
+    const steps = names.map((n, i) => ({ t: n[0], ic: 'ic ic-' + (i < curIdx ? 'check' : n[1]), d: i === 2 && v === 'diag' ? 'с 12.11 14:02' : (i <= curIdx ? n[2] : '—'),
+      cls: 'step' + (i < curIdx ? ' done' : i === curIdx ? ' cur' : ''), cur: i === curIdx ? 'step' : 'false' }));
+    const tab = (id, t, ic, href, n, slot) => ({ t, ic: 'ic ic-' + ic, href, n: n || '', slot: slot || '', cls: 'tab' + (id === (v === 'invoice' ? 'invoice' : v) ? ' on' : '') + (slot ? ' slot' : ''), tip: '' });
+    const tabs = [
+      tab('diag', 'Диагностика', 'st-diag', 'OrderDiagnostics.dc.html'),
+      tab('works', 'Работы', 'wrench', 'OrderWorks.dc.html', v === 'diag' ? '' : '6'),
+      tab('invoice', 'Счёт', 'receipt', 'Invoice.dc.html'),
+      tab('history', 'История', 'history', 'OrderHistory.dc.html', v === 'diag' ? '4' : late ? '21' : '14'),
+      tab('photo', 'Фото', 'camera', 'OrderWorks.dc.html', '3', 'order.tab'),
+    ];
+    tabs.forEach((t, i) => t.tip = 'Ctrl+' + (i + 1));
+    return { o, tk, steps, tabs, isWorks: v === 'works', isDiag: v === 'diag', isPay: late,
+      sum: v === 'diag' ? '≈ 10 240 ₽' : '8 490 ₽', dueNote: late ? 'готов досрочно' : v === 'diag' ? 'через 6 дней' : 'через 3 дня' };
+  }
+}
+</script>
+</body>
+</html>

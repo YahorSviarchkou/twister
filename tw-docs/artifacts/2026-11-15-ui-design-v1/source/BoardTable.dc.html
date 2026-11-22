@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — заказы, таблица</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content">
+      <div class="pagehead">
+        <h1 class="t-display" style="margin: 0">Заказы</h1>
+        <span class="t-sm muted">13 активных · <span class="danger-text strong">2 просрочено</span></span>
+        <div class="grow"></div>
+        <div class="seg" role="group" aria-label="Вид доски">
+          <a href="Main.dc.html" title="Канбан · Ctrl+1"><i class="ic ic-board"></i>Канбан</a>
+          <button class="on" title="Таблица · Ctrl+2"><i class="ic ic-list"></i>Таблица</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-sm"><i class="ic ic-user"></i><span class="muted">Мастер:</span>Все<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><i class="ic ic-calendar"></i><span class="muted">Срок:</span>Любой<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm" style="border-color: var(--accent); background: var(--accent-soft); color: var(--accent-text)"><i class="ic ic-filter"></i><span>Статус заказа: Новый, Принят, Ждёт оплаты</span><i class="ic ic-x s14"></i></button>
+        <button class="link t-sm" style="margin-left: 4px">Сбросить фильтры</button>
+        <div class="grow"></div>
+        <span class="t-sm muted">Выделено: 1</span>
+        <button class="btn btn-sm slot" data-slot="toolbar.action" title="Экспорт в Excel · Ctrl+E"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+        <button class="btn btn-sm btn-icon" aria-label="Настроить колонки" title="Колонки"><i class="ic ic-gear"></i></button>
+      </div>
+      <div style="padding: 0 24px 16px; flex: 1 1 auto; min-height: 0; display: flex">
+        <div class="tbl-wrap" style="position: relative; overflow: visible; flex: 1; display: flex; flex-direction: column">
+          <table class="tbl">
+            <thead><tr>
+              <th style="width: 36px"><input type="checkbox" aria-label="Выбрать все" style="accent-color: var(--accent)"></th>
+              <th style="width: 74px">№ <i class="ic ic-sort"></i></th>
+              <th style="width: 150px">Заказ</th>
+              <th style="width: 190px">Задача</th>
+              <th>Клиент <i class="ic ic-sort"></i></th>
+              <th style="width: 160px">Телефон</th>
+              <th>Велосипед</th>
+              <th style="width: 150px">Мастер</th>
+              <th style="width: 84px">Принят</th>
+              <th style="width: 140px" class="sorted">Срок <i class="ic ic-arr-up"></i></th>
+              <th class="r" style="width: 110px">Сумма <i class="ic ic-sort"></i></th>
+              <th style="width: 44px"></th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="r" hint-placeholder-count="13">
+                <tr class="{{r.cls}}">
+                  <td><input type="checkbox" checked="{{r.sel}}" aria-label="Выбрать" style="accent-color: var(--accent)"></td>
+                  <td class="num strong">{{r.no}}</td>
+                  <td><span class="{{r.o.cls}}"><i class="{{r.o.ic}}"></i>{{r.o.t}}</span></td>
+                  <td><div class="row g6"><span class="{{r.k.cls}}"><i class="{{r.k.ic}}"></i>{{r.k.t}}</span><sc-if value="{{r.wait}}" hint-placeholder-val="{{ false }}"><span class="chip s-amb" title="Ждёт запчасти" style="padding: 0 4px"><i class="ic ic-st-wait"></i></span></sc-if></div></td>
+                  <td class="ell" style="max-width: 240px">{{r.client}}</td>
+                  <td class="num sub">{{r.phone}}</td>
+                  <td class="ell" style="max-width: 220px">{{r.bike}}</td>
+                  <td><span class="row g6"><span class="{{r.avCls}}">{{r.av}}</span><span class="t-sm">{{r.master}}</span></span></td>
+                  <td class="num sub">{{r.acc}}</td>
+                  <td><span class="{{r.dueCls}}"><i class="ic ic-clock s12"></i>{{r.due}}</span></td>
+                  <td class="r money">{{r.sum}}</td>
+                  <td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Действия" title="Действия · Shift+F10"><i class="ic ic-more"></i></button></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div class="grow"></div>
+          <div class="pager"><span>1–13 из <span class="num">13</span> · сумма по фильтру <span class="money" style="color: var(--text)">33 760 ₽</span></span><div class="grow"></div><span>Строк на странице:</span><div class="input" style="width: 64px; height: 28px"><span class="num">25</span><i class="ic ic-chev-d s12" style="margin-left: auto"></i></div><button class="pg" aria-label="Назад" disabled><i class="ic ic-chev-l s14"></i></button><button class="pg on">1</button><button class="pg" aria-label="Вперёд" disabled><i class="ic ic-chev-r s14"></i></button></div>
+          <div class="pop" role="menu" aria-label="Действия с заказом № 1047" style="position: absolute; left: 700px; top: 412px; width: 340px; z-index: 6">
+            <div class="mhead">Заказ № 1047 · Принят · В работе</div>
+            <div class="mi"><i class="ic ic-external"></i>Открыть<span class="kbd">Enter</span></div>
+            <div class="mi active"><i class="ic ic-user"></i>Назначить мастера<i class="ic ic-chev-r s14" style="margin-left: auto"></i></div>
+            <div class="mi"><i class="ic ic-calendar"></i>Изменить срок…</div>
+            <div class="mi dis" title="Недоступно: задача ещё в работе"><i class="ic ic-st-pay"></i>Выставить счёт<span class="t-sm" style="margin-left: auto">задача не готова</span></div>
+            <div class="mi"><i class="ic ic-print"></i>Квитанция приёма<span class="kbd">Ctrl+P</span></div>
+            <div class="mi"><i class="ic ic-copy"></i>Копировать номер<span class="kbd">Ctrl+C</span></div>
+            <div class="msep"></div>
+            <div class="mi slot" data-slot="context.action"><i class="ic ic-sheet"></i>Экспорт в Excel<span class="kbd">Ctrl+E</span></div>
+            <div class="mi slot" data-slot="context.action"><i class="ic ic-cloud"></i>Отправить статус на сайт</div>
+            <div class="msep"></div>
+            <div class="mi danger"><i class="ic ic-st-cancel"></i>Отклонить заказ…<span class="kbd" style="color: var(--danger)">Del</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const O = { n: ['Новый','neu','st-new'], a: ['Принят','blu','st-accept'], p: ['Ждёт оплаты','amb','st-pay'] };
+    const K = { '-': ['—','neu','st-new'], c: ['Создана','neu','st-new'], d: ['Диагностика','vio','st-diag'], w: ['В работе','blu','st-work'], r: ['Готова','grn','st-ready'], s: ['Готова · без ремонта','grn','st-skip'] };
+    const ch = x => ({ t: x[0], cls: 'chip s-' + x[1], ic: 'ic ic-' + x[2] });
+    const MS = { 'ПЛ': ['П. Лебедев', 'av a1'], 'СМ': ['С. Макаров', 'av a2'], '—': ['не назначен', 'av'] };
+    const raw = [
+      [1043,'a','w','Морозова Елена','+7 925 318-44-02','Stels Navigator 500 · 2020','СМ','09.11','13.11','over',5340,1],
+      [1049,'a','d','Волков Игорь Петрович','+7 903 615-27-90','Cube Aim Pro 29 · 2020','ПЛ','11.11','14.11','over',800],
+      [1054,'n','-','Белова Мария','+7 977 402-11-35','Format 1413 · 2021','—','15.11','сегодня','today',600,0,1],
+      [1045,'a','w','Соколов Михаил','+7 916 870-33-14','Trek Marlin 5 · 2022','ПЛ','12.11','сегодня','today',3900],
+      [1041,'p','r','Егорова Наталья','+7 926 145-09-71','Author Basic · 2016','СМ','10.11','15.11','',1980],
+      [1044,'p','r','Зайцев Роман','+7 905 233-61-18','Specialized Rockhopper · 2021','ПЛ','11.11','15.11','',4300],
+      [1048,'p','s','Ковалёва Ирина','+7 965 712-40-53','Stels Pilot 710 · 2015','ПЛ','13.11','15.11','',800],
+      [1050,'a','d','Никитина Анна','+7 915 064-88-29','Merida Crossway 100 · 2018','СМ','14.11','17.11','',800],
+      [1046,'a','w','Павлов Артём','+7 985 390-17-62','GT Avalanche Sport · 2019','СМ','12.11','17.11','',2450],
+      [1047,'a','w','Смирнов Андрей Викторович','+7 916 204-55-17','Merida Big.Nine 300 · 2021','ПЛ','12.11','18.11','',8490,1,0,1],
+      [1051,'a','c','Фёдоров Кирилл','+7 999 821-34-06','Stark Funriser 26 · 2017','ПЛ','14.11','18.11','',800],
+      [1052,'n','-','Кузнецова Ольга Игоревна','+7 912 345-18-07','Stels Navigator 500 · 2019','СМ','14.11','18.11','',1500,0,1],
+      [1053,'n','-','Орлов Дмитрий Сергеевич','+7 926 557-02-93','Forward Sporting 27.5 2.0 · 2022','—','15.11','19.11','',2000,0,1],
+    ];
+    const rows = raw.map(r => ({ no: r[0], o: ch(O[r[1]]), k: ch(K[r[2]]), client: r[3], phone: r[4], bike: r[5], master: MS[r[6]][0], avCls: MS[r[6]][1], av: r[6] === '—' ? '?' : r[6],
+      acc: r[7], due: r[9] === 'over' ? r[8] + ' · −' + (r[0] === 1043 ? 2 : 1) + ' дн.' : r[8], dueCls: 'pill-due' + (r[9] ? ' ' + r[9] : ''), sum: (r[12] ? '≈ ' : '') + m(r[10]), wait: !!r[11],
+      sel: !!r[13], cls: (r[13] ? 'sel' : '') + (r[9] === 'over' ? ' over' : '') }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { rows, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

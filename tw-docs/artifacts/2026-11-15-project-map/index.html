@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Карта проекта Twister</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: инженерный отчёт. Верх: вердикт и цифры, дальше карта слоями: модули → архитектура → домен → флоу → порты → проблемы → сборка/git → план. */
+:root{
+  --bg:#eef0f3; --surface:#ffffff; --sunken:#f6f7f9; --ink:#15181c; --muted:#5b636e; --line:#d9dde3;
+  --accent:#d9531e; --accent-soft:#fbe7dd;
+  --ok:#23804f; --ok-soft:#dff1e7; --warn:#a86f00; --warn-soft:#f8ecd2; --crit:#c2302a; --crit-soft:#f8dedc; --none:#8a929d; --none-soft:#e8eaee;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111317; --surface:#1a1d22; --sunken:#15171b; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+    --accent:#ff7a3d; --accent-soft:#3a2418;
+    --ok:#4cc085; --ok-soft:#183026; --warn:#e2a93a; --warn-soft:#33290f; --crit:#f0645c; --crit-soft:#3a1c1b; --none:#7d8590; --none-soft:#23272d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111317; --surface:#1a1d22; --sunken:#15171b; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+  --accent:#ff7a3d; --accent-soft:#3a2418;
+  --ok:#4cc085; --ok-soft:#183026; --warn:#e2a93a; --warn-soft:#33290f; --crit:#f0645c; --crit-soft:#3a1c1b; --none:#7d8590; --none-soft:#23272d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--sunken);border:1px solid var(--line);border-radius:4px;padding:0 .3em}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:40px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:26px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.lede{max-width:72ch;color:var(--muted)}
+
+/* nav */
+nav.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+nav.top a{flex:none;text-decoration:none;font-size:13.5px;color:var(--muted);padding:5px 10px;border-radius:6px}
+nav.top a:hover,nav.top a:focus-visible{background:var(--surface);color:var(--ink);outline:none}
+nav.top a.brand{color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:15px;margin-right:6px}
+
+section{padding:44px 0 8px;scroll-margin-top:52px}
+.sec-head{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.sec-head .tag{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
+
+/* hero */
+header.hero{padding:34px 0 6px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:13.5px;margin-top:10px}
+.hero .meta span{font-family:var(--f-mono);font-size:12.5px}
+.verdict{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:16px 18px;max-width:900px}
+.verdict p+p{margin-top:8px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:20px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.tile .num{font-family:var(--f-display);font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .lbl{font-size:13px;color:var(--muted)}
+.tile.crit .num{color:var(--crit)} .tile.warn .num{color:var(--warn)} .tile.ok .num{color:var(--ok)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:1px 8px;border-radius:999px;white-space:nowrap;border:1px solid transparent}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.c-ok{color:var(--ok);background:var(--ok-soft)}
+.c-warn{color:var(--warn);background:var(--warn-soft)}
+.c-crit{color:var(--crit);background:var(--crit-soft)}
+.c-none{color:var(--none);background:var(--none-soft)}
+.c-acc{color:var(--accent);background:var(--accent-soft)}
+
+/* module cards */
+.grid-mod{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.mod{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px 15px;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+.mod::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--stripe,var(--none))}
+.mod.s-ok{--stripe:var(--ok)} .mod.s-warn{--stripe:var(--warn)} .mod.s-crit{--stripe:var(--crit)} .mod.s-none{--stripe:var(--none)}
+.mod .name{font-family:var(--f-mono);font-size:14px;font-weight:500}
+.mod .role{font-size:13px;color:var(--muted)}
+.mod .row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.mod .stats{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.bar{height:6px;background:var(--sunken);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--stripe,var(--accent));border-radius:999px}
+.mod ul{margin:0;padding-left:17px;font-size:13.5px}
+.mod li+li{margin-top:2px}
+.pct{font-family:var(--f-display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:var(--muted)}
+
+/* figures */
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+figure .scroll{overflow-x:auto}
+figure svg{display:block;width:100%;height:auto;min-width:760px;color:var(--ink);font-family:var(--f-body)}
+figcaption{font-size:13px;color:var(--muted);margin-top:10px;max-width:90ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{min-width:0;width:auto;display:inline}
+
+svg .box{fill:var(--surface);stroke:var(--ink);stroke-width:1.3}
+svg .box.empty{fill:var(--sunken);stroke:var(--none);stroke-dasharray:5 4}
+svg .box.legacy{fill:var(--sunken);stroke:var(--muted)}
+svg .box.ghost{fill:var(--crit-soft);stroke:var(--crit);stroke-dasharray:5 4}
+svg .box.hot{stroke:var(--accent);stroke-width:2}
+svg .t-name{font-family:var(--f-mono);font-size:13px;font-weight:500;fill:var(--ink)}
+svg .t-sub{font-size:11px;fill:var(--muted)}
+svg .t-small{font-size:11px;fill:var(--muted)}
+svg .t-crit{font-size:11px;fill:var(--crit)}
+svg .t-acc{font-size:11px;fill:var(--accent)}
+svg .t-lane{font-family:var(--f-display);font-size:15px;font-weight:600;fill:var(--ink)}
+svg .t-ev{font-family:var(--f-mono);font-size:10.5px;fill:var(--muted)}
+svg .t-st{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink)}
+svg .t-field{font-family:var(--f-mono);font-size:10.5px;fill:var(--muted)}
+svg .t-field.bad{fill:var(--crit)}
+svg .e{stroke:var(--ink);stroke-width:1.2;fill:none}
+svg .e.dash{stroke:var(--muted);stroke-dasharray:5 4}
+svg .e.dot{stroke:var(--none);stroke-dasharray:2 4}
+svg .e.miss{stroke:var(--crit);stroke-dasharray:6 4;stroke-width:1.4}
+svg .e.casc{stroke:var(--accent);stroke-width:1.4}
+svg .sep{stroke:var(--line);stroke-width:1;stroke-dasharray:4 4}
+svg .st{fill:var(--surface);stroke:var(--ink);stroke-width:1.2}
+svg .st.good{stroke:var(--ok);stroke-width:2}
+svg .st.end{fill:var(--sunken);stroke:var(--muted)}
+svg .mk{fill:var(--accent)}
+svg .mk-t{font-family:var(--f-mono);font-size:10px;font-weight:500;fill:#fff}
+svg .arrowfill{fill:var(--ink)} svg .arrowfill.m{fill:var(--muted)} svg .arrowfill.r{fill:var(--crit)} svg .arrowfill.a{fill:var(--accent)} svg .arrowfill.n{fill:var(--none)}
+svg .tl-bar{fill:var(--ink)} svg .tl-bar.cur{fill:var(--accent)} svg .tl-pause{fill:var(--none-soft);stroke:var(--none);stroke-dasharray:3 3}
+svg .tl-axis{stroke:var(--line)}
+
+/* tables */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;background:var(--sunken);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.n{font-variant-numeric:tabular-nums}
+td .mono{white-space:nowrap}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.panel h3{margin-bottom:8px}
+.panel ul{margin:0;padding-left:18px;font-size:14px}
+.panel li+li{margin-top:4px}
+.stack{display:flex;flex-direction:column;gap:14px}
+
+/* cascades */
+.casc{display:grid;grid-template-columns:28px 1fr auto;gap:4px 10px;align-items:start;font-size:14px}
+.casc .no{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font:500 11px/20px var(--f-mono);text-align:center;margin-top:2px}
+.casc .what small{display:block;color:var(--muted);font-size:13px}
+
+/* issues */
+.filters{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px;align-items:center}
+.fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fgroup .flbl{font-size:12px;color:var(--muted);margin-right:2px}
+.fbtn{font:500 12.5px var(--f-body);color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 11px;cursor:pointer}
+.fbtn:hover{color:var(--ink);border-color:var(--muted)}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fbtn:focus-visible,.fbtn:focus{outline:2px solid var(--accent);outline-offset:2px}
+.issues{display:flex;flex-direction:column;gap:6px}
+.iss{display:grid;grid-template-columns:4px 1fr;background:var(--surface);border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.iss .sv{background:var(--sv)}
+.iss .bd{padding:9px 13px;display:flex;flex-direction:column;gap:3px}
+.iss .hd{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.iss .ttl{font-weight:600;font-size:14.5px}
+.iss .det{font-size:13.5px;color:var(--muted)}
+.iss .where{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.iss[data-sev="block"]{--sv:var(--crit)} .iss[data-sev="bug"]{--sv:var(--warn)} .iss[data-sev="risk"]{--sv:var(--accent)} .iss[data-sev="debt"]{--sv:var(--none)}
+.count{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;counter-reset:st}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.step .k{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.step ol,.step ul{margin:0;padding-left:18px;font-size:13.5px}
+.step li+li{margin-top:3px}
+.callout{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:8px;padding:14px 16px;font-size:14px}
+.callout b{color:var(--accent)}
+
+footer{padding:40px 0 50px;color:var(--muted);font-size:12.5px}
+
+@media (max-width:640px){h1{font-size:30px} h2{font-size:22px} .tile .num{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Разделы">
+  <div class="wrap">
+    <a class="brand" href="#overview">Twister</a>
+    <a href="#modules">Модули</a>
+    <a href="#architecture">Архитектура</a>
+    <a href="#domain">Домен</a>
+    <a href="#workflow">Статусы и каскады</a>
+    <a href="#flow">Флоу ремонта</a>
+    <a href="#ports">DAO-порты</a>
+    <a href="#legacy">Старое приложение</a>
+    <a href="#issues">Проблемы</a>
+    <a href="#build">Сборка и git</a>
+    <a href="#roadmap">План</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero" id="overview">
+  <h1>Twister: карта проекта</h1>
+  <p class="lede" style="margin-top:8px">Система управления велосипедной мастерской. Изначально монолит JavaFX под Windows, сейчас переезжает на модули с прицелом на плагины и веб-версию.</p>
+  <div class="meta">
+    <span>состояние на 15.11.2026</span>
+    <span>ветка exp</span>
+    <span>последний коммит 28.03.2026</span>
+    <span>последние правки в рабочей копии 12.04.2026</span>
+    <span>Java 21 · Spring Boot 3.2.5 · JavaFX</span>
+  </div>
+
+  <div class="verdict">
+    <p><b>Коротко.</b> Самая зрелая часть проекта — <code>tw-workflow</code>: стейт-машины трёх уровней заказа, сервисы и 138 тестов. Модель в <code>tw-core</code> и JPA-слой в <code>tw-persistence-api</code> в основном готовы. Между ними нет связующего слоя: из 11 DAO-портов не реализован ни один, а единственный <code>CustomerDaoImpl</code> возвращает <code>null</code>.</p>
+    <p>Новое desktop-приложение пока не стартует, плагинной системы нет, CI собирает только старый монолит на JDK 17. Работа стоит с апреля, и около 64 файлов (стартер, мапперы, desktop) существуют только в незакоммиченной рабочей копии.</p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile warn"><span class="num">≈25%</span><span class="lbl">готовность к цели: модульное desktop-приложение с полным флоу ремонта (оценка)</span></div>
+    <div class="tile"><span class="num">9 + 1</span><span class="lbl">модулей в Gradle плюс старый <code>src/</code> в корне; 4 модуля пустые</span></div>
+    <div class="tile crit"><span class="num">0 / 11</span><span class="lbl">DAO-портов workflow реализовано в persistence</span></div>
+    <div class="tile ok"><span class="num">138</span><span class="lbl">тестов в tw-workflow; в persistence 16, из них 2 падают</span></div>
+    <div class="tile crit"><span class="num">64</span><span class="lbl">файла не закоммичены (+874 / −82 без учёта CRLF)</span></div>
+  </div>
+</header>
+
+<!-- MODULES -->
+<section id="modules">
+  <div class="sec-head">
+    <span class="tag">01 · МОДУЛИ</span>
+    <h2>Готовность по модулям</h2>
+    <p class="lede">Проценты отражают оценку того, сколько работы сделано относительно задуманного для модуля. Цвет полосы показывает состояние: зелёный работает, жёлтый частично, красный блокирует, серый пусто.</p>
+  </div>
+  <div class="grid-mod">
+
+    <article class="mod s-ok">
+      <div class="row"><span class="name">tw-core</span><span class="pct">60%</span></div>
+      <div class="bar"><i style="width:60%"></i></div>
+      <span class="role">Доменная модель без Spring</span>
+      <span class="stats">29 файлов · 519 строк · 0 тестов</span>
+      <ul>
+        <li>Customer, Transport, Spare, ServiceType, справочники, RepairOrder → Task → TaskItem, Invoice, истории статусов</li>
+        <li>Нет DiagnosticReport, Payment, количества запчастей в работе, суммы и статуса счёта</li>
+        <li>Анемичная модель: текущий статус = последняя запись истории</li>
+      </ul>
+    </article>
+
+    <article class="mod s-warn">
+      <div class="row"><span class="name">tw-workflow</span><span class="pct">45%</span></div>
+      <div class="bar"><i style="width:45%"></i></div>
+      <span class="role">Сервисы, стейт-машины, оркестратор, DAO-порты</span>
+      <span class="stats">45 файлов · 1 746 строк · 138 тестов (3 014 строк)</span>
+      <ul>
+        <li>Движок переходов надёжный и покрыт тестами, Jacoco ≥80% на класс</li>
+        <li>Из 5 каскадов оркестратора 3 падают на реальных данных</li>
+        <li>Policies и доменные события из readme не начаты; каскады зашиты в <code>switch</code></li>
+      </ul>
+    </article>
+
+    <article class="mod s-warn">
+      <div class="row"><span class="name">tw-persistence-api</span><span class="pct">40%</span></div>
+      <div class="bar"><i style="width:40%"></i></div>
+      <span class="role">JPA-сущности, репозитории, спецификации, мапперы</span>
+      <span class="stats">64 файла · 1 271 строка · 16 тестов, 2 красных</span>
+      <ul>
+        <li>Сущности и спецификации около 85%</li>
+        <li>Мапперы сырые: 5 пустых, циклы, сломан <code>workflowItemId</code></li>
+        <li>Автоконфиг лежит по неверному пути, миграций нет, БД не выбрана</li>
+      </ul>
+    </article>
+
+    <article class="mod s-crit">
+      <div class="row"><span class="name">tw-fx-javafx-starter</span><span class="pct">30%</span></div>
+      <div class="bar"><i style="width:30%"></i></div>
+      <span class="role">Свой Spring Boot стартер для JavaFX</span>
+      <span class="stats">10 файлов · 340 строк · 0 тестов · не закоммичен</span>
+      <ul>
+        <li>Загрузка FXML через Spring-бины, мост i18n, кэш экранов на Caffeine</li>
+        <li>Нет файла AutoConfiguration.imports, возможен NPE на старте</li>
+        <li>Нет bootstrap, показа окон и диалогов, компонентов</li>
+      </ul>
+    </article>
+
+    <article class="mod s-crit">
+      <div class="row"><span class="name">tw-app-desktop</span><span class="pct">3%</span></div>
+      <div class="bar"><i style="width:3%"></i></div>
+      <span class="role">Сборка desktop-приложения</span>
+      <span class="stats">2 файла · 58 строк · не закоммичен</span>
+      <ul>
+        <li>Main-класс и <code>CustomerDaoImpl</code>, все методы которого возвращают null</li>
+        <li>Не стартует: нет datasource, драйвера, миграций, 10 DAO-бинов</li>
+        <li>Зависимость на стартер закомментирована, UI нет</li>
+      </ul>
+    </article>
+
+    <article class="mod s-none">
+      <div class="row"><span class="name">tw-fx-plugin-api</span><span class="pct">0%</span></div>
+      <div class="bar"><i style="width:0"></i></div>
+      <span class="role">SPI для плагинов</span>
+      <span class="stats">только build.gradle.kts</span>
+      <ul><li>Механизм не выбран: нет ServiceLoader, PF4J, точек расширения</li></ul>
+    </article>
+
+    <article class="mod s-none">
+      <div class="row"><span class="name">tw-fx-plugin-excel</span><span class="pct">0%</span></div>
+      <div class="bar"><i style="width:0"></i></div>
+      <span class="role">Экспорт и импорт в Excel</span>
+      <span class="stats">только build.gradle.kts</span>
+    </article>
+
+    <article class="mod s-none">
+      <div class="row"><span class="name">tw-fx-plugin-web-sync</span><span class="pct">0%</span></div>
+      <div class="bar"><i style="width:0"></i></div>
+      <span class="role">Синхронизация с веб-версией</span>
+      <span class="stats">только build.gradle.kts</span>
+    </article>
+
+    <article class="mod s-none">
+      <div class="row"><span class="name">tw-app-web</span><span class="pct">0%</span></div>
+      <div class="bar"><i style="width:0"></i></div>
+      <span class="role">Веб-приложение</span>
+      <span class="stats">только build.gradle.kts</span>
+    </article>
+
+    <article class="mod s-warn">
+      <div class="row"><span class="name">src/ (legacy)</span><span class="chip c-none">заморожен</span></div>
+      <span class="role">Исходный монолит: JavaFX 17 + SQLite + Flyway</span>
+      <span class="stats">47 файлов · 2 267 строк · 0 тестов</span>
+      <ul>
+        <li>CRUD клиентов, запчастей, услуг работает; редактирование клиента сломано</li>
+        <li>Заказы только для чтения, создание и правка заглушки</li>
+        <li>Единственное, что собирается в инсталлятор</li>
+      </ul>
+    </article>
+
+    <article class="mod s-warn">
+      <div class="row"><span class="name">build / CI</span><span class="pct">25%</span></div>
+      <div class="bar"><i style="width:25%"></i></div>
+      <span class="role">Gradle, version catalog, GitHub Actions, jpackage, Inno Setup</span>
+      <span class="stats">release.yml · installer.iss</span>
+      <ul>
+        <li>Version catalog, Spotless и Jacoco есть, но скопированы по модулям</li>
+        <li>CI на JDK 17 при toolchain 21, пакует только legacy</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="sec-head">
+    <span class="tag">02 · АРХИТЕКТУРА</span>
+    <h2>Граф модулей</h2>
+    <p class="lede">Связи взяты из build.gradle.kts. Ни один модуль не использует <code>api(...)</code>: типы tw-core видны потребителям только потому, что desktop подключает tw-core напрямую.</p>
+  </div>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1100 520" role="img" aria-label="tw-app-desktop зависит от tw-workflow, tw-persistence-api и tw-core; зависимости на стартер и plugin-api закомментированы; persistence не реализует DAO-порты workflow; CI собирает только старый src/.">
+      <defs>
+        <marker id="ar-i" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill"/></marker>
+        <marker id="ar-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill m"/></marker>
+        <marker id="ar-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill r"/></marker>
+        <marker id="ar-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill n"/></marker>
+      </defs>
+
+      <text x="20" y="18" class="t-small">Новые модули (settings.gradle.kts)</text>
+
+      <!-- edges first -->
+      <line x1="262" y1="84" x2="214" y2="298" class="e" marker-end="url(#ar-i)"/>
+      <line x1="308" y1="84" x2="456" y2="298" class="e" marker-end="url(#ar-i)"/>
+      <line x1="285" y1="84" x2="335" y2="438" class="e" marker-end="url(#ar-i)"/>
+      <line x1="230" y1="354" x2="308" y2="438" class="e" marker-end="url(#ar-i)"/>
+      <line x1="440" y1="354" x2="362" y2="438" class="e" marker-end="url(#ar-i)"/>
+      <line x1="240" y1="84" x2="131" y2="158" class="e dash" marker-end="url(#ar-m)"/>
+      <text x="118" y="118" class="t-small" text-anchor="middle">закомментировано</text>
+      <line x1="330" y1="84" x2="478" y2="158" class="e dash" marker-end="url(#ar-m)"/>
+      <text x="402" y="110" class="t-small">закомментировано</text>
+      <line x1="620" y1="168" x2="592" y2="180" class="e dot" marker-end="url(#ar-n)"/>
+      <line x1="620" y1="214" x2="592" y2="196" class="e dot" marker-end="url(#ar-n)"/>
+      <line x1="420" y1="187" x2="192" y2="187" class="e dot" marker-end="url(#ar-n)"/>
+      <text x="338" y="202" class="t-small" text-anchor="middle">задумано</text>
+      <line x1="380" y1="327" x2="292" y2="327" class="e miss" marker-end="url(#ar-r)"/>
+      <text x="446" y="374" class="t-crit">реализаций DAO-портов: 0 из 11</text>
+
+      <!-- boxes -->
+      <rect x="200" y="30" width="170" height="54" rx="6" class="box hot"/>
+      <text x="285" y="53" class="t-name" text-anchor="middle">tw-app-desktop</text>
+      <text x="285" y="71" class="t-sub" text-anchor="middle">Spring Boot · не стартует</text>
+
+      <rect x="560" y="30" width="170" height="54" rx="6" class="box empty"/>
+      <text x="645" y="53" class="t-name" text-anchor="middle">tw-app-web</text>
+      <text x="645" y="71" class="t-sub" text-anchor="middle">пусто</text>
+
+      <rect x="20" y="160" width="170" height="54" rx="6" class="box"/>
+      <text x="105" y="183" class="t-name" text-anchor="middle">tw-fx-javafx-starter</text>
+      <text x="105" y="201" class="t-sub" text-anchor="middle">FXML · i18n · кэш экранов</text>
+
+      <rect x="420" y="160" width="170" height="54" rx="6" class="box empty"/>
+      <text x="505" y="183" class="t-name" text-anchor="middle">tw-fx-plugin-api</text>
+      <text x="505" y="201" class="t-sub" text-anchor="middle">пусто · SPI не выбран</text>
+
+      <rect x="620" y="150" width="150" height="36" rx="6" class="box empty"/>
+      <text x="695" y="172" class="t-name" text-anchor="middle" style="font-size:12px">plugin-excel</text>
+      <rect x="620" y="196" width="150" height="36" rx="6" class="box empty"/>
+      <text x="695" y="218" class="t-name" text-anchor="middle" style="font-size:12px">plugin-web-sync</text>
+
+      <rect x="120" y="300" width="170" height="54" rx="6" class="box"/>
+      <text x="205" y="323" class="t-name" text-anchor="middle">tw-workflow</text>
+      <text x="205" y="341" class="t-sub" text-anchor="middle">статусы · сервисы · порты</text>
+
+      <rect x="380" y="300" width="170" height="54" rx="6" class="box"/>
+      <text x="465" y="323" class="t-name" text-anchor="middle">tw-persistence-api</text>
+      <text x="465" y="341" class="t-sub" text-anchor="middle">сущности · мапперы</text>
+
+      <rect x="250" y="440" width="170" height="54" rx="6" class="box"/>
+      <text x="335" y="463" class="t-name" text-anchor="middle">tw-core</text>
+      <text x="335" y="481" class="t-sub" text-anchor="middle">доменная модель</text>
+
+      <!-- legacy zone -->
+      <line x1="795" y1="10" x2="795" y2="510" class="sep"/>
+      <text x="820" y="18" class="t-small">Старый монолит (корень репозитория)</text>
+
+      <rect x="820" y="40" width="260" height="50" rx="6" class="box legacy"/>
+      <text x="950" y="61" class="t-name" text-anchor="middle">.github/workflows/release.yml</text>
+      <text x="950" y="78" class="t-sub" text-anchor="middle">ручной запуск · JDK 17 · без тестов</text>
+
+      <line x1="950" y1="90" x2="950" y2="158" class="e" marker-end="url(#ar-i)"/>
+      <text x="960" y="128" class="t-small">собирает</text>
+
+      <rect x="820" y="160" width="260" height="70" rx="6" class="box legacy"/>
+      <text x="950" y="182" class="t-name" text-anchor="middle">src/ · TwisterApplication</text>
+      <text x="950" y="200" class="t-sub" text-anchor="middle">JavaFX 17 · SQLite · Flyway V0.0.1</text>
+      <text x="950" y="217" class="t-sub" text-anchor="middle">47 файлов · 0 тестов</text>
+
+      <line x1="950" y1="230" x2="950" y2="298" class="e" marker-end="url(#ar-i)"/>
+      <text x="960" y="268" class="t-small">пакует</text>
+
+      <rect x="820" y="300" width="260" height="54" rx="6" class="box legacy"/>
+      <text x="950" y="323" class="t-name" text-anchor="middle">jpackage → Inno Setup</text>
+      <text x="950" y="341" class="t-sub" text-anchor="middle">TwisterInstaller.exe</text>
+
+      <text x="820" y="400" class="t-crit">Новые модули в CI не участвуют:</text>
+      <text x="820" y="417" class="t-crit">toolchain Java 21 против JDK 17 в раннере,</text>
+      <text x="820" y="434" class="t-crit">jpackage смотрит на jar корневого проекта.</text>
+    </svg>
+    </div>
+    <div class="legend">
+      <span><svg width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" style="stroke:var(--ink);stroke-width:1.3"/></svg>implementation</span>
+      <span><svg width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" style="stroke:var(--muted);stroke-width:1.3;stroke-dasharray:5 4"/></svg>есть, но закомментировано</span>
+      <span><svg width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" style="stroke:var(--none);stroke-width:1.3;stroke-dasharray:2 4"/></svg>задумано по названиям, кода нет</span>
+      <span><svg width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" style="stroke:var(--crit);stroke-width:1.4;stroke-dasharray:6 4"/></svg>должно быть, отсутствует</span>
+      <span><svg width="22" height="14"><rect x="1" y="1" width="20" height="12" rx="3" style="fill:var(--sunken);stroke:var(--none);stroke-dasharray:4 3"/></svg>пустой модуль</span>
+    </div>
+    <figcaption>Ключевой разрыв архитектуры: tw-workflow объявляет порты, tw-persistence-api даёт репозитории, но модуль-мост с адаптерами отсутствует. Сейчас persistence зависит только от tw-core и не видит интерфейсы портов.</figcaption>
+  </figure>
+</section>
+
+<!-- DOMAIN -->
+<section id="domain">
+  <div class="sec-head">
+    <span class="tag">03 · ДОМЕН</span>
+    <h2>Доменная модель новой версии</h2>
+    <p class="lede">tw-core и зеркальные JPA-сущности. Красным пунктиром показано то, что нужно по задуманному флоу, но в модели отсутствует.</p>
+  </div>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1060 440" role="img" aria-label="Customer связан с RepairOrder один ко многим и с Transport многие ко многим; RepairOrder один к одному с RepairTask и RepairInvoice; RepairTask содержит RepairTaskItem, каждый ссылается на ServiceType и список Spare без количества; DiagnosticReport и Payment отсутствуют.">
+      <defs>
+        <marker id="d-i" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill"/></marker>
+        <marker id="d-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill r"/></marker>
+      </defs>
+
+      <!-- edges -->
+      <line x1="220" y1="80" x2="288" y2="80" class="e" marker-end="url(#d-i)"/>
+      <text x="254" y="72" class="t-ev" text-anchor="middle">1 : *</text>
+      <line x1="120" y1="130" x2="120" y2="258" class="e" marker-end="url(#d-i)"/>
+      <text x="128" y="190" class="t-ev">* : *</text>
+      <text x="128" y="204" class="t-ev">customer_transport</text>
+      <polyline points="220,300 258,300 258,112 288,112" class="e" marker-end="url(#d-i)"/>
+      <text x="264" y="245" class="t-ev">* : 1</text>
+      <line x1="500" y1="75" x2="568" y2="75" class="e" marker-end="url(#d-i)"/>
+      <text x="534" y="67" class="t-ev" text-anchor="middle">1 : 1</text>
+      <line x1="770" y1="75" x2="838" y2="75" class="e" marker-end="url(#d-i)"/>
+      <text x="804" y="67" class="t-ev" text-anchor="middle">1 : *</text>
+      <line x1="395" y1="130" x2="395" y2="258" class="e" marker-end="url(#d-i)"/>
+      <text x="403" y="196" class="t-ev">1 : 1</text>
+      <line x1="940" y1="130" x2="940" y2="258" class="e" marker-end="url(#d-i)"/>
+      <text x="948" y="190" class="t-ev">* : *</text>
+      <text x="948" y="204" class="t-field bad">без количества</text>
+      <line x1="860" y1="130" x2="742" y2="258" class="e" marker-end="url(#d-i)"/>
+      <text x="826" y="214" class="t-ev">* : 1</text>
+      <line x1="670" y1="120" x2="670" y2="148" class="e miss" marker-end="url(#d-r)"/>
+      <line x1="395" y1="360" x2="395" y2="378" class="e miss" marker-end="url(#d-r)"/>
+
+      <!-- Customer -->
+      <rect x="20" y="30" width="200" height="100" rx="6" class="box"/>
+      <text x="32" y="51" class="t-name">Customer</text>
+      <text x="32" y="71" class="t-field">surname, name, patronymic</text>
+      <text x="32" y="87" class="t-field">phone</text>
+      <text x="32" y="103" class="t-field bad">email: новое, не в update</text>
+      <text x="32" y="119" class="t-field">transportList</text>
+
+      <!-- Transport -->
+      <rect x="20" y="260" width="200" height="90" rx="6" class="box"/>
+      <text x="32" y="281" class="t-name">Transport</text>
+      <text x="32" y="301" class="t-field">model, issueYear, sku</text>
+      <text x="32" y="317" class="t-field">type, brand, country</text>
+      <text x="32" y="335" class="t-field">велосипед клиента</text>
+
+      <!-- RepairOrder -->
+      <rect x="290" y="30" width="210" height="100" rx="6" class="box hot"/>
+      <text x="302" y="51" class="t-name">RepairOrder</text>
+      <text x="302" y="71" class="t-field">description</text>
+      <text x="302" y="87" class="t-field">customer, transport</text>
+      <text x="302" y="103" class="t-field">task, invoice</text>
+      <text x="302" y="119" class="t-field">OPEN … CLOSED / REJECTED</text>
+
+      <!-- RepairTask -->
+      <rect x="570" y="30" width="200" height="90" rx="6" class="box hot"/>
+      <text x="582" y="51" class="t-name">RepairTask</text>
+      <text x="582" y="71" class="t-field">order, items</text>
+      <text x="582" y="87" class="t-field">CREATED → DIAGNOSIS →</text>
+      <text x="582" y="103" class="t-field">IN_PROGRESS → READY</text>
+
+      <!-- RepairTaskItem -->
+      <rect x="840" y="30" width="200" height="100" rx="6" class="box hot"/>
+      <text x="852" y="51" class="t-name">RepairTaskItem</text>
+      <text x="852" y="71" class="t-field">serviceType</text>
+      <text x="852" y="87" class="t-field">spares</text>
+      <text x="852" y="103" class="t-field bad">нет заметок диагностики</text>
+      <text x="852" y="119" class="t-field">CREATED … READY</text>
+
+      <!-- Ghost diagnostic -->
+      <rect x="570" y="150" width="200" height="44" rx="6" class="box ghost"/>
+      <text x="670" y="170" class="t-name" text-anchor="middle" style="fill:var(--crit);font-size:12px">DiagnosticReport</text>
+      <text x="670" y="186" class="t-crit" text-anchor="middle">нет в модели</text>
+
+      <!-- Invoice -->
+      <rect x="290" y="260" width="210" height="100" rx="6" class="box"/>
+      <text x="302" y="281" class="t-name">RepairInvoice</text>
+      <text x="302" y="301" class="t-field">diagnosticPrice</text>
+      <text x="302" y="317" class="t-field">sparePrice, laborPrice</text>
+      <text x="302" y="333" class="t-field bad">нет total, номера, статуса,</text>
+      <text x="302" y="349" class="t-field bad">даты оплаты</text>
+
+      <!-- Payment ghost -->
+      <rect x="290" y="380" width="210" height="40" rx="6" class="box ghost"/>
+      <text x="395" y="405" class="t-name" text-anchor="middle" style="fill:var(--crit);font-size:12px">Payment · нет</text>
+
+      <!-- ServiceType -->
+      <rect x="570" y="260" width="200" height="80" rx="6" class="box"/>
+      <text x="582" y="281" class="t-name">ServiceType</text>
+      <text x="582" y="301" class="t-field">name, price</text>
+      <text x="582" y="317" class="t-field">каталог работ</text>
+
+      <!-- Spare -->
+      <rect x="840" y="260" width="200" height="100" rx="6" class="box"/>
+      <text x="852" y="281" class="t-name">Spare</text>
+      <text x="852" y="301" class="t-field">type, brand, country</text>
+      <text x="852" y="317" class="t-field">material, price</text>
+      <text x="852" y="333" class="t-field">warehouseQuantity</text>
+      <text x="852" y="349" class="t-field bad">флоу склад не трогает</text>
+
+      <!-- side notes -->
+      <text x="570" y="380" class="t-small">Справочники: Country, SpareBrand, SpareType,</text>
+      <text x="570" y="396" class="t-small">TransportBrand, TransportType (Reference → CompositeReference).</text>
+      <text x="570" y="418" class="t-small">У Order, Task, Item своя StatusHistory; статус = последняя по createdAt.</text>
+    </svg>
+    </div>
+    <figcaption>Модель покрывает каркас заказа, но цены и количество считаются по списку <code>spares</code>: одинаковая запчасть дважды в списке — единственный способ указать «2 штуки». User и Role есть, но нигде не используются.</figcaption>
+  </figure>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="sec-head">
+    <span class="tag">04 · СТАТУСЫ И КАСКАДЫ</span>
+    <h2>Стейт-машины tw-workflow</h2>
+    <p class="lede">Переходы взяты из <code>TransitionTable</code>. Оранжевые номера отмечают состояния, после которых <code>WorkflowOrchestrator</code> запускает каскад; расшифровка ниже. Красный пунктир: переходы, которых требует задуманный процесс, но в таблице их нет.</p>
+  </div>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 940 600" role="img" aria-label="RepairOrder: OPEN, ACCEPTED, WAITING_PAYMENT, CLOSED, REJECTED. RepairTask: CREATED, DIAGNOSIS, IN_PROGRESS, READY, CANCELED. RepairTaskItem: CREATED, WAITING_PARTS, IN_PROGRESS, READY, CANCELED. Нет отмены из ожидания оплаты и нет пути без ремонта.">
+      <defs>
+        <marker id="w-i" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill"/></marker>
+        <marker id="w-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill m"/></marker>
+        <marker id="w-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrowfill r"/></marker>
+      </defs>
+
+      <!-- ===== ORDER (O=0) ===== -->
+      <text x="20" y="20" class="t-lane">RepairOrder</text>
+      <line x1="160" y1="78" x2="268" y2="78" class="e" marker-end="url(#w-i)"/>
+      <text x="215" y="71" class="t-ev" text-anchor="middle">ACCEPT_ORDER</text>
+      <line x1="410" y1="78" x2="518" y2="78" class="e" marker-end="url(#w-i)"/>
+      <text x="465" y="71" class="t-ev" text-anchor="middle">GENERATE_INVOICE</text>
+      <line x1="660" y1="78" x2="768" y2="78" class="e" marker-end="url(#w-i)"/>
+      <text x="715" y="71" class="t-ev" text-anchor="middle">PAY</text>
+      <line x1="90" y1="96" x2="188" y2="144" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <line x1="340" y1="96" x2="242" y2="144" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <text x="215" y="124" class="t-ev" text-anchor="middle">REJECT_ORDER</text>
+      <polyline points="590,96 590,164 287,164" class="e miss" marker-end="url(#w-r)"/>
+      <text x="440" y="158" class="t-crit" text-anchor="middle">нет отмены из ожидания оплаты</text>
+
+      <rect x="20" y="60" width="140" height="36" rx="18" class="st"/><text x="90" y="82" class="t-st" text-anchor="middle">OPEN</text>
+      <rect x="270" y="60" width="140" height="36" rx="18" class="st"/><text x="340" y="82" class="t-st" text-anchor="middle">ACCEPTED</text>
+      <rect x="520" y="60" width="140" height="36" rx="18" class="st"/><text x="590" y="82" class="t-st" text-anchor="middle">WAITING_PAYMENT</text>
+      <rect x="770" y="60" width="140" height="36" rx="18" class="st good"/><text x="840" y="82" class="t-st" text-anchor="middle">CLOSED</text>
+      <rect x="145" y="146" width="140" height="36" rx="18" class="st end"/><text x="215" y="168" class="t-st" text-anchor="middle">REJECTED</text>
+      <text x="840" y="124" class="t-small" text-anchor="middle">событие CLOSE объявлено,</text>
+      <text x="840" y="139" class="t-small" text-anchor="middle">но перехода для него нет</text>
+
+      <circle cx="404" cy="62" r="9" class="mk"/><text x="404" y="65.5" class="mk-t" text-anchor="middle">1</text>
+      <circle cx="279" cy="148" r="9" class="mk"/><text x="279" y="151.5" class="mk-t" text-anchor="middle">2</text>
+
+      <line x1="20" y1="198" x2="920" y2="198" class="sep"/>
+
+      <!-- ===== TASK (O=200) ===== -->
+      <text x="20" y="222" class="t-lane">RepairTask</text>
+      <path d="M340,260 C340,226 840,226 840,260" class="e miss" marker-end="url(#w-r)"/>
+      <text x="590" y="228" class="t-crit" text-anchor="middle">нет пути «ремонт не нужен → счёт за диагностику»</text>
+      <line x1="160" y1="278" x2="268" y2="278" class="e" marker-end="url(#w-i)"/>
+      <text x="215" y="271" class="t-ev" text-anchor="middle">START_DIAGNOSIS</text>
+      <line x1="410" y1="278" x2="518" y2="278" class="e" marker-end="url(#w-i)"/>
+      <text x="465" y="271" class="t-ev" text-anchor="middle">START_REPAIR</text>
+      <line x1="660" y1="278" x2="768" y2="278" class="e" marker-end="url(#w-i)"/>
+      <text x="715" y="271" class="t-ev" text-anchor="middle">FINISH_TASK</text>
+      <line x1="90" y1="296" x2="298" y2="344" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <line x1="340" y1="296" x2="340" y2="344" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <line x1="590" y1="296" x2="382" y2="344" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <text x="350" y="326" class="t-ev">CANCEL</text>
+
+      <rect x="20" y="260" width="140" height="36" rx="18" class="st"/><text x="90" y="282" class="t-st" text-anchor="middle">CREATED</text>
+      <rect x="270" y="260" width="140" height="36" rx="18" class="st"/><text x="340" y="282" class="t-st" text-anchor="middle">DIAGNOSIS</text>
+      <rect x="520" y="260" width="140" height="36" rx="18" class="st"/><text x="590" y="282" class="t-st" text-anchor="middle">IN_PROGRESS</text>
+      <rect x="770" y="260" width="140" height="36" rx="18" class="st good"/><text x="840" y="282" class="t-st" text-anchor="middle">READY</text>
+      <rect x="270" y="346" width="140" height="36" rx="18" class="st end"/><text x="340" y="368" class="t-st" text-anchor="middle">CANCELED</text>
+      <text x="560" y="350" class="t-small">Пункты задачи можно создавать</text>
+      <text x="560" y="365" class="t-small">в любом статусе: на DIAGNOSIS</text>
+      <text x="560" y="380" class="t-small">это никак не завязано.</text>
+
+      <circle cx="404" cy="348" r="9" class="mk"/><text x="404" y="351.5" class="mk-t" text-anchor="middle">3</text>
+      <circle cx="904" cy="262" r="9" class="mk"/><text x="904" y="265.5" class="mk-t" text-anchor="middle">5</text>
+
+      <line x1="20" y1="398" x2="920" y2="398" class="sep"/>
+
+      <!-- ===== ITEM (O=400) ===== -->
+      <text x="20" y="422" class="t-lane">RepairTaskItem</text>
+      <path d="M90,460 C90,428 590,428 590,460" class="e" marker-end="url(#w-i)"/>
+      <text x="340" y="432" class="t-ev" text-anchor="middle">START_WORK</text>
+      <line x1="160" y1="478" x2="268" y2="478" class="e" marker-end="url(#w-i)"/>
+      <text x="215" y="471" class="t-ev" text-anchor="middle">WAIT_PARTS</text>
+      <line x1="410" y1="478" x2="518" y2="478" class="e" marker-end="url(#w-i)"/>
+      <text x="465" y="471" class="t-ev" text-anchor="middle">PARTS_AVAILABLE</text>
+      <line x1="660" y1="478" x2="768" y2="478" class="e" marker-end="url(#w-i)"/>
+      <text x="715" y="471" class="t-ev" text-anchor="middle">FINISH_WORK</text>
+      <line x1="90" y1="496" x2="298" y2="544" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <line x1="340" y1="496" x2="340" y2="544" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <line x1="590" y1="496" x2="382" y2="544" class="e" stroke-opacity=".6" marker-end="url(#w-m)"/>
+      <text x="350" y="526" class="t-ev">CANCEL</text>
+
+      <rect x="20" y="460" width="140" height="36" rx="18" class="st"/><text x="90" y="482" class="t-st" text-anchor="middle">CREATED</text>
+      <rect x="270" y="460" width="140" height="36" rx="18" class="st"/><text x="340" y="482" class="t-st" text-anchor="middle">WAITING_PARTS</text>
+      <rect x="520" y="460" width="140" height="36" rx="18" class="st"/><text x="590" y="482" class="t-st" text-anchor="middle">IN_PROGRESS</text>
+      <rect x="770" y="460" width="140" height="36" rx="18" class="st good"/><text x="840" y="482" class="t-st" text-anchor="middle">READY</text>
+      <rect x="270" y="546" width="140" height="36" rx="18" class="st end"/><text x="340" y="568" class="t-st" text-anchor="middle">CANCELED</text>
+      <text x="560" y="540" class="t-crit">Нет: автопроверки склада, резерва запчастей,</text>
+      <text x="560" y="555" class="t-crit">статуса READY_TO_EXECUTION, ограничения</text>
+      <text x="560" y="570" class="t-crit">«работать можно только при задаче IN_PROGRESS».</text>
+
+      <circle cx="904" cy="462" r="9" class="mk"/><text x="904" y="465.5" class="mk-t" text-anchor="middle">4</text>
+    </svg>
+    </div>
+  </figure>
+
+  <div class="panel" style="margin-top:12px">
+    <h3>Каскады <code>WorkflowOrchestrator.execute</code></h3>
+    <div class="casc" style="margin-top:10px">
+      <span class="no">1</span><span class="what">Заказ ACCEPTED → создаётся RepairTask в статусе CREATED</span><span class="chip c-ok">работает</span>
+      <span class="no">2</span><span class="what">Заказ REJECTED → задаче отправляется CANCEL<small>Из OPEN всегда падает: задачи ещё нет, <code>NoSuchElementException</code> откатывает транзакцию. Юнит-тест мокает задачу и скрывает баг.</small></span><span class="chip c-crit">баг</span>
+      <span class="no">3</span><span class="what">Задача CANCELED → CANCEL каждому пункту<small>Пункты в READY или CANCELED не имеют перехода CANCEL, бросается <code>IllegalStateException</code>, откатывается всё. Заказ при прямой отмене задачи остаётся ACCEPTED.</small></span><span class="chip c-crit">баг</span>
+      <span class="no">4</span><span class="what">Все пункты READY → задаче FINISH_TASK<small>Запрос <code>findAllTaskItemsStatusesByTaskId</code> возвращает всю историю, а у каждого пункта есть запись CREATED, поэтому <code>allMatch(READY)</code> не выполнится. CANCELED-пункты тоже не исключаются.</small></span><span class="chip c-crit">баг</span>
+      <span class="no">5</span><span class="what">Задача READY → заказу GENERATE_INVOICE<small>Статус уходит в WAITING_PAYMENT, но <code>RepairInvoiceService.generateRepairInvoice</code> никто не вызывает. В коде: <code>// todo gen invoice needed? or manual</code>.</small></span><span class="chip c-warn">наполовину</span>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section id="flow">
+  <div class="sec-head">
+    <span class="tag">05 · ФЛОУ РЕМОНТА</span>
+    <h2>Задуманный процесс из readme и что реализовано</h2>
+    <p class="lede">readme.md описывает путь «заказ → задача → диагностика → пункты работ → запчасти → выполнение → счёт → оплата». По шагам:</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Шаг из readme</th><th>Как сейчас</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>Приём велосипеда: RepairOrder с клиентом и транспортом</td><td><code>RepairOrderService.create</code> записывает OPEN. Редактирования описания нет.</td><td><span class="chip c-ok">есть</span></td></tr>
+        <tr><td>Заказ принят → RepairTask(CREATED)</td><td>Каскад 1 оркестратора</td><td><span class="chip c-ok">есть</span></td></tr>
+        <tr><td>Задача → DIAGNOSIS</td><td>Ручное событие START_DIAGNOSIS</td><td><span class="chip c-ok">есть</span></td></tr>
+        <tr><td>На диагностике создаются пункты работ</td><td><code>RepairTaskItemService.create</code> есть, но не связан со статусом DIAGNOSIS</td><td><span class="chip c-warn">частично</span></td></tr>
+        <tr><td><code>attachRequiredSpares()</code>: запчасти есть → READY_TO_EXECUTION, нет → WAIT_SPARES</td><td>Проверки склада нет, WAIT_PARTS ставится вручную, READY_TO_EXECUTION не существует, <code>takeFromWarehouse</code> флоу не вызывает</td><td><span class="chip c-crit">нет</span></td></tr>
+        <tr><td><code>buildDiagnosticReport()</code></td><td>Ни сущности, ни поля, ни сервиса</td><td><span class="chip c-crit">нет</span></td></tr>
+        <tr><td>Ремонт не нужен → счёт только за диагностику</td><td>Перехода DIAGNOSIS → счёт нет</td><td><span class="chip c-crit">нет</span></td></tr>
+        <tr><td>Ожидание запчастей с повторной проверкой</td><td>Нет планировщика; PARTS_AVAILABLE ручной</td><td><span class="chip c-crit">нет</span></td></tr>
+        <tr><td>Пункт IN_PROGRESS → DONE</td><td>IN_PROGRESS → READY (DONE переименован)</td><td><span class="chip c-ok">есть</span></td></tr>
+        <tr><td>Все пункты готовы → задача READY</td><td>Каскад 4, не срабатывает из-за запроса истории</td><td><span class="chip c-crit">сломано</span></td></tr>
+        <tr><td>Создание счёта, задача WAIT_PAYMENT</td><td>Статус ожидания оплаты перенесён на заказ, сам счёт не создаётся</td><td><span class="chip c-warn">частично</span></td></tr>
+        <tr><td>Оплачено → CLOSED</td><td>Событие PAY без сущности оплаты, суммы и проверки</td><td><span class="chip c-warn">частично</span></td></tr>
+        <tr><td>Цепочка Policy → Domain Event → Workflow (низ readme)</td><td>Не реализована: события-команды и <code>switch</code> в оркестраторе, без <code>ApplicationEventPublisher</code></td><td><span class="chip c-none">не начато</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:8px">Названия расходятся с readme: DIAGNOSTIS → DIAGNOSIS, WAIT_SPARES → WAITING_PARTS, DONE → READY, WAIT_PAYMENT перенесён с задачи на заказ.</p>
+</section>
+
+<!-- PORTS -->
+<section id="ports">
+  <div class="sec-head">
+    <span class="tag">06 · DAO-ПОРТЫ</span>
+    <h2>Порты workflow против слоя persistence</h2>
+    <p class="lede">Чтобы контекст desktop-приложения поднялся, каждый порт нужен как бин. Репозитории почти совпадают с портами, но нет ни мапперов целиком, ни адаптеров.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Порт (tw-workflow)</th><th>Репозиторий</th><th>Маппер</th><th>Адаптер</th><th>Замечание</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">CustomerDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">пустой</span></td><td><span class="chip c-warn">заглушка</span></td><td><code>CustomerDaoImpl</code> в desktop, все методы возвращают null</td></tr>
+        <tr><td class="mono">ReferenceDao&lt;T&gt; ×6</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">нет</span></td><td>Country, ServiceType, SpareBrand, SpareType, TransportBrand, TransportType</td></tr>
+        <tr><td class="mono">SpareDao</td><td><span class="chip c-warn">без findByName</span></td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">нет</span></td><td>в <code>CompositeReferenceRepository</code> нет <code>findByName</code></td></tr>
+        <tr><td class="mono">TransportDao</td><td><span class="chip c-warn">без findByName</span></td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">нет</span></td><td>то же</td></tr>
+        <tr><td class="mono">RepairOrderDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-warn">циклы</span></td><td><span class="chip c-crit">нет</span></td><td>Order → Task/Invoice → Order: риск StackOverflow в MapStruct</td></tr>
+        <tr><td class="mono">RepairTaskDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">пустой</span></td><td><span class="chip c-crit">нет</span></td><td></td></tr>
+        <tr><td class="mono">RepairTaskItemDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">пустой</span></td><td><span class="chip c-crit">нет</span></td><td></td></tr>
+        <tr><td class="mono">RepairInvoiceDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-warn">циклы</span></td><td><span class="chip c-crit">нет</span></td><td>мапперы Invoice и Order используют друг друга</td></tr>
+        <tr><td class="mono">StatusHistoryDao&lt;Order&gt;</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-warn">баг id</span></td><td><span class="chip c-crit">нет</span></td><td><code>workflowItem</code> → <code>workflowItemId</code> не маппится, NOT NULL упадёт</td></tr>
+        <tr><td class="mono">StatusHistoryDao&lt;Task&gt;</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-crit">пустой</span></td><td><span class="chip c-crit">нет</span></td><td></td></tr>
+        <tr><td class="mono">RepairTaskItemStatusHistoryDao</td><td><span class="chip c-warn">семантика</span></td><td><span class="chip c-crit">пустой</span></td><td><span class="chip c-crit">нет</span></td><td>JPQL отдаёт всю историю, а нужен последний статус каждого пункта</td></tr>
+        <tr><td class="mono">UserDao</td><td><span class="chip c-ok">есть</span></td><td><span class="chip c-none">—</span></td><td><span class="chip c-none">—</span></td><td>порт пустой, UserService пустой</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout" style="margin-top:12px"><b>Архитектурное решение, которое нужно принять первым.</b> Где живут адаптеры. Сейчас persistence не зависит от workflow, а адаптер положен в desktop, значит веб-приложению пришлось бы писать их заново. Вариант: вынести порты в отдельный модуль (или в tw-core) без Spring Data типов, а адаптеры держать в tw-persistence-api. Тогда desktop и web подключают одну и ту же реализацию. Попутно убрать <code>Page</code>/<code>Pageable</code> из сигнатур портов и зависимость workflow от starter-data-jpa.</div>
+</section>
+
+<!-- LEGACY -->
+<section id="legacy">
+  <div class="sec-head">
+    <span class="tag">07 · СТАРОЕ ПРИЛОЖЕНИЕ</span>
+    <h2>Корневой <code>src/</code>: что умеет и что забрать</h2>
+    <p class="lede">Монолит Spring Boot + JavaFX 17 на SQLite. Боковое меню: Работы, Клиенты, Сервис, Запчасти, Выход. Последнее изменение 15.03.2026, дальше разработка ушла в модули.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Сценарий</th><th>Как работает</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>Запуск</td><td>Splash-гифка, Spring в отдельном потоке, по <code>ContextRefreshedEvent</code> открывается главное окно</td><td><span class="chip c-ok">готово</span></td></tr>
+        <tr><td>Клиенты: список, создание, удаление</td><td>Таблица на 100 строк без сортировки; отчество обязательно; дубль телефона даёт общую ошибку БД</td><td><span class="chip c-ok">базово</span></td></tr>
+        <tr><td>Редактирование клиента</td><td><code>CustomerService.updateCustomer</code> закомментирован и возвращает null, диалог закрывается как будто всё сохранено</td><td><span class="chip c-crit">сломано</span></td></tr>
+        <tr><td>Запчасти и услуги: CRUD</td><td>Тот же шаблон; дубль названия даёт общий alert</td><td><span class="chip c-ok">готово</span></td></tr>
+        <tr><td>Заказы: список</td><td>Только чтение, N+1 запросов, дата через <code>Date.toString</code></td><td><span class="chip c-warn">частично</span></td></tr>
+        <tr><td>Создание, правка, удаление заказа</td><td>Пустые обработчики; в ComboBox захардкожена фейковая запчасть</td><td><span class="chip c-crit">заглушка</span></td></tr>
+        <tr><td>Поиск, фильтры, пагинация</td><td>Два поля в FXML никуда не подключены</td><td><span class="chip c-crit">заглушка</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="two" style="margin-top:12px">
+    <div class="panel">
+      <h3>Дизайн сейчас</h3>
+      <ul>
+        <li>Фиксированный макет 1920×1080, стили инлайном в FXML</li>
+        <li>Белая боковая панель 300 px без hover, активного пункта и клавиатуры</li>
+        <li>Таблицы и диалоги на стандартном Modena</li>
+        <li>Шрифты Formular лежат в ресурсах, но не загружаются</li>
+        <li>Даты и деньги не форматируются; запятая в цене не принимается</li>
+        <li>i18n: ru 53 ключа, en 9; часть строк захардкожена на двух языках</li>
+        <li>Палитра: <code>#FBFBFD</code> фон, <code>#262628</code> заголовки, <code>#73757d</code> меню</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Перенести в стартер / desktop</h3>
+      <ul>
+        <li>Bootstrap: splash, Spring в фоне, переключение по событию, глобальный обработчик ошибок (со стектрейсом в лог)</li>
+        <li>ScreenManager: <code>showScreen</code>, <code>showDialogAndWait</code>, <code>loadChildFxml</code>; добавить owner и title диалогам</li>
+        <li>Обобщённая таблица по <code>@UIColumn</code> и шаблон диалога с <code>ValidatableField</code>, но поверх view-моделей, не JPA-сущностей</li>
+        <li>Логотип, иконки, гифка, шрифты; конвейер jpackage + Inno Setup</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Выбросить</h3>
+      <ul>
+        <li>Старую схему: <code>operation_spares</code> с id через запятую, <code>orders</code>, <code>order_op_sps</code></li>
+        <li>Миграцию V0.0.1: в локальной базе 1 запчасть и 1 услуга</li>
+        <li>Старые сервисы и репозитории, <code>OrderEditDialog</code>, <code>ProcessedOrder</code></li>
+        <li>После переноса: весь <code>src/</code> и плагины Boot/JavaFX в корне, корень станет чистым агрегатором</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ISSUES -->
+<section id="issues">
+  <div class="sec-head">
+    <span class="tag">08 · ПРОБЛЕМЫ</span>
+    <h2>Реестр проблем</h2>
+    <p class="lede">Собрано из анализа кода, логов сборки и git. «Блокер» не даёт приложению собраться или стартовать, «баг» ломает сценарий, «риск» может стоить данных или времени, «долг» мешает развитию.</p>
+  </div>
+  <div class="filters" role="group" aria-label="Фильтры">
+    <div class="fgroup" id="f-sev"><span class="flbl">Тип</span></div>
+    <div class="fgroup" id="f-mod"><span class="flbl">Модуль</span></div>
+    <span class="count" id="iss-count"></span>
+  </div>
+  <div class="issues" id="issues-list"></div>
+</section>
+
+<!-- BUILD -->
+<section id="build">
+  <div class="sec-head">
+    <span class="tag">09 · СБОРКА И GIT</span>
+    <h2>История и состояние репозитория</h2>
+    <p class="lede">43 коммита с 24.04.2024. Ветки: <code>main</code> = origin, <code>dev</code> отстаёт от main на 5 коммитов, <code>exp</code> на 22 коммита впереди main и на 2 коммита впереди origin/exp (не запушены).</p>
+  </div>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 940 170" role="img" aria-label="Хронология: старт в 2024, i18n в ноябре 2025, альфа и инсталлятор в феврале 2026, модули и тесты в марте 2026, незакоммиченная работа до апреля 2026, затем пауза около семи месяцев.">
+      <line x1="20" y1="80" x2="905" y2="80" class="tl-axis"/>
+      <line x1="20" y1="76" x2="20" y2="84" class="tl-axis"/><text x="20" y="96" class="t-small">04.2024</text>
+      <line x1="272" y1="76" x2="272" y2="84" class="tl-axis"/><text x="272" y="96" class="t-small" text-anchor="middle">2025</text>
+      <line x1="608" y1="76" x2="608" y2="84" class="tl-axis"/><text x="608" y="96" class="t-small" text-anchor="middle">2026</text>
+
+      <rect x="42" y="60" width="208" height="14" rx="3" class="tl-bar"/>
+      <text x="146" y="50" class="t-small" text-anchor="middle">2024 · старт: JavaFX + Spring, сущности, вкладки</text>
+      <rect x="567" y="60" width="6" height="14" rx="2" class="tl-bar"/>
+      <text x="570" y="50" class="t-small" text-anchor="middle">11.2025 · i18n</text>
+
+      <rect x="649" y="60" width="12" height="14" rx="2" class="tl-bar"/>
+      <rect x="677" y="60" width="7" height="14" rx="2" class="tl-bar"/>
+      <rect x="686" y="60" width="4" height="14" rx="1" class="tl-bar"/>
+      <rect x="691" y="60" width="12" height="14" rx="2" class="tl-bar cur"/>
+      <rect x="705" y="60" width="196" height="14" rx="3" class="tl-pause"/>
+      <text x="803" y="50" class="t-small" text-anchor="middle">пауза ≈7 месяцев</text>
+      <line x1="901" y1="30" x2="901" y2="84" style="stroke:var(--accent);stroke-width:1.5"/>
+      <text x="898" y="26" class="t-acc" text-anchor="end">сегодня 15.11.2026</text>
+
+      <polyline points="655,74 655,112 712,112" class="e dot"/>
+      <text x="716" y="116" class="t-small">02.2026 · альфа и 8 коммитов CI-инсталлятора</text>
+      <polyline points="680,74 680,130 712,130" class="e dot"/>
+      <text x="716" y="134" class="t-small">03.2026 · разбиение на модули</text>
+      <polyline points="688,74 688,148 712,148" class="e dot"/>
+      <text x="716" y="152" class="t-small">03.2026 · тесты и покрытие</text>
+      <polyline points="697,74 697,166 712,166" class="e dot"/>
+      <text x="716" y="168" class="t-acc">04.2026 · незакоммичено: мапперы, стартер, desktop</text>
+    </svg>
+    </div>
+  </figure>
+
+  <div class="two" style="margin-top:12px">
+    <div class="panel">
+      <h3>Незакоммиченная работа на exp</h3>
+      <div class="tbl" style="border:none">
+        <table>
+          <thead><tr><th>Где</th><th>Что</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">tw-persistence-api</td><td>~44 файла: 17 новых мапперов, правки сущностей, новый аудит через <code>AuditorAware</code>, переписанная тестовая база; тесты <code>gen/</code> и <code>reference/</code> вне git</td></tr>
+            <tr><td class="mono">tw-fx-javafx-starter</td><td>весь модуль: 10 файлов</td></tr>
+            <tr><td class="mono">tw-app-desktop</td><td>весь модуль: 2 файла</td></tr>
+            <tr><td class="mono">tw-core</td><td><code>Customer.email</code></td></tr>
+            <tr><td class="mono">корень</td><td>libs.versions.toml (mapstruct, caffeine), .gitignore; вне git: testing_plan.md, lombok.config, логи</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">По счётчику git изменений +1 410 / −618, но около половины даёт смена окончаний строк CRLF/LF: <code>.gitattributes</code> нет.</p>
+    </div>
+    <div class="stack">
+      <div class="panel">
+        <h3>Сборка</h3>
+        <ul>
+          <li>Корневой build.gradle.kts по-прежнему собирает legacy и задаёт <code>createAppImage</code> с захардкоженным <code>twister-1.0-SNAPSHOT.jar</code></li>
+          <li>JavaFX 17 в корне, 21 в стартере (версия JavaFX взята из версии Java)</li>
+          <li>JUnit 6.0.3 поверх BOM Boot 3.2.5 (JUnit 5.10); Boot 3.2 вне поддержки</li>
+          <li>Нет convention-плагина: Spotless и Jacoco скопированы в каждый модуль</li>
+          <li>Последний <code>check</code> (29.03): 2 теста в persistence красные, Jacoco-гейт не проходит</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Инсталлятор</h3>
+        <ul>
+          <li>Inno Setup: нет AppId (обновления), иконки, запуска после установки; ярлыки по умолчанию выключены</li>
+          <li>Версия задана в четырёх местах по-разному: 1.0-SNAPSHOT, 0.0.1 alpha, 1.0.0, v1.0</li>
+          <li>Предположение: <code>twister.db</code> создаётся в папке установки и удаляется при деинсталляции. Данные лучше хранить в <code>%APPDATA%</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="sec-head">
+    <span class="tag">10 · ПЛАН</span>
+    <h2>Предлагаемый порядок работ</h2>
+    <p class="lede">Это рекомендация по итогам анализа, а не план из репозитория. Этапы идут по зависимостям: каждый следующий опирается на предыдущий.</p>
+  </div>
+  <div class="road">
+    <div class="step">
+      <span class="k">ЭТАП 0 · день</span>
+      <h3>Сохранить работу</h3>
+      <ol>
+        <li><code>.gitattributes</code> и renormalize, чтобы убрать CRLF-шум</li>
+        <li>Закоммитить частями: persistence, стартер, desktop</li>
+        <li>Запушить exp; удалить или подтянуть <code>dev</code></li>
+      </ol>
+    </div>
+    <div class="step">
+      <span class="k">ЭТАП 1 · каркас запускается</span>
+      <h3>Склеить слои</h3>
+      <ol>
+        <li>Решить, где порты и адаптеры (см. блок в разделе 06)</li>
+        <li>Выбрать БД (SQLite локально или Postgres) и написать Flyway V1 под новую схему</li>
+        <li>Исправить пути AutoConfiguration.imports, добавить <code>@EnableJpaRepositories</code>/<code>@EntityScan</code></li>
+        <li>Дописать мапперы: циклы, <code>workflowItemId</code>, пустые</li>
+        <li>Реализовать 11 адаптеров, починить 2 теста</li>
+        <li>Цель: desktop-контекст поднимается на реальной БД</li>
+      </ol>
+    </div>
+    <div class="step">
+      <span class="k">ЭТАП 2 · флоу ремонта</span>
+      <h3>Довести процесс</h3>
+      <ol>
+        <li>Починить каскады 2–4 и рассинхрон заказа при отмене задачи</li>
+        <li>Количество запчастей в пункте, резерв и списание со склада</li>
+        <li>DiagnosticReport и путь «без ремонта»</li>
+        <li>Генерация счёта, Payment, закрытие заказа</li>
+        <li>E2E-тест всего флоу на Testcontainers</li>
+      </ol>
+    </div>
+    <div class="step">
+      <span class="k">ЭТАП 3 · интерфейс</span>
+      <h3>Desktop UI заново</h3>
+      <ol>
+        <li>Стартер: bootstrap, окна, диалоги, скоуп контроллеров prototype, исправить i18n-мост</li>
+        <li>Дизайн-токены в CSS, загрузка шрифтов, адаптивные макеты</li>
+        <li>Экраны: доска заказов по статусам, карточка заказа, клиенты и их велосипеды, склад, справочники, счёт с печатью</li>
+      </ol>
+    </div>
+    <div class="step">
+      <span class="k">ЭТАП 4 · поставка</span>
+      <h3>Сборка и релиз</h3>
+      <ol>
+        <li>Convention-плагин в buildSrc, единая версия</li>
+        <li>CI: Java 21, тесты на push и PR</li>
+        <li>jpackage для tw-app-desktop, AppId, иконка, данные в <code>%APPDATA%</code></li>
+        <li>Удалить корневой <code>src/</code></li>
+      </ol>
+    </div>
+    <div class="step">
+      <span class="k">ЭТАП 5 · расширение</span>
+      <h3>Плагины и веб</h3>
+      <ol>
+        <li>Начать с плагинов как Spring auto-config модулей на classpath; PF4J только если нужна загрузка jar во время работы</li>
+        <li>Точки расширения: пункты меню, экраны, действия таблиц, экспорт</li>
+        <li>plugin-excel на Apache POI; tw-app-web как REST поверх workflow с общими адаптерами</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Карта построена по коду в <code>D:\Twister\twister</code> на 15.11.2026: модули tw-*, корневой src/, build-файлы, readme.md, testing_plan.md, check.log и история git. Проценты готовности — экспертная оценка, не метрика. Код не изменялся.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var SEV = {block:"Блокер", bug:"Баг", risk:"Риск", debt:"Долг"};
+  var CHIP = {block:"c-crit", bug:"c-warn", risk:"c-acc", debt:"c-none"};
+  var issues = [
+    {s:"block",m:"persistence",t:"AutoConfiguration.imports лежит не там",d:"Файл в resources/spring/ вместо META-INF/spring/: PersistenceConfiguration не подключится в приложении. Тесты проходят только из-за явного @ImportAutoConfiguration.",w:"tw-persistence-api/src/main/resources/spring/"},
+    {s:"block",m:"starter",t:"Стартер не регистрируется как автоконфигурация",d:"В resources нет AutoConfiguration.imports, а desktop сканирует только com.twister.desktop.app.",w:"tw-fx-javafx-starter/src/main/resources"},
+    {s:"block",m:"starter",t:"NPE при старте без настроек",d:"Вложенные records в JavaFxProperties без @DefaultValue: если не задан twister.javafx.bundle.*, bundle() = null и messageSource() падает.",w:"JavaFxProperties.java"},
+    {s:"block",m:"desktop",t:"Desktop-контекст не поднимается",d:"Нет datasource, JDBC-драйвера и миграций; workflow требует ~10 DAO-бинов, есть только заглушка CustomerDaoImpl.",w:"tw-app-desktop"},
+    {s:"block",m:"persistence",t:"Нет ни одного DAO-адаптера",d:"0 из 11 портов workflow реализовано; модуль-мост не определён.",w:"tw-workflow/.../dao"},
+    {s:"block",m:"build",t:"CI не соберёт exp",d:"Раннер на Temurin 17, модули требуют toolchain 21, foojay-resolver не подключён. Пайплайн пакует только legacy.",w:".github/workflows/release.yml"},
+    {s:"risk",m:"git",t:"64 файла существуют только локально",d:"Стартер, desktop и все мапперы не закоммичены около 7 месяцев, часть только в staged. 2 коммита exp не запушены.",w:"branch exp"},
+    {s:"bug",m:"workflow",t:"Отклонение заказа в OPEN всегда падает",d:"Задача создаётся только на ACCEPTED; каскад отмены ищет её и бросает NoSuchElementException, транзакция откатывается.",w:"WorkflowOrchestrator.handleRejectedOrder"},
+    {s:"bug",m:"workflow",t:"Задача не завершается автоматически",d:"findAllTaskItemsStatusesByTaskId возвращает все записи истории, включая CREATED; allMatch(READY) ложен. CANCELED-пункты не исключаются.",w:"RepairTaskItemStatusHistoryRepository"},
+    {s:"bug",m:"workflow",t:"Каскад отмены задачи падает",d:"CANCEL отправляется и пунктам в READY/CANCELED, для которых перехода нет: IllegalStateException и откат.",w:"WorkflowOrchestrator.handleCanceledTask"},
+    {s:"bug",m:"workflow",t:"Счёт не создаётся",d:"GENERATE_INVOICE переводит заказ в WAITING_PAYMENT, но generateRepairInvoice никто не вызывает.",w:"WorkflowOrchestrator.java:95"},
+    {s:"bug",m:"workflow",t:"Отмена задачи не отменяет заказ",d:"Прямой CANCEL задачи оставляет заказ в ACCEPTED.",w:"WorkflowOrchestrator"},
+    {s:"bug",m:"workflow",t:"getAllByIds считает отсутствующие id наоборот",d:"actualIds.removeAll(ids) всегда даёт пустой список, лог о пропусках не срабатывает.",w:"ReferenceService, SpareService"},
+    {s:"bug",m:"workflow",t:"Дубли справочников проходят проверку",d:"findByName вызывается до перевода в верхний регистр, а хранится имя в верхнем.",w:"ReferenceService.create"},
+    {s:"bug",m:"workflow",t:"Customer.email не обрабатывается",d:"Новое поле не учитывается в update, фильтре и тестах.",w:"CustomerService.update"},
+    {s:"bug",m:"persistence",t:"Маппер истории теряет workflowItemId",d:"В сущности объект workflowItem, в домене Long workflowItemId; без @Mapping получится null и нарушение NOT NULL.",w:"RepairOrderStatusHistoryRepositoryMapper"},
+    {s:"bug",m:"persistence",t:"Циклы в мапперах",d:"Order ↔ Task/Invoice, Task ↔ Items без @Context или ignore: риск бесконечной рекурсии.",w:"mapper/repair"},
+    {s:"bug",m:"persistence",t:"5 мапперов пустые",d:"Customer, RepairTask, RepairTaskItem и две истории статусов без @Mapper и методов.",w:"mapper/"},
+    {s:"bug",m:"persistence",t:"2 теста спецификаций падают",d:"Фильтр задаёт typeId/brandId/countryId, а фикстуры без связей; inner join даёт пустой результат.",w:"SpareSpecificationTest, TransportSpecificationTest"},
+    {s:"bug",m:"persistence",t:"Поиск по отчеству чувствителен к регистру",d:"Для patronymic нет cb.lower(), хотя вход приводится к нижнему регистру.",w:"CustomerSpecification"},
+    {s:"bug",m:"persistence",t:"@ToString с ленивыми коллекциями",d:"toString сущностей заказа и задачи включает statusHistory/items: LazyInitializationException вне сессии.",w:"RepairOrderEntity, RepairTaskEntity"},
+    {s:"bug",m:"starter",t:"%key в FXML, вероятно, не резолвится",d:"MessageSourceResourceBundle.getKeys() пуст, containsKey возвращает false.",w:"MessageSourceResourceBundle.java"},
+    {s:"bug",m:"starter",t:"Флаги кэша расходятся",d:"Условие читает cache.enabled, а свойство привязано к cache.global-enabled.",w:"JavaFxConfiguration, JavaFxProperties"},
+    {s:"bug",m:"starter",t:"Singleton-контроллеры",d:"@FXController мета-аннотирован @Component: повторная загрузка FXML перезаписывает поля того же экземпляра.",w:"annotation/FXController"},
+    {s:"bug",m:"legacy",t:"Редактирование клиента ничего не сохраняет",d:"updateCustomer закомментирован и возвращает null, диалог закрывается как успешный.",w:"src/.../CustomerService"},
+    {s:"bug",m:"legacy",t:"Заказы в legacy — заглушки",d:"Создание, правка и удаление пустые; в ComboBox фейковая Spare(1, \"Spare 1\").",w:"OrderEditDialog, OrdersTabScreen"},
+    {s:"bug",m:"legacy",t:"Шрифты не подключены",d:"Formular лежит в resources, но Font.loadFont не вызывается.",w:"src/main/resources/fonts"},
+    {s:"risk",m:"legacy",t:"Данные могут удаляться при деинсталляции",d:"БД и логи по относительным путям; [UninstallDelete] {app}. Предположение, не проверено на установке.",w:"installer.iss"},
+    {s:"risk",m:"legacy",t:"Целостность БД не защищена",d:"Опечатка NOT_NULL делает customer_id nullable, в SQLite не включены foreign keys.",w:"V0.0.1__create-tables.sql"},
+    {s:"risk",m:"persistence",t:"Схема только через ddl-auto",d:"Миграций под новую модель нет, выбор SQLite или Postgres не сделан; legacy-миграция несовместима.",w:"tw-persistence-api"},
+    {s:"debt",m:"persistence",t:"EAGER везде, нет индексов и unique",d:"Все @ManyToOne/@OneToOne жадные, обратные @OneToOne не ленятся; нет индексов по FK, unique на телефон, логин, имя справочника.",w:"entity/"},
+    {s:"debt",m:"workflow",t:"Spring Data в портах",d:"DAO-интерфейсы используют Page/Pageable, workflow тянет starter-data-jpa без JPA-кода.",w:"tw-workflow/build.gradle.kts"},
+    {s:"debt",m:"workflow",t:"Policies и доменные события не начаты",d:"Каскады зашиты в switch оркестратора; задуманная цепочка из readme отсутствует.",w:"readme.md"},
+    {s:"debt",m:"plugins",t:"Плагинной системы нет",d:"Нет SPI, ServiceLoader, PF4J и точек расширения; 4 модуля пустые.",w:"tw-fx-plugin-*, tw-app-web"},
+    {s:"debt",m:"build",t:"Версии и плагины разъехались",d:"JavaFX 17 и 21, JUnit 6 поверх BOM Boot 3.2, плагины объявлены и в корне, и в каталоге; нет convention-плагина.",w:"build.gradle.kts, libs.versions.toml"},
+    {s:"debt",m:"build",t:"Модули не экспортируют tw-core",d:"Нигде нет api(...): потребители видят типы домена только при прямой зависимости.",w:"*/build.gradle.kts"},
+    {s:"debt",m:"git",t:"Нет .gitattributes",d:"Около половины диффа — смена окончаний строк, ревью засорено.",w:"корень"},
+    {s:"risk",m:"workflow",t:"Пароль пользователя открытым текстом",d:"User.password — простая строка, аудит всегда SYSTEM. Пока User не используется.",w:"tw-core User, PersistenceConfiguration"}
+  ];
+  var MODS = {persistence:"persistence", workflow:"workflow", starter:"starter", desktop:"desktop", build:"build / CI", git:"git", legacy:"legacy src", plugins:"плагины / web"};
+  var state = {s:"all", m:"all"};
+  var list = document.getElementById("issues-list");
+  var countEl = document.getElementById("iss-count");
+
+  function esc(x){return String(x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  function render(){
+    var order = {block:0,bug:1,risk:2,debt:3};
+    var rows = issues.filter(function(i){return (state.s==="all"||i.s===state.s)&&(state.m==="all"||i.m===state.m);})
+      .sort(function(a,b){return order[a.s]-order[b.s];});
+    list.innerHTML = rows.map(function(i){
+      return '<div class="iss" data-sev="'+i.s+'"><span class="sv"></span><div class="bd"><div class="hd"><span class="chip '+CHIP[i.s]+'">'+SEV[i.s]+'</span><span class="ttl">'+esc(i.t)+'</span></div><span class="det">'+esc(i.d)+'</span><span class="where">'+esc(MODS[i.m])+' · '+esc(i.w)+'</span></div></div>';
+    }).join("");
+    countEl.textContent = "показано " + rows.length + " из " + issues.length;
+  }
+  function makeGroup(id, key, entries){
+    var g = document.getElementById(id);
+    entries.forEach(function(e){
+      var b = document.createElement("button");
+      b.type="button"; b.className="fbtn"; b.textContent=e[1]; b.dataset.v=e[0];
+      b.id = id+"-"+e[0];
+      b.setAttribute("aria-pressed", e[0]==="all"?"true":"false");
+      b.addEventListener("click", function(){
+        state[key]=e[0];
+        g.querySelectorAll(".fbtn").forEach(function(x){x.setAttribute("aria-pressed", x.dataset.v===e[0]?"true":"false");});
+        render();
+      });
+      g.appendChild(b);
+    });
+  }
+  function cnt(f){return issues.filter(f).length;}
+  makeGroup("f-sev","s",[["all","все"]].concat(Object.keys(SEV).map(function(k){return [k,SEV[k]+" · "+cnt(function(i){return i.s===k;})];})));
+  makeGroup("f-mod","m",[["all","все"]].concat(Object.keys(MODS).map(function(k){return [k,MODS[k]];})));
+  render();
+})();
+</script>
+</body>
+</html>

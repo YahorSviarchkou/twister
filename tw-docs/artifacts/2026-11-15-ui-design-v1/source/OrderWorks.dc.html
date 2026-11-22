@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — заказ № 1047, работы</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <dc-import name="OrderHeader" v="works" hint-size="100%,236px"></dc-import>
+    <div class="content" style="flex-direction: row">
+      <div class="col grow" style="padding: 12px 20px 0 24px; gap: 12px; min-height: 0">
+        <div class="row g8">
+          <button class="btn btn-sm" title="Добавить пункт · Insert"><i class="ic ic-plus"></i>Добавить пункт<span class="kbd">Ins</span></button>
+          <button class="btn btn-sm"><i class="ic ic-tag"></i>Из прайса…</button>
+          <div class="seg" role="group" aria-label="Фильтр пунктов" style="margin-left: 8px">
+            <button class="on" style="height: 26px">Все <span class="num">6</span></button>
+            <button style="height: 26px">Не готовы <span class="num">3</span></button>
+            <button style="height: 26px">Готовы <span class="num">2</span></button>
+          </div>
+          <div class="grow"></div>
+          <span class="t-sm sub row g8">Готово <span class="num strong">2 из 5</span><span class="progress" style="width: 96px; display: inline-block"><span style="display: block; width: 40%; height: 100%; background: var(--accent)"></span></span></span>
+          <div class="vr" style="margin: 4px 4px"></div>
+          <button class="btn btn-sm slot" data-slot="toolbar.action" title="Экспорт в Excel · Ctrl+E"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th style="width: 40px" class="c">№</th>
+              <th style="width: 260px">Услуга из прайса</th>
+              <th>Запчасти · количество · наличие на складе</th>
+              <th style="width: 150px">Статус</th>
+              <th class="r" style="width: 110px">Сумма</th>
+              <th style="width: 210px">Действия</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{items}}" as="it" hint-placeholder-count="6">
+                <tr class="{{it.rowCls}}" tabindex="0">
+                  <td class="c num muted" style="vertical-align: top; padding-top: 10px">{{it.n}}</td>
+                  <td style="vertical-align: top; padding-top: 9px">
+                    <div class="col"><span class="{{it.nameCls}}">{{it.svc}}</span><span class="t-sm muted" style="font-size: 12px">работа <span class="money" style="font-weight: 400">{{it.labor}}</span></span></div>
+                  </td>
+                  <td style="vertical-align: top; padding-top: 8px; padding-bottom: 8px">
+                    <sc-if value="{{it.noParts}}" hint-placeholder-val="{{ false }}"><span class="muted t-sm">Без запчастей</span></sc-if>
+                    <sc-for list="{{it.parts}}" as="p">
+                      <div class="row g12" style="min-height: 26px">
+                        <span class="ell" style="width: 300px">{{p.name}}</span>
+                        <span class="num sub" style="width: 36px">× {{p.q}}</span>
+                        <span class="money sub" style="width: 80px; text-align: right; font-weight: 400">{{p.price}}</span>
+                        <span class="row g6 t-sm" style="font-size: 12px"><span class="{{p.dot}}"></span><span class="{{p.stCls}}">{{p.stock}}</span></span>
+                      </div>
+                    </sc-for>
+                  </td>
+                  <td style="vertical-align: top; padding-top: 9px"><span class="{{it.st.cls}}"><i class="{{it.st.ic}}"></i>{{it.st.t}}</span></td>
+                  <td class="r money" style="vertical-align: top; padding-top: 10px">{{it.sum}}</td>
+                  <td style="vertical-align: top; padding-top: 6px">
+                    <div class="row g6">
+                      <sc-for list="{{it.acts}}" as="a"><button class="{{a.cls}}" title="{{a.tip}}" aria-label="{{a.tip}}"><i class="{{a.ic}}"></i>{{a.t}}</button></sc-for>
+                      <button class="btn btn-ghost btn-sm btn-icon" aria-label="Ещё" title="Ещё · Shift+F10"><i class="ic ic-more"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div class="row between" style="padding: 4px 0">
+          <span class="t-sm muted row g6"><i class="ic ic-info s14"></i>Отменённые пункты не попадают в счёт. Резерв запчастей снимается автоматически.</span>
+          <div class="row g24">
+            <span class="col" style="align-items: flex-end"><span class="t-label">Работы</span><span class="money">3 300 ₽</span></span>
+            <span class="col" style="align-items: flex-end"><span class="t-label">Запчасти</span><span class="money">4 390 ₽</span></span>
+            <span class="col" style="align-items: flex-end"><span class="t-label">Диагностика</span><span class="money">800 ₽</span></span>
+            <div class="vr"></div>
+            <span class="col" style="align-items: flex-end"><span class="t-label">Итого по заказу</span><span class="money" style="font-size: 20px; line-height: 26px; font-weight: 600">8 490 ₽</span></span>
+          </div>
+        </div>
+      </div>
+      <aside class="col" aria-label="Пункт 4" style="width: 400px; flex: none; background: var(--surface); border-left: 1px solid var(--border); min-height: 0">
+        <div class="row g8" style="height: 48px; padding: 0 16px; border-bottom: 1px solid var(--border)">
+          <span class="t-h3">Пункт <span class="num">4</span></span>
+          <span class="chip s-amb"><i class="ic ic-st-wait"></i>Ждёт запчасти</span>
+          <div class="grow"></div>
+          <button class="btn btn-ghost btn-sm btn-icon" aria-label="Закрыть панель" title="Закрыть · Esc"><i class="ic ic-x"></i></button>
+        </div>
+        <div class="col g16" style="padding: 16px; overflow: hidden">
+          <div class="field"><label>Услуга</label><div class="input"><i class="ic ic-tag"></i><span class="grow">Переборка задней втулки</span><span class="money sub" style="font-weight: 400">1 200 ₽</span><i class="ic ic-chev-d s14"></i></div></div>
+          <div class="field"><label>Мастер</label><div class="input"><span class="av a1" style="width: 20px; height: 20px; font-size: 9px">ПЛ</span><span class="grow">Пётр Лебедев</span><i class="ic ic-chev-d s14"></i></div></div>
+          <div class="col g8">
+            <div class="row between"><span class="flabel">Запчасти</span><button class="link t-sm row g4"><i class="ic ic-plus s14"></i>Добавить запчасть</button></div>
+            <div class="panel" style="padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; background: var(--surface-2)">
+              <div class="row between"><span class="strong t-sm">Подшипник 6000-2RS 10×26×8</span><span class="money t-sm">360 ₽</span></div>
+              <div class="row between">
+                <div class="row g4" role="group" aria-label="Количество">
+                  <button class="btn btn-sm btn-icon" aria-label="Меньше"><i class="ic ic-minus s14"></i></button>
+                  <input class="input num" value="2" aria-label="Количество" style="width: 48px; height: 28px; text-align: center; padding: 0">
+                  <button class="btn btn-sm btn-icon" aria-label="Больше"><i class="ic ic-plus s14"></i></button>
+                  <span class="t-sm muted" style="margin-left: 6px">по <span class="num">180 ₽</span></span>
+                </div>
+              </div>
+              <div class="row g6 t-sm"><span class="dot bad"></span><span class="danger-text strong">На складе 0, нужно 2</span></div>
+              <div class="row g6 t-sm"><i class="ic ic-st-wait s14 warn-text"></i><span class="sub">Заказано 4 шт., приход ожидается <span class="num">17.11</span></span></div>
+            </div>
+          </div>
+          <div class="banner warn"><i class="ic ic-info"></i><span>Когда приход подшипников будет проведён на складе, пункт получит резерв, а вы — уведомление «Пришли запчасти по заказу № 1047».</span></div>
+          <div class="field"><label>Заметка мастера</label><textarea class="input" rows="3" aria-label="Заметка мастера">Корпус без задиров, конусы в норме. Меняем только подшипники, смазка — Shimano Premium.</textarea></div>
+          <div class="col g8">
+            <span class="flabel">Действия в статусе «Ждёт запчасти»</span>
+            <div class="row g8">
+              <button class="btn is-disabled" disabled title="Недоступно: нет на складе «Подшипник 6000-2RS» — нужно 2, доступно 0"><i class="ic ic-st-work"></i>В работу</button>
+              <button class="btn btn-danger-o"><i class="ic ic-st-cancel"></i>Отменить пункт</button>
+            </div>
+            <span class="hint">«В работу» станет доступно, когда хватит запчастей.</span>
+          </div>
+          <div class="hr"></div>
+          <div class="col g8">
+            <span class="flabel">История пункта</span>
+            <div class="row start g8 t-sm"><span class="num muted" style="width: 92px; font-size: 12px">13.11 09:05</span><span class="grow"><span class="chip s-neu" style="height: 20px"><i class="ic ic-st-new"></i>Создан</span> → <span class="chip s-amb" style="height: 20px"><i class="ic ic-st-wait"></i>Ждёт запчасти</span><br><span class="muted">П. Лебедев</span></span></div>
+            <div class="row start g8 t-sm"><span class="num muted" style="width: 92px; font-size: 12px">12.11 15:12</span><span class="grow">Пункт создан · <span class="muted">П. Лебедев</span></span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="statusbar">
+      <span class="row g6"><span class="dot ok"></span>Сохранено 13:02</span>
+      <span class="row g6"><span class="kbd">Ctrl+S</span>сохранить</span>
+      <span class="row g6"><span class="kbd">Ins</span>пункт</span>
+      <span class="row g6"><span class="kbd">Ctrl+]</span>следующий статус пункта</span>
+      <span class="row g6"><span class="kbd">Ctrl+1…5</span>вкладки</span>
+      <div class="grow"></div>
+      <span class="row g6">Заказ № 1047 · Принят · В работе</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const S = {
+      created: { t: 'Создан', cls: 'chip s-neu', ic: 'ic ic-st-new' },
+      wait: { t: 'Ждёт запчасти', cls: 'chip s-amb', ic: 'ic ic-st-wait' },
+      work: { t: 'В работе', cls: 'chip s-blu', ic: 'ic ic-st-work' },
+      done: { t: 'Готов', cls: 'chip s-grn', ic: 'ic ic-st-ready' },
+      cancel: { t: 'Отменён', cls: 'chip s-red', ic: 'ic ic-st-cancel' },
+    };
+    const A = {
+      start: { t: 'Начать', ic: 'ic ic-st-work', cls: 'btn btn-sm', tip: 'В работу · Ctrl+]' },
+      waitP: { t: '', ic: 'ic ic-st-wait', cls: 'btn btn-sm btn-icon', tip: 'Ждёт запчасти' },
+      done: { t: 'Готово', ic: 'ic ic-check', cls: 'btn btn-sm btn-primary', tip: 'Готово · Ctrl+]' },
+      toWork: { t: 'В работу', ic: 'ic ic-st-work', cls: 'btn btn-sm is-disabled', tip: 'Недоступно: нет запчастей на складе' },
+    };
+    const P = (name, q, price, stock, kind) => ({ name, q, price: m(price * q), stock,
+      dot: 'dot ' + kind, stCls: kind === 'bad' ? 'danger-text strong' : kind === 'warn' ? 'warn-text' : 'sub' });
+    const raw = [
+      { svc: 'Замена цепи', labor: 450, st: 'done', parts: [P('Цепь Shimano CN-HG54, 116 зв.', 1, 2190, 'Резерв · на складе 6', 'ok')] },
+      { svc: 'Замена троса переключателя', labor: 250, st: 'done', parts: [P('Трос Jagwire Basics 2300 мм', 1, 190, 'Резерв · на складе 14', 'ok')] },
+      { svc: 'Настройка переключателей', labor: 500, st: 'work', parts: [] },
+      { svc: 'Переборка задней втулки', labor: 1200, st: 'wait', parts: [P('Подшипник 6000-2RS 10×26×8', 2, 180, 'Нет: 0 из 2 · ждём 17.11', 'bad')], sel: true },
+      { svc: 'Замена каретки', labor: 900, st: 'created', parts: [P('Каретка Shimano BB-UN300 68/122,5', 1, 1650, 'В наличии 2 · не зарезервировано', 'warn')] },
+      { svc: 'Замена покрышки', labor: 300, st: 'cancel', parts: [P('Покрышка Kenda K1153 29×2,10', 1, 1450, 'Резерв снят · клиент отказался', 'neu')] },
+    ];
+    const acts = { done: [], work: [A.done], wait: [A.toWork], created: [A.start, A.waitP], cancel: [] };
+    const items = raw.map((r, i) => ({ n: i + 1, svc: r.svc, labor: m(r.labor), st: S[r.st], parts: r.parts, noParts: !r.parts.length,
+      sum: m(r.labor + r.parts.reduce((s, p) => s + parseInt(p.price.replace(/\D/g, ''), 10), 0)), acts: acts[r.st],
+      rowCls: (r.sel ? 'sel' : '') + (r.st === 'cancel' ? ' muted-row' : ''), nameCls: 'strong' + (r.st === 'cancel' ? ' muted' : '') }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { items, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — служебные состояния</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1520px; padding: 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 440px; gap: 36px; overflow: hidden">
+
+  <div class="col g8">
+    <span class="t-h3">Стартовый splash</span>
+    <div class="col" style="flex: 1; border-radius: 6px; background: #143234; color: #C6D9D8; align-items: center; justify-content: center; gap: 14px; box-shadow: var(--sh-3); position: relative">
+      <svg width="64" height="64" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="#2A8F8E"></rect><path d="M8 8.5h12M14 8.5V15" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path><circle cx="14" cy="19.5" r="3.2" stroke="#fff" stroke-width="2" fill="none"></circle></svg>
+      <span style="font-size: 32px; line-height: 40px; font-weight: 700; color: #fff; letter-spacing: .01em">Twister</span>
+      <span style="font-size: 14px; color: #8FABAA">Велосервис «Спица»</span>
+      <div class="col g6" style="width: 320px; margin-top: 16px">
+        <div style="height: 4px; border-radius: 2px; background: #22484A"><div style="width: 60%; height: 4px; border-radius: 2px; background: #5CC2C0"></div></div>
+        <span style="font-size: 12px; color: #8FABAA">Загружаем плагины: Синхронизация с веб-версией · 3 из 5</span>
+      </div>
+      <span class="num" style="position: absolute; bottom: 14px; font-size: 11px; color: #6E8B8A">2.0.0 · JavaFX 21</span>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Пустой список</span>
+    <div class="panel col" style="flex: 1; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 32px">
+      <span class="chip s-neu" style="width: 64px; height: 64px; padding: 0; justify-content: center; border-radius: 50%"><i class="ic ic-users s32"></i></span>
+      <span class="t-h2">Клиентов пока нет</span>
+      <span class="sub" style="max-width: 380px">Клиент появляется автоматически при приёме велосипеда. Можно добавить и вручную — например, перенести постоянных.</span>
+      <div class="row g8" style="margin-top: 8px"><button class="btn btn-primary"><i class="ic ic-plus"></i>Принять велосипед<span class="kbd">Ctrl+N</span></button><button class="btn">Добавить клиента</button></div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Ничего не найдено по фильтру</span>
+    <div class="col" style="flex: 1; gap: 10px">
+      <div class="row g8"><div class="input" style="height: 30px; width: 260px"><i class="ic ic-search"></i><input value="Scultura" aria-label="Поиск"></div><button class="btn btn-sm" style="border-color: var(--accent); background: var(--accent-soft); color: var(--accent-text)">Срок: просрочено<i class="ic ic-x s14"></i></button></div>
+      <div class="panel col" style="flex: 1; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 24px">
+        <i class="ic ic-search s48 muted"></i>
+        <span class="t-h2">По «Scultura» среди просроченных — ничего</span>
+        <span class="sub">Есть 1 заказ с этой моделью вне фильтра «Срок».</span>
+        <div class="row g8" style="margin-top: 6px"><button class="btn">Сбросить фильтры</button><button class="btn btn-ghost">Искать во всех заказах</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Загрузка</span>
+    <div class="tbl-wrap col" style="flex: 1">
+      <div class="row g8" style="height: 44px; padding: 0 12px; border-bottom: 1px solid var(--border)"><span class="spinner"></span><span class="t-sm sub">Загружаем заказы…</span><div class="grow"></div><button class="btn btn-sm btn-ghost">Отмена</button></div>
+      <div class="row g16" style="height: 34px; padding: 0 12px; background: var(--surface-2); border-bottom: 1px solid var(--border)"><span class="skel" style="width: 40px; height: 10px"></span><span class="skel" style="width: 120px; height: 10px"></span><span class="skel" style="width: 160px; height: 10px"></span><span class="skel" style="width: 60px; height: 10px; margin-left: auto"></span></div>
+      <sc-for list="{{skel}}" as="s" hint-placeholder-count="8">
+        <div class="row g16" style="height: 40px; padding: 0 12px; border-bottom: 1px solid var(--border)"><span class="skel" style="width: 40px"></span><span class="skel" style="width: 86px; height: 20px"></span><span class="skel" style="width: {{s.w}}"></span><span class="skel" style="width: 64px; margin-left: auto"></span></div>
+      </sc-for>
+      <span class="t-sm muted" style="padding: 10px 12px">Если дольше 3 секунд — показываем, что именно грузится.</span>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Ошибка с понятным текстом и способом исправления</span>
+    <div class="panel col g12" style="flex: 1; padding: 24px; border-color: var(--s-red-bd)">
+      <div class="row g12"><span class="chip s-red" style="width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 6px"><i class="ic ic-alert s20"></i></span><div class="col"><span class="t-h2">Не удалось сохранить заказ</span><span class="t-sm sub">Нет связи с базой данных на компьютере приёмщика</span></div></div>
+      <div class="banner ok"><i class="ic ic-save"></i><span>Ничего не потеряно: заказ сохранён в черновик на этом компьютере.</span></div>
+      <div class="col g6 t-sm"><span class="strong">Что сделать</span>
+        <span class="row start g8"><span class="num muted">1</span>Проверьте, что компьютер у кассы включён и Twister на нём запущен.</span>
+        <span class="row start g8"><span class="num muted">2</span>Проверьте Wi-Fi или кабель: адрес базы <span class="num">192.168.1.10:5432</span>.</span>
+        <span class="row start g8"><span class="num muted">3</span>Нажмите «Повторить» — черновик отправится сам.</span>
+      </div>
+      <div class="grow"></div>
+      <div class="row g8"><button class="btn btn-primary"><i class="ic ic-refresh"></i>Повторить<span class="kbd">F5</span></button><button class="btn"><i class="ic ic-copy"></i>Скопировать отчёт</button><span class="num muted t-sm" style="margin-left: auto">TW-DB-01</span></div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Подтверждение отмены заказа</span>
+    <div style="flex: 1; position: relative; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: var(--bg)">
+      <div class="scrim">
+        <div class="dialog" role="alertdialog" aria-label="Отклонить заказ № 1052" style="width: 500px">
+          <div class="dlg-h"><span class="chip s-red" style="width: 32px; height: 32px; padding: 0; justify-content: center; border-radius: 6px"><i class="ic ic-st-cancel"></i></span><span class="t-h1">Отклонить заказ № 1052?</span></div>
+          <div class="dlg-b">
+            <span class="sub t-sm">Кузнецова Ольга Игоревна · Stels Navigator 500. Заказ перейдёт в «Отклонён», вернуть его будет нельзя — только создать новый.</span>
+            <div class="field"><label class="req">Причина</label><div class="input err"><span class="grow ph">Выберите причину</span><i class="ic ic-chev-d s14"></i></div><span class="errmsg"><i class="ic ic-alert s14"></i>Укажите причину — она попадёт в историю</span></div>
+            <div class="banner warn"><i class="ic ic-info"></i><span>Резерв 1 запчасти будет снят.</span></div>
+          </div>
+          <div class="dlg-f"><button class="btn is-focus">Не отклонять<span class="kbd">Esc</span></button><button class="btn btn-danger"><i class="ic ic-st-cancel"></i>Отклонить заказ</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">«Действие недоступно в текущем статусе»</span>
+    <div class="panel col g16" style="flex: 1; padding: 24px">
+      <span class="t-sm sub">Кнопка видна, но выключена, причина — в тултипе по наведению и фокусу:</span>
+      <div class="col g8" style="align-items: flex-start">
+        <button class="btn is-disabled is-focus" disabled aria-describedby="tipx"><i class="ic ic-st-pay"></i>Выставить счёт<span class="kbd">Ctrl+]</span></button>
+        <span class="tip" id="tipx" role="tooltip" style="max-width: 420px"><i class="ic ic-lock s14"></i><span>Счёт выставляется, когда задача «Готова». Сейчас задача «В работе», не готовы 3 пункта.</span></span>
+      </div>
+      <div class="hr"></div>
+      <span class="t-sm sub">Если действие вызвано горячей клавишей — тост вместо молчания:</span>
+      <div class="toast warn" role="status" style="width: 100%"><i class="ic ic-alert s20"></i><div class="col grow g4"><span class="t-title">Недоступно в статусе «Ждёт запчасти»</span><span>Пункт 4 нельзя перевести «В работу»: нет «Подшипник 6000-2RS» (нужно 2).</span></div><button class="tl">Открыть склад</button></div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Конфликт: заказ изменил другой пользователь</span>
+    <div class="panel col g12" style="flex: 1; padding: 24px">
+      <div class="banner warn"><i class="ic ic-users"></i><div class="col g4"><span class="strong">П. Лебедев изменил заказ № 1047 минуту назад</span><span>Пункт 3 «Настройка переключателей» → «Готов». Ваши правки в заметке не потеряны.</span></div></div>
+      <div class="tbl-wrap"><table class="tbl compact"><thead><tr><th>Поле</th><th>У вас</th><th>Сейчас в базе</th></tr></thead><tbody>
+        <tr><td>Статус пункта 3</td><td><span class="chip s-blu"><i class="ic ic-st-work"></i>В работе</span></td><td><span class="chip s-grn"><i class="ic ic-st-ready"></i>Готов</span></td></tr>
+        <tr><td>Заметка мастера</td><td class="t-sm">изменена вами</td><td class="t-sm muted">без изменений</td></tr>
+      </tbody></table></div>
+      <div class="grow"></div>
+      <div class="row g8"><button class="btn btn-primary">Обновить и сохранить мою заметку</button><button class="btn btn-ghost">Отбросить мои правки</button></div>
+    </div>
+  </div>
+
+  <div class="col g8">
+    <span class="t-h3">Тосты подтверждения</span>
+    <div class="col g12" style="flex: 1; padding: 20px; border-radius: 6px; background: var(--surface-3); justify-content: flex-end; align-items: flex-end">
+      <div class="toast ok" role="status"><i class="ic ic-st-ready s20"></i><div class="col grow g4"><span class="t-title">Оплата принята · 6 490 ₽</span><span>Заказ № 1047 закрыт. Квитанция на печати.</span></div><button class="tl">Отменить</button></div>
+      <div class="toast ok" role="status"><i class="ic ic-st-ready s20"></i><div class="col grow g4"><span class="t-title">Пункт 4 → «Готов»</span><span>Осталось 1 из 5.</span></div><button class="tl">Отменить <span class="num">Ctrl+Z</span></button></div>
+      <span class="t-sm muted">Справа снизу, 5 с, по наведению не исчезает. Не больше трёх одновременно.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1920,"height":1520}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const skel = [140, 200, 120, 180, 160, 210, 130, 170].map(w => ({ w: w + 'px' }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    return { skel, rootCls: 'tw' + (dark ? ' dark' : '') };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — настройки</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="settings" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content" style="flex-direction: row">
+      <nav class="col" aria-label="Разделы настроек" style="width: 260px; flex: none; border-right: 1px solid var(--border); padding: 16px 8px; gap: 2px; background: var(--surface-2)">
+        <span class="t-cap" style="padding: 0 10px 8px">Настройки</span>
+        <sc-for list="{{secs}}" as="s" hint-placeholder-count="6"><a href="{{s.href}}" class="{{s.cls}}"><i class="{{s.ic}}"></i><span class="grow">{{s.t}}</span><span class="num muted t-sm">{{s.n}}</span></a></sc-for>
+      </nav>
+      <div class="col grow g16" style="padding: 20px 32px; min-width: 0; overflow: hidden">
+        <sc-if value="{{isPlugins}}" hint-placeholder-val="{{ true }}">
+          <div class="row g12"><h1 class="t-display" style="margin: 0">Плагины</h1><span class="badge">5</span><div class="grow"></div><button class="btn"><i class="ic ic-upload"></i>Установить из файла (.jar)</button></div>
+          <div class="banner warn" style="max-width: 1240px"><i class="ic ic-refresh"></i><span class="grow">«Онлайн-касса» включится после перезапуска Twister. Открытые заказы сохранятся.</span><button class="btn btn-sm">Перезапустить</button></div>
+          <div class="row start g24">
+            <div class="col g8" style="flex: 1 1 auto; max-width: 1000px">
+              <sc-for list="{{plugins}}" as="p" hint-placeholder-count="5">
+                <article class="panel row start g16" style="padding: 16px">
+                  <span class="{{p.tile}}" style="width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 6px"><i class="{{p.ic}}" style="width: 20px; height: 20px"></i></span>
+                  <div class="col g6 grow">
+                    <div class="row g8"><span class="t-h3">{{p.t}}</span><span class="num muted t-sm">{{p.v}}</span><span class="t-sm muted">· {{p.a}}</span></div>
+                    <span class="t-sm sub">{{p.d}}</span>
+                    <div class="row g6 wrap"><span class="t-sm muted">Встраивается:</span><sc-for list="{{p.slots}}" as="s"><span class="num" style="font-size: 11px; line-height: 18px; padding: 0 6px; border-radius: 3px; background: var(--surface-3); color: var(--text-2)">{{s}}</span></sc-for></div>
+                    <sc-if value="{{p.state}}" hint-placeholder-val="{{ false }}"><span class="row g6 t-sm"><span class="{{p.dot}}"></span><span class="{{p.stCls}}">{{p.state}}</span></span></sc-if>
+                  </div>
+                  <div class="row g12" style="padding-top: 4px">
+                    <button class="btn btn-sm btn-ghost"><i class="ic ic-gear"></i>Настроить</button>
+                    <button class="{{p.sw}}" role="switch" aria-checked="{{p.on}}" aria-label="{{p.t}}"></button>
+                  </div>
+                </article>
+              </sc-for>
+            </div>
+            <aside class="panel col g8" style="width: 400px; flex: none; padding: 16px">
+              <span class="t-h3">Точки расширения</span>
+              <span class="t-sm muted">Плагин объявляет, куда встраивается; элементы рисуются стандартными компонентами Twister.</span>
+              <sc-for list="{{slotDocs}}" as="s"><div class="col" style="padding: 6px 0; border-top: 1px solid var(--border)"><span class="num strong" style="font-size: 12px; color: var(--slot)">{{s.id}}</span><span class="t-sm sub">{{s.d}}</span></div></sc-for>
+            </aside>
+          </div>
+        </sc-if>
+        <sc-if value="{{isUsers}}" hint-placeholder-val="{{ false }}">
+          <div class="row g12"><h1 class="t-display" style="margin: 0">Пользователи и роли</h1><div class="grow"></div><button class="btn btn-primary"><i class="ic ic-plus"></i>Пользователь</button></div>
+          <div class="tbl-wrap" style="max-width: 1360px">
+            <table class="tbl">
+              <thead><tr><th>Пользователь</th><th>Логин</th><th>Роль</th><th>Последний вход</th><th class="c">Активен</th><th style="width: 44px"></th></tr></thead>
+              <tbody>
+                <sc-for list="{{users}}" as="u" hint-placeholder-count="4">
+                  <tr class="{{u.cls}}"><td><span class="row g8"><span class="{{u.av}}">{{u.i}}</span><span class="strong">{{u.n}}</span></span></td><td class="num sub">{{u.l}}</td><td><span class="row g6"><i class="{{u.ric}}" style="color: var(--text-3)"></i>{{u.r}}</span></td><td class="num sub">{{u.last}}</td><td class="c"><button class="{{u.sw}}" role="switch" aria-label="Активен"></button></td><td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Действия"><i class="ic ic-more"></i></button></td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <h2 class="t-h1" style="margin: 8px 0 0">Права ролей</h2>
+          <div class="tbl-wrap" style="max-width: 1360px">
+            <table class="tbl compact">
+              <thead><tr><th>Действие</th><th class="c" style="width: 160px">Админ</th><th class="c" style="width: 160px">Мастер</th><th class="c" style="width: 160px">Бухгалтер</th></tr></thead>
+              <tbody>
+                <sc-for list="{{perms}}" as="p" hint-placeholder-count="9">
+                  <tr><td>{{p.t}}</td><sc-for list="{{p.v}}" as="x"><td class="c"><span class="{{x.cls}}" style="justify-content: center"><i class="{{x.ic}}"></i>{{x.t}}</span></td></sc-for></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+        <sc-if value="{{isGeneral}}" hint-placeholder-val="{{ false }}">
+          <div class="row g12"><h1 class="t-display" style="margin: 0">Мастерская и язык</h1><div class="grow"></div><button class="btn btn-primary"><i class="ic ic-save"></i>Сохранить<span class="kbd">Ctrl+S</span></button></div>
+          <div class="row start g24">
+            <section class="panel col" style="flex: 1 1 0; max-width: 680px">
+              <div class="ph-head"><i class="ic ic-building sub"></i><span class="t-h3">Данные мастерской</span></div>
+              <div style="padding: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+                <div class="field"><label class="req">Название</label><input class="input" value="Велосервис «Спица»" aria-label="Название"></div>
+                <div class="field"><label>Юр. лицо</label><input class="input" value="ИП Котов Алексей Сергеевич" aria-label="Юр. лицо"></div>
+                <div class="field"><label>ИНН</label><input class="input num" placeholder="12 цифр" aria-label="ИНН"></div>
+                <div class="field"><label>Телефон</label><input class="input num" value="+7 495 120-44-80" aria-label="Телефон"></div>
+                <div class="field" style="grid-column: span 2"><label>Адрес</label><input class="input" value="г. Москва, ул. Лесная, 14" aria-label="Адрес"></div>
+                <div class="field"><label>Часы работы</label><input class="input" value="Пн–Сб 10:00–20:00" aria-label="Часы работы"></div>
+                <div class="field"><label>Email для счетов</label><input class="input" value="spica@velo.ru" aria-label="Email"></div>
+                <div class="field"><label>Диагностика по умолчанию</label><div class="input"><input class="num" value="800" aria-label="Стоимость диагностики"><span class="sfx">₽</span></div></div>
+                <div class="field"><label>Порог «мало на складе»</label><div class="input"><input class="num" value="2" aria-label="Порог"><span class="sfx">шт.</span></div></div>
+              </div>
+            </section>
+            <section class="panel col" style="flex: 1 1 0; max-width: 620px">
+              <div class="ph-head"><i class="ic ic-globe sub"></i><span class="t-h3">Язык и формат</span></div>
+              <div class="col g16" style="padding: 16px">
+                <div class="field"><span class="flabel">Язык интерфейса</span><div class="seg"><button class="on">Русский</button><button>English</button></div><span class="hint">Применяется сразу, без перезапуска. Документы печатаются на языке клиента.</span></div>
+                <div class="row g16 start">
+                  <div class="field grow"><label>Валюта</label><div class="input"><span class="grow">Российский рубль</span><span class="num sub">₽ · RUB</span><i class="ic ic-chev-d s14"></i></div></div>
+                  <div class="field" style="width: 200px"><label>Символ</label><div class="seg" style="width: 100%"><button style="flex: 1">перед</button><button class="on" style="flex: 1">после</button></div></div>
+                </div>
+                <div class="row g16 start">
+                  <div class="field grow"><label>Разделитель тысяч</label><div class="input"><span class="grow">Пробел</span><i class="ic ic-chev-d s14"></i></div></div>
+                  <div class="field grow"><label>Формат даты</label><div class="input"><span class="grow num">ДД.ММ.ГГГГ</span><i class="ic ic-chev-d s14"></i></div></div>
+                </div>
+                <div class="panel row g24" style="padding: 12px 16px; background: var(--surface-2)"><span class="t-label">Пример</span><span class="money" style="font-size: 16px">12 450 ₽</span><span class="num">18.11.2026</span><span class="num muted">EN: $12,450 · 11/18/2026</span></div>
+                <div class="field"><span class="flabel">Тема</span><div class="seg"><button class="on"><i class="ic ic-sun"></i>Светлая</button><button><i class="ic ic-moon"></i>Тёмная</button><button>Как в Windows</button></div></div>
+              </div>
+            </section>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"section":{"editor":"enum","options":["plugins","users","general"],"default":"plugins"},"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const sec = this.props.section ?? 'plugins';
+    const secs = [['general','Мастерская и язык','building','SettingsGeneral.dc.html',''],['users','Пользователи и роли','users','SettingsUsers.dc.html','4'],['plugins','Плагины','puzzle','Settings.dc.html','5'],['print','Печать и шаблоны','print','Settings.dc.html',''],['data','Данные и резервные копии','save','Settings.dc.html','']]
+      .map(s => ({ t: s[1], ic: 'ic ic-' + s[2], href: s[3], n: s[4], cls: 'mi' + (s[0] === sec ? ' active' : '') }));
+    const P = (t, v, a, d, ic, tile, slots, on, state, kind) => ({ t, v, a, d, ic: 'ic ic-' + ic, tile: 'chip ' + tile, slots, on: on ? 'true' : 'false', sw: 'switch' + (on ? ' on' : ''),
+      state: state || '', dot: 'dot ' + (kind || 'ok'), stCls: kind === 'bad' ? 'danger-text' : kind === 'warn' ? 'warn-text' : 'sub' });
+    const plugins = [
+      P('Экспорт в Excel', '1.2.0', 'Twister', 'Выгрузка любой таблицы — заказы, склад, клиенты, прайс — в .xlsx с текущими фильтрами и сортировкой.', 'sheet', 's-grn', ['toolbar.action', 'context.action'], true),
+      P('Синхронизация с веб-версией', '0.9.4', 'Twister', 'Принимает заявки с сайта мастерской и показывает клиенту статус ремонта по номеру заказа.', 'cloud', 's-blu', ['nav.item', 'dashboard.block', 'statusbar.item', 'context.action'], true, 'Подключено · spica.twister-web.ru · синхронизация 2 мин назад', 'ok'),
+      P('Фотофиксация', '1.0.1', 'Twister', 'Фото велосипеда при приёме и после ремонта, с веб-камеры или телефона по QR-коду.', 'camera', 's-vio', ['order.tab'], true),
+      P('Онлайн-касса (54-ФЗ)', '0.3.0 beta', 'Twister', 'Фискальный чек при приёме оплаты через подключённую ККТ.', 'receipt', 's-amb', ['dashboard.block', 'toolbar.action'], true, 'Включён, ждёт перезапуска. Не выбрана ККТ — откройте «Настроить».', 'warn'),
+      P('SMS-уведомления', '1.1.0', 'SMS-шлюз · сторонний', 'SMS клиенту, когда велосипед готов или ждёт оплаты.', 'sms', 's-neu', ['context.action'], false, 'Выключен', 'neu'),
+    ];
+    const slotDocs = [['nav.item','Пункт в боковом меню, в группе «Работа» или «Каталоги»'],['order.tab','Вкладка в карточке заказа после «Истории»'],['toolbar.action','Кнопка в тулбаре таблиц и списков'],['context.action','Пункт контекстного меню строки'],['dashboard.block','Блок на «Сводке» в общей сетке'],['statusbar.item','Индикатор в строке состояния']].map(s => ({ id: s[0], d: s[1] }));
+    const users = [['Алексей Котов','АК','av a4','kotov','Администратор','shield','сегодня 08:52',1],['Пётр Лебедев','ПЛ','av a1','lebedev','Мастер','wrench','сегодня 09:10',1],['Сергей Макаров','СМ','av a2','makarov','Мастер','wrench','сегодня 09:31',1],['Ирина Власова','ИВ','av a3','vlasova','Бухгалтер','receipt','13.11.2026 18:04',1],['Олег Сазонов','ОС','av','sazonov','Мастер','wrench','02.06.2026 19:40',0]]
+      .map(u => ({ n: u[0], i: u[1], av: u[2], l: u[3], r: u[4], ric: 'ic ic-' + u[5], last: u[6], sw: 'switch' + (u[7] ? ' on' : ''), cls: u[7] ? '' : 'muted-row' }));
+    const Y = { t: 'Да', cls: 'row g4 ok-text', ic: 'ic ic-check s14' }, N = { t: 'Нет', cls: 'row g4 muted', ic: 'ic ic-minus s14' }, R = { t: 'Просмотр', cls: 'row g4 sub', ic: 'ic ic-eye s14' };
+    const perms = [['Приём, клиенты, велосипеды',[Y,R,R]],['Диагностика и пункты работ',[Y,Y,N]],['Перевод статусов задачи и пунктов',[Y,Y,N]],['Отклонение заказа',[Y,N,N]],['Выставление счёта и приём оплаты',[Y,N,Y]],['Склад: приход и списание',[Y,R,Y]],['Прайс и справочники',[Y,R,R]],['Отчёты',[Y,N,Y]],['Настройки, пользователи, плагины',[Y,N,N]]].map(p => ({ t: p[0], v: p[1].map(x => ({ ...x, cls: 'inline-flex ' + x.cls })) }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { secs, plugins, slotDocs, users, perms, isPlugins: sec === 'plugins', isUsers: sec === 'users', isGeneral: sec === 'general', rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

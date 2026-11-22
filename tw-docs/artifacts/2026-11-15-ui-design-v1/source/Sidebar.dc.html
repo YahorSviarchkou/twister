@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Боковая навигация</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<nav class="tw-c nav" aria-label="Разделы" style="width: {{wpx}}; height: {{hpx}}; font-family: 'IBM Plex Sans', sans-serif; border-right: 1px solid var(--nav-border)">
+  <div class="row g12" style="height: 52px; padding: 0 {{padX}}; border-bottom: 1px solid var(--nav-border); flex: none">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" style="flex: none"><rect width="28" height="28" rx="6" fill="#2A8F8E"></rect><path d="M8 8.5h12M14 8.5V15" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path><circle cx="14" cy="19.5" r="3.2" stroke="#fff" stroke-width="2" fill="none"></circle></svg>
+    <sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}">
+      <div class="col" style="min-width: 0">
+        <span style="font-size: 16px; line-height: 20px; font-weight: 700; color: #fff; letter-spacing: .01em">Twister</span>
+        <span class="ell" style="font-size: 11px; line-height: 14px; color: var(--nav-muted)">Велосервис «Спица»</span>
+      </div>
+    </sc-if>
+  </div>
+  <div class="col" style="flex: 1 1 auto; padding-top: 4px; min-height: 0">
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+      <sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}"><div class="nav-cap">{{g.cap}}</div></sc-if>
+      <sc-if value="{{collapsed}}" hint-placeholder-val="{{ false }}"><div style="height: 1px; margin: 10px 14px; background: var(--nav-border)"></div></sc-if>
+      <sc-for list="{{g.items}}" as="it" hint-placeholder-count="4">
+        <a href="{{it.href}}" class="{{it.cls}}" data-slot="{{it.slot}}" title="{{it.tip}}" aria-label="{{it.t}}">
+          <i class="{{it.ic}}" style="width: 18px; height: 18px"></i>
+          <sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}"><span>{{it.t}}</span></sc-if>
+          <sc-if value="{{it.showBadge}}" hint-placeholder-val="{{ false }}"><span class="{{it.badgeCls}}">{{it.badge}}</span></sc-if>
+          <sc-if value="{{it.showDot}}" hint-placeholder-val="{{ false }}"><span class="dot" style="position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; background: #5CC2C0"></span></sc-if>
+        </a>
+      </sc-for>
+    </sc-for>
+  </div>
+  <div class="col" style="border-top: 1px solid var(--nav-border); padding: 6px 0; flex: none">
+    <a href="Settings.dc.html" class="{{setCls}}" title="Настройки · Ctrl+," aria-label="Настройки"><i class="ic ic-gear" style="width: 18px; height: 18px"></i><sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}"><span>Настройки</span></sc-if></a>
+    <button class="nav-i" style="border: 0; background: transparent; cursor: pointer; text-align: left" title="Свернуть меню · Ctrl+B" aria-label="Свернуть или развернуть меню">
+      <i class="{{toggleIc}}" style="width: 18px; height: 18px"></i><sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}"><span>Свернуть меню</span><span class="kbd" style="margin-left: auto; background: transparent; color: var(--nav-muted); border-color: var(--nav-border)">Ctrl+B</span></sc-if>
+    </button>
+    <div class="row g12" style="height: 48px; padding: 0 {{padX}}; margin-top: 4px">
+      <span class="av a1" style="width: 28px; height: 28px; font-size: 11px">АК</span>
+      <sc-if value="{{expanded}}" hint-placeholder-val="{{ true }}">
+        <div class="col grow"><span class="ell" style="font-size: 13px; color: #fff; font-weight: 500">Алексей Котов</span><span style="font-size: 11px; line-height: 14px; color: var(--nav-muted)">Администратор</span></div>
+        <i class="ic ic-logout" style="color: var(--nav-muted)" title="Сменить пользователя"></i>
+      </sc-if>
+    </div>
+  </div>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["dash","orders","clients","stock","invoices","reports","web","price","dict","settings"],"default":"orders"},"collapsed":{"editor":"boolean","default":false},"h":{"editor":"int","default":1080},"$preview":{"width":232,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'orders';
+    const collapsed = !!(this.props.collapsed ?? false);
+    const base = (id) => 'nav-i' + (id === active ? ' on' : '');
+    const mk = (id, t, ic, href, badge, extra) => ({ t, ic: 'ic ic-' + ic, href, tip: collapsed ? t : '', cls: base(id) + (extra && extra.slot ? ' slot sl-left' : '') + (collapsed ? ' c' : ''),
+      slot: extra && extra.slot ? extra.slot : '', badge: badge || '', showBadge: !!badge && !collapsed, showDot: !!badge && collapsed,
+      badgeCls: 'badge' + (extra && extra.hot ? ' acc' : '') });
+    const groups = [
+      { cap: 'Работа', items: [
+        mk('dash', 'Сводка', 'dash', 'Dashboard.dc.html'),
+        mk('orders', 'Заказы', 'board', 'Main.dc.html', '17'),
+        mk('clients', 'Клиенты', 'users', 'Clients.dc.html'),
+        mk('stock', 'Склад', 'box', 'Stock.dc.html', '3'),
+        mk('invoices', 'Счета и оплаты', 'receipt', 'Invoice.dc.html', '3'),
+        mk('reports', 'Отчёты', 'chart', 'Dashboard.dc.html'),
+        mk('web', 'Веб-заявки', 'cloud', 'Dashboard.dc.html', '2', { slot: 'nav.item', hot: true }) ]},
+      { cap: 'Каталоги', items: [
+        mk('price', 'Прайс услуг', 'tag', 'Directories.dc.html'),
+        mk('dict', 'Справочники', 'book', 'Directories.dc.html') ]},
+    ];
+    const h = this.props.h ?? 1080;
+    return { groups, collapsed, expanded: !collapsed, wpx: collapsed ? '56px' : '232px', hpx: h + 'px', padX: collapsed ? '14px' : '16px',
+      setCls: base('settings'), toggleIc: collapsed ? 'ic ic-expand' : 'ic ic-collapse' };
+  }
+}
+</script>
+</body>
+</html>

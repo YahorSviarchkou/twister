@@ -1,0 +1,28 @@
+%% Current Gradle module graph on branch exp (2026-11-15). Dashed: dependency present but commented out.
+flowchart TB
+  desktop["tw-app-desktop<br/>does not start"]
+  web["tw-app-web<br/>empty"]
+  starter["tw-fx-javafx-starter<br/>FXML, i18n, screen cache"]
+  papi["tw-fx-plugin-api<br/>empty"]
+  pexcel["tw-fx-plugin-excel<br/>empty"]
+  psync["tw-fx-plugin-web-sync<br/>empty"]
+  wf["tw-workflow<br/>state machines, services, DAO ports"]
+  per["tw-persistence-api<br/>JPA entities, repositories, mappers"]
+  core["tw-core<br/>domain model"]
+  legacy["root src/ (legacy)<br/>JavaFX 17, SQLite, Flyway"]
+  ci["release.yml<br/>JDK 17"]
+
+  desktop --> wf
+  desktop --> per
+  desktop --> core
+  desktop -.-> starter
+  desktop -.-> papi
+  wf --> core
+  per --> core
+  per -. "DAO adapters: 0 of 11" .-> wf
+  ci --> legacy
+
+  classDef empty stroke-dasharray: 5 4,fill:transparent
+  classDef broken stroke:#c2302a,stroke-width:2px
+  class web,papi,pexcel,psync empty
+  class desktop broken

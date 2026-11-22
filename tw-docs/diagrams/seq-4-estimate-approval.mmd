@@ -1,0 +1,23 @@
+%% Sequence 4: estimate approval after diagnosis.
+sequenceDiagram
+  actor Desk as Front desk
+  participant Tablet as Mechanic's tablet
+  participant Shell as JavaFX shell
+  participant API
+  participant Kernel
+  participant Store as Storage
+  participant Bus as Event bus
+
+  Tablet->>API: work items and parts after diagnosis
+  API->>Kernel: add work items
+  Kernel->>Store: order -> Approval
+  Kernel->>Bus: EstimateReady
+  Bus->>Shell: notify the front desk
+  Shell->>Desk: estimate 4,300 RUB
+  Desk->>Shell: customer approved by phone
+  Shell->>Kernel: approve (who and how)
+  Kernel->>Store: order -> In progress
+  Kernel->>Bus: EstimateApproved
+  Bus->>API: broadcast
+  API-->>Tablet: you can start
+  Note over Kernel: Below the "no call needed" threshold the kernel approves on its own.<br/>Later: the customer approves by a link from Telegram.

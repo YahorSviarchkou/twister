@@ -1,0 +1,19 @@
+%% Sequence 2: pairing a mechanic's tablet with the workshop PC.
+sequenceDiagram
+  actor Mech as Mechanic
+  participant Tablet
+  participant Shell as JavaFX shell
+  participant API
+  participant Kernel
+  participant Store as Storage
+
+  Mech->>Shell: add device
+  Shell->>Kernel: issue device token
+  Kernel->>Store: save device
+  Kernel-->>Shell: token
+  Shell-->>Mech: QR code with address and token
+  Mech->>Tablet: scan QR code
+  Tablet->>API: POST /pair
+  API->>Kernel: verify token
+  Kernel-->>API: device bound to mechanic
+  API-->>Tablet: session and WebSocket

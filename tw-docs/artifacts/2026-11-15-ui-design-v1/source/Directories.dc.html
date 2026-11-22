@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — прайс услуг и справочники</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="price" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content" style="flex-direction: row">
+      <nav class="col" aria-label="Справочники" style="width: 260px; flex: none; border-right: 1px solid var(--border); padding: 16px 8px; gap: 2px; background: var(--surface-2)">
+        <span class="t-cap" style="padding: 0 10px 8px">Справочники</span>
+        <sc-for list="{{dicts}}" as="d" hint-placeholder-count="5">
+          <a href="Directories.dc.html" class="{{d.cls}}"><i class="{{d.ic}}"></i><span class="grow">{{d.t}}</span><span class="num muted t-sm">{{d.n}}</span></a>
+        </sc-for>
+        <div class="hr" style="margin: 12px 10px"></div>
+        <span class="t-sm muted" style="padding: 0 10px">Все справочники открываются в одном шаблоне: список слева, редактирование справа.</span>
+      </nav>
+      <section class="col grow" style="min-width: 0; padding: 16px 24px">
+        <div class="row g12" style="padding-bottom: 12px">
+          <h1 class="t-display" style="margin: 0">Прайс услуг</h1><span class="badge">18</span>
+          <div class="grow"></div>
+          <div class="input" style="width: 280px; height: 30px"><i class="ic ic-search"></i><input placeholder="Найти услугу" aria-label="Найти услугу"><span class="kbd">Ctrl+F</span></div>
+          <button class="btn btn-sm slot" data-slot="toolbar.action"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+          <button class="btn btn-sm btn-primary"><i class="ic ic-plus"></i>Услуга<span class="kbd">Ins</span></button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl compact">
+            <thead><tr><th class="sorted">Название <i class="ic ic-arr-up"></i></th><th class="r" style="width: 140px">Цена <i class="ic ic-sort"></i></th><th class="r" style="width: 150px">В заказах за год</th><th style="width: 160px">Изменено</th></tr></thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="r" hint-placeholder-count="18">
+                <tr class="{{r.cls}}"><td class="strong">{{r.t}}</td><td class="r money">{{r.p}}</td><td class="r num sub">{{r.u}}</td><td class="num sub t-sm">{{r.d}}</td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <aside class="col" aria-label="Редактирование услуги" style="width: 420px; flex: none; background: var(--surface); border-left: 1px solid var(--border)">
+        <div class="row g8" style="height: 52px; padding: 0 16px; border-bottom: 1px solid var(--border)"><span class="t-h3">Услуга</span><span class="t-sm warn-text row g4" style="margin-left: 8px"><span class="dot warn"></span>есть несохранённые изменения</span><div class="grow"></div><button class="btn btn-ghost btn-sm btn-icon" aria-label="Закрыть"><i class="ic ic-x"></i></button></div>
+        <div class="col g16" style="padding: 16px; flex: 1 1 auto">
+          <div class="field"><label class="req">Название</label><input class="input" value="Переборка задней втулки" aria-label="Название"><span class="hint">Как будет в заказе и счёте. RU / EN — вкладки ниже.</span></div>
+          <div class="row g6"><button class="qtag on">RU</button><button class="qtag">EN · Rear hub overhaul</button></div>
+          <div class="field" style="width: 200px"><label class="req">Цена</label><div class="input is-focus"><input class="num" value="1 300" aria-label="Цена"><span class="sfx">₽</span></div><span class="hint">Было <span class="money" style="font-weight: 400">1 200 ₽</span></span></div>
+          <div class="banner info"><i class="ic ic-info"></i><span>Новая цена применится к новым пунктам. В 3 открытых заказах останется прежняя — их можно обновить вручную.</span></div>
+          <div class="row between"><span class="row g8"><button class="switch on" role="switch" aria-checked="true" aria-label="Показывать в выборе"></button><span class="t-sm">Показывать при выборе услуги</span></span></div>
+          <div class="hr"></div>
+          <div class="col g8"><span class="flabel">История цены</span>
+            <div class="row g12 t-sm"><span class="num muted" style="width: 84px">03.11.2026</span><span class="money" style="font-weight: 400">1 000 → 1 200 ₽</span><span class="muted" style="margin-left: auto">А. Котов</span></div>
+            <div class="row g12 t-sm"><span class="num muted" style="width: 84px">15.02.2026</span><span class="money" style="font-weight: 400">900 → 1 000 ₽</span><span class="muted" style="margin-left: auto">А. Котов</span></div>
+          </div>
+          <div class="grow"></div>
+        </div>
+        <div class="row g8" style="padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface-2)">
+          <button class="btn btn-ghost btn-sm is-disabled" disabled title="Используется в 38 заказах — скройте её из выбора"><i class="ic ic-trash"></i>Удалить</button>
+          <div class="grow"></div>
+          <button class="btn btn-ghost">Отменить</button>
+          <button class="btn btn-primary"><i class="ic ic-save"></i>Сохранить<span class="kbd">Ctrl+S</span></button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const dicts = [['Прайс услуг','tag',18,1],['Страны','globe',18],['Бренды','bike',52],['Типы запчастей','parts',31],['Типы транспорта','building',5]]
+      .map(d => ({ t: d[0], ic: 'ic ic-' + d[1], n: d[2], cls: 'mi' + (d[3] ? ' active' : '') }));
+    dicts[4].ic = 'ic ic-bike';
+    const rows = [['Диагностика',800,412,'01.02.2026'],['Замена камеры',300,96,'01.02.2026'],['Замена каретки',900,41,'01.02.2026'],['Замена кассеты',400,58,'01.02.2026'],['Замена покрышки',300,74,'01.02.2026'],['Замена тормозных колодок',300,133,'01.02.2026'],['Замена троса переключателя',250,88,'01.02.2026'],['Замена троса тормоза',250,52,'01.02.2026'],['Замена цепи',450,164,'03.11.2026'],['Мойка и смазка трансмиссии',700,120,'01.02.2026'],['Настройка переключателей',500,240,'01.02.2026'],['Настройка тормозов V-brake',350,61,'01.02.2026'],['Переборка задней втулки',1200,38,'03.11.2026',1],['Переборка передней втулки',900,29,'03.11.2026'],['Подготовка к хранению',1500,47,'01.09.2026'],['Правка колеса (восьмёрка)',600,109,'01.02.2026'],['Прокачка гидравлических тормозов',1200,77,'01.02.2026'],['Сезонное ТО',3500,63,'01.02.2026']]
+      .map(r => ({ t: r[0], p: m(r[1]), u: r[2], d: r[3], cls: r[4] ? 'sel' : '' }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { dicts, rows, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

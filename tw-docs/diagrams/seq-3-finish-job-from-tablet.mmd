@@ -1,0 +1,26 @@
+%% Sequence 3: a mechanic finishes a work item from the tablet.
+sequenceDiagram
+  actor Mech as Mechanic
+  participant Tablet
+  participant Shell as JavaFX shell
+  participant API
+  participant Kernel
+  participant Store as Storage
+  participant Bus as Event bus
+  participant TgPlugin as Telegram plugin
+  participant Telegram
+
+  Mech->>Tablet: "Done" on a work item
+  Tablet->>API: POST /items/{id}/finish
+  API->>Kernel: finishWorkItem
+  Kernel->>Store: work item -> Done, history
+  opt all work items done
+    Kernel->>Store: order -> Ready
+  end
+  Kernel->>Bus: WorkItemFinished, OrderReady (after commit)
+  Bus->>Shell: refresh the order board
+  Bus->>API: broadcast
+  API-->>Tablet: WebSocket update
+  Bus->>TgPlugin: OrderReady
+  TgPlugin->>Telegram: "Your bike is ready"
+  Note over Kernel,Store: Kernel steps run in one transaction, events leave only after commit.

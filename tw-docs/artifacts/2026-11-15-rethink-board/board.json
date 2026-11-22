@@ -1,0 +1,3239 @@
+{
+ "source": {
+  "artifact": "https://claude.ai/artifact/19HvSDfC3njcGjTJ2E7ksj",
+  "snapshot": "2026-11-21",
+  "note": "Snapshot of a Claude whiteboard. Texts are in the original language (Russian)."
+ },
+ "title": "Twister: переосмысление и фазы",
+ "order": [
+  "e4",
+  "e8",
+  "e17",
+  "e29",
+  "e34",
+  "e38",
+  "e46",
+  "e68",
+  "e73",
+  "e86",
+  "e103",
+  "e104",
+  "e122",
+  "e123",
+  "e149",
+  "e175",
+  "e198",
+  "e229",
+  "e257",
+  "e1",
+  "e2",
+  "e3",
+  "e5",
+  "e6",
+  "e7",
+  "e9",
+  "e10",
+  "e11",
+  "e12",
+  "e13",
+  "e14",
+  "e15",
+  "e16",
+  "e18",
+  "e19",
+  "e20",
+  "e21",
+  "e22",
+  "e23",
+  "e24",
+  "e25",
+  "e26",
+  "e27",
+  "e28",
+  "e30",
+  "e31",
+  "e32",
+  "e33",
+  "e35",
+  "e36",
+  "e37",
+  "e39",
+  "e40",
+  "e41",
+  "e42",
+  "e43",
+  "e44",
+  "e45",
+  "e47",
+  "e48",
+  "e49",
+  "e50",
+  "e51",
+  "e52",
+  "e53",
+  "e54",
+  "e55",
+  "e56",
+  "e57",
+  "e58",
+  "e59",
+  "e60",
+  "e61",
+  "e62",
+  "e63",
+  "e64",
+  "e65",
+  "e66",
+  "e67",
+  "e69",
+  "e70",
+  "e71",
+  "e72",
+  "e74",
+  "e75",
+  "e76",
+  "e77",
+  "e78",
+  "e79",
+  "e80",
+  "e81",
+  "e82",
+  "e83",
+  "e84",
+  "e85",
+  "e87",
+  "e88",
+  "e89",
+  "e90",
+  "e91",
+  "e92",
+  "e93",
+  "e94",
+  "e95",
+  "e96",
+  "e97",
+  "e98",
+  "e99",
+  "e100",
+  "e101",
+  "e102",
+  "e105",
+  "e106",
+  "e107",
+  "e108",
+  "e109",
+  "e110",
+  "e111",
+  "e112",
+  "e113",
+  "e114",
+  "e115",
+  "e116",
+  "e117",
+  "e118",
+  "e119",
+  "e120",
+  "e121",
+  "e124",
+  "e125",
+  "e126",
+  "e127",
+  "e128",
+  "e129",
+  "e130",
+  "e131",
+  "e132",
+  "e133",
+  "e134",
+  "e135",
+  "e136",
+  "e137",
+  "e138",
+  "e139",
+  "e140",
+  "e141",
+  "e142",
+  "e143",
+  "e144",
+  "e145",
+  "e146",
+  "e147",
+  "e148",
+  "e150",
+  "e151",
+  "e152",
+  "e153",
+  "e154",
+  "e155",
+  "e156",
+  "e157",
+  "e158",
+  "e159",
+  "e160",
+  "e161",
+  "e162",
+  "e163",
+  "e164",
+  "e165",
+  "e166",
+  "e167",
+  "e168",
+  "e169",
+  "e170",
+  "e171",
+  "e172",
+  "e173",
+  "e174",
+  "e176",
+  "e177",
+  "e178",
+  "e179",
+  "e180",
+  "e181",
+  "e182",
+  "e183",
+  "e184",
+  "e185",
+  "e186",
+  "e187",
+  "e188",
+  "e189",
+  "e190",
+  "e191",
+  "e192",
+  "e193",
+  "e194",
+  "e195",
+  "e196",
+  "e197",
+  "e199",
+  "e200",
+  "e201",
+  "e202",
+  "e203",
+  "e204",
+  "e205",
+  "e206",
+  "e207",
+  "e208",
+  "e209",
+  "e210",
+  "e211",
+  "e212",
+  "e213",
+  "e214",
+  "e215",
+  "e216",
+  "e217",
+  "e218",
+  "e219",
+  "e220",
+  "e221",
+  "e222",
+  "e223",
+  "e224",
+  "e225",
+  "e226",
+  "e227",
+  "e228",
+  "e230",
+  "e231",
+  "e232",
+  "e233",
+  "e234",
+  "e235",
+  "e236",
+  "e237",
+  "e238",
+  "e239",
+  "e240",
+  "e241",
+  "e242",
+  "e243",
+  "e244",
+  "e245",
+  "e246",
+  "e247",
+  "e248",
+  "e249",
+  "e250",
+  "e251",
+  "e252",
+  "e253",
+  "e254",
+  "e255",
+  "e256",
+  "e258",
+  "e259",
+  "e260",
+  "e261",
+  "e262",
+  "e263",
+  "e264",
+  "e265",
+  "e266",
+  "e267",
+  "e268",
+  "e269",
+  "e270",
+  "e271",
+  "e272",
+  "e273",
+  "e274",
+  "e275",
+  "e276",
+  "e277",
+  "e278",
+  "e279"
+ ],
+ "elements": {
+  "e4": {
+   "type": "container",
+   "x": 0,
+   "y": 260,
+   "w": 560,
+   "h": 272,
+   "text": "Главная развилка",
+   "color": "white"
+  },
+  "e8": {
+   "type": "container",
+   "x": 600,
+   "y": 260,
+   "w": 920,
+   "h": 272,
+   "text": "Что переосмыслить",
+   "color": "white"
+  },
+  "e17": {
+   "type": "container",
+   "x": 0,
+   "y": 600,
+   "w": 1568,
+   "h": 388,
+   "text": "Фазы",
+   "color": "white"
+  },
+  "e29": {
+   "type": "container",
+   "x": 0,
+   "y": 1060,
+   "w": 768,
+   "h": 240,
+   "text": "Архитектура: варианты UI",
+   "color": "white"
+  },
+  "e34": {
+   "type": "container",
+   "x": 808,
+   "y": 1060,
+   "w": 760,
+   "h": 240,
+   "text": "Текущий код",
+   "color": "white"
+  },
+  "e38": {
+   "type": "container",
+   "x": 0,
+   "y": 1370,
+   "w": 996,
+   "h": 312,
+   "text": "Вопросы, которые определят направление",
+   "color": "white"
+  },
+  "e46": {
+   "type": "container",
+   "x": 0,
+   "y": 1760,
+   "w": 1088,
+   "h": 696,
+   "text": "Архитектура расширения: слои",
+   "color": "white"
+  },
+  "e68": {
+   "type": "container",
+   "x": 1128,
+   "y": 1760,
+   "w": 440,
+   "h": 696,
+   "text": "Точки расширения",
+   "color": "white"
+  },
+  "e73": {
+   "type": "container",
+   "x": 0,
+   "y": 2520,
+   "w": 1568,
+   "h": 318,
+   "text": "Телефон и планшет по Wi-Fi",
+   "color": "white"
+  },
+  "e86": {
+   "type": "container",
+   "x": 0,
+   "y": 3100,
+   "w": 1568,
+   "h": 546,
+   "text": "Уровень 1 · Контекст системы",
+   "color": "white"
+  },
+  "e103": {
+   "type": "container",
+   "x": 0,
+   "y": 3726,
+   "w": 1568,
+   "h": 918,
+   "text": "Уровень 2 · Контейнеры",
+   "color": "white"
+  },
+  "e104": {
+   "type": "container",
+   "x": 24,
+   "y": 4020,
+   "w": 888,
+   "h": 600,
+   "text": "Система Twister",
+   "color": "white"
+  },
+  "e122": {
+   "type": "container",
+   "x": 0,
+   "y": 4724,
+   "w": 1568,
+   "h": 1198,
+   "text": "Уровень 3 · Компоненты Desktop-приложения",
+   "color": "white"
+  },
+  "e123": {
+   "type": "container",
+   "x": 300,
+   "y": 4998,
+   "w": 964,
+   "h": 636,
+   "text": "Desktop-приложение",
+   "color": "white"
+  },
+  "e149": {
+   "type": "container",
+   "x": 0,
+   "y": 6180,
+   "w": 1568,
+   "h": 692,
+   "text": "1 · Приём велосипеда",
+   "color": "white"
+  },
+  "e175": {
+   "type": "container",
+   "x": 0,
+   "y": 6952,
+   "w": 1568,
+   "h": 640,
+   "text": "2 · Подключение планшета",
+   "color": "white"
+  },
+  "e198": {
+   "type": "container",
+   "x": 0,
+   "y": 7672,
+   "w": 1568,
+   "h": 756,
+   "text": "3 · Мастер закрывает работу с планшета",
+   "color": "white"
+  },
+  "e229": {
+   "type": "container",
+   "x": 0,
+   "y": 8508,
+   "w": 1568,
+   "h": 808,
+   "text": "4 · Согласование сметы",
+   "color": "white"
+  },
+  "e257": {
+   "type": "container",
+   "x": 0,
+   "y": 9396,
+   "w": 1568,
+   "h": 652,
+   "text": "5 · Выдача и оплата",
+   "color": "white"
+  },
+  "e1": {
+   "type": "text",
+   "x": 0,
+   "y": 0,
+   "text": "Twister: переосмысление",
+   "size": "title"
+  },
+  "e2": {
+   "type": "text",
+   "x": 0,
+   "y": 72,
+   "text": "Сначала одна реальная мастерская, потом продукт",
+   "size": "large"
+  },
+  "e3": {
+   "type": "link",
+   "x": 0,
+   "y": 128,
+   "href": "https://claude.ai/artifact/AJTesZt4JMRCbm2r5AYeK7",
+   "title": "Дизайн интерфейса v1",
+   "kind": "design"
+  },
+  "e5": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 284,
+   "w": 244,
+   "h": 100,
+   "text": "**Инструмент для одной мастерской**\nбыстро, без лишней архитектуры",
+   "color": "peach"
+  },
+  "e6": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 292,
+   "y": 284,
+   "w": 244,
+   "h": 100,
+   "text": "**Продукт для многих**\nSaaS, онбординг, интеграции",
+   "color": "white"
+  },
+  "e7": {
+   "type": "text",
+   "x": 24,
+   "y": 408,
+   "text": "Сейчас проект строится как продукт (плагины, web-sync), а базовый флоу ремонта ещё не работает. Начать с одной мастерской, путь к продукту не закрывать.",
+   "wrap": 512
+  },
+  "e9": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 624,
+   "y": 284,
+   "w": 200,
+   "h": 100,
+   "text": "**Велосипед в центре**\nсервисная книжка, история работ",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e10": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 848,
+   "y": 284,
+   "w": 200,
+   "h": 100,
+   "text": "**2 машины статусов**\nзадача сливается с заказом",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e11": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1072,
+   "y": 284,
+   "w": 200,
+   "h": 100,
+   "text": "**Согласование сметы**\nкто и как, порог «без звонка»",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e12": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1296,
+   "y": 284,
+   "w": 200,
+   "h": 100,
+   "text": "**Мастер у стенда**\nрежим для планшета",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e13": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 624,
+   "y": 408,
+   "w": 200,
+   "h": 100,
+   "text": "**Физический мир**\nбирка с QR, фото, квитанция",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e14": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 848,
+   "y": 408,
+   "w": 200,
+   "h": 100,
+   "text": "**Склад по делу**\nрезерв, дозаказ, продажа через прилавок",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e15": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1072,
+   "y": 408,
+   "w": 200,
+   "h": 100,
+   "text": "**Деньги**\nпредоплата, зарплата мастеров, касса",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e16": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1296,
+   "y": 408,
+   "w": 200,
+   "h": 100,
+   "text": "**Связь с клиентом**\nTelegram, статус по QR",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e18": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 0 · Решения**\n- Закоммитить и запушить\n- CI на Java 21\n- Выбрать позиционирование, UI, БД\n- Домен: 2 машины статусов, смета, количество запчастей\n\nИтог: зелёная сборка и записи решений",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e19": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 288,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 1 · MVP**\nПринял → починил → выдал\n- Клиенты и велосипеды\n- Приём: фото, квитанция, бирка\n- Смета и согласование\n- Работы и запчасти с количеством\n- Оплата, выдача, склад, бэкап\n\nИтог: сезон без бумаги",
+   "color": "peach",
+   "textAlign": "left"
+  },
+  "e20": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 552,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 2 · Мастер и клиент**\n- Режим мастера на планшете\n- Назначение и очередь\n- Уведомления клиенту\n- Статус по QR, смета по ссылке\n\nИтог: приёмщик не звонит по рутине",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e21": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 816,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 3 · Склад и деньги**\n- Поставщики и дозаказ\n- Продажа через прилавок\n- Предоплата, касса\n- Зарплата мастеров\n- Отчёты: выручка, загрузка, маржа",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e22": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1080,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 4 · Удержание**\n- Напоминания о сезонном ТО\n- Гарантия на работы\n- Пакеты ТО\n- Онлайн-запись с учётом загрузки",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e23": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1344,
+   "y": 624,
+   "w": 200,
+   "h": 340,
+   "text": "**Фаза 5 · Продукт**\nесли решишь\n- Несколько мастерских, SaaS\n- Роли и права\n- Импорт, интеграции\n- Плагины во время работы",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e24": {
+   "type": "arrow",
+   "from": "e18",
+   "to": "e19",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e25": {
+   "type": "arrow",
+   "from": "e19",
+   "to": "e20",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e26": {
+   "type": "arrow",
+   "from": "e20",
+   "to": "e21",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e27": {
+   "type": "arrow",
+   "from": "e21",
+   "to": "e22",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e28": {
+   "type": "arrow",
+   "from": "e22",
+   "to": "e23",
+   "fromSide": "right",
+   "toSide": "left",
+   "dash": true
+  },
+  "e30": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 1084,
+   "w": 224,
+   "h": 120,
+   "text": "**A · Веб-интерфейс**\nПК на стойке и планшет мастера, один код",
+   "color": "peach"
+  },
+  "e31": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 272,
+   "y": 1084,
+   "w": 224,
+   "h": 120,
+   "text": "**B · JavaFX + веб**\nдва интерфейса; веб для планшета может отдавать сам ПК",
+   "color": "white"
+  },
+  "e32": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 520,
+   "y": 1084,
+   "w": 224,
+   "h": 120,
+   "text": "**C · Только JavaFX**\nмастер без планшета",
+   "color": "white"
+  },
+  "e33": {
+   "type": "text",
+   "x": 24,
+   "y": 1228,
+   "text": "Одно ядро и разные сборки (см. «Архитектура расширения» ниже). Плагины как модули сборки; загрузка во время работы позже.",
+   "size": "small",
+   "wrap": 720
+  },
+  "e35": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 832,
+   "y": 1084,
+   "w": 224,
+   "h": 180,
+   "text": "**Оставить**\n- Движок стейт-машин с историей\n- Сущности и спецификации\n- Дизайн-систему",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e36": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1080,
+   "y": 1084,
+   "w": 224,
+   "h": 180,
+   "text": "**Пересобрать**\n- 3 уровня статусов → 2\n- DAO-порты без Spring Data\n- Адаптеры в persistence",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e37": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1328,
+   "y": 1084,
+   "w": 216,
+   "h": 180,
+   "text": "**Отложить или удалить**\n- web-sync двух баз\n- plugin-api, завязанный на JavaFX\n- Старый src/ после переноса",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e39": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 1394,
+   "w": 300,
+   "h": 120,
+   "text": "Есть ли реальная мастерская, где это будет работать?",
+   "color": "yellow"
+  },
+  "e40": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 348,
+   "y": 1394,
+   "w": 300,
+   "h": 120,
+   "text": "Личный инструмент или продукт на продажу? В какой стране (касса)?",
+   "color": "yellow"
+  },
+  "e41": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 672,
+   "y": 1394,
+   "w": 300,
+   "h": 120,
+   "text": "Чем пользуется мастер у стенда: планшет, телефон или ничего?",
+   "color": "yellow"
+  },
+  "e42": {
+   "type": "text",
+   "x": 1040,
+   "y": 1400,
+   "text": "Персиковый: рекомендация\nЖёлтый: открытый вопрос",
+   "size": "small",
+   "wrap": 480
+  },
+  "e43": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 1538,
+   "w": 300,
+   "h": 120,
+   "text": "Десктоп: автономный со своей базой, тонкий клиент к серверу или оба?",
+   "color": "yellow"
+  },
+  "e44": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 348,
+   "y": 1538,
+   "w": 300,
+   "h": 120,
+   "text": "Веб-UI: на сервере (htmx, Vaadin) или SPA?",
+   "color": "yellow"
+  },
+  "e45": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 672,
+   "y": 1538,
+   "w": 300,
+   "h": 120,
+   "text": "Кто пишет плагины: только ты или посторонние?",
+   "color": "yellow"
+  },
+  "e47": {
+   "type": "text",
+   "x": 24,
+   "y": 1824,
+   "text": "**Сборки**"
+  },
+  "e48": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 1784,
+   "w": 264,
+   "h": 112,
+   "text": "**app-desktop-standalone**\nkernel + store-jpa (SQLite) + shell-javafx + rest для планшетов",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e49": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 512,
+   "y": 1784,
+   "w": 264,
+   "h": 112,
+   "text": "**app-server**\nkernel + store-jpa (Postgres) + rest + shell-web",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e50": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 800,
+   "y": 1784,
+   "w": 264,
+   "h": 112,
+   "text": "**app-desktop-client**\nshell-javafx + store-remote, тонкий клиент",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e51": {
+   "type": "text",
+   "x": 24,
+   "y": 1944,
+   "text": "**Оболочки и входы**"
+  },
+  "e52": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 1920,
+   "w": 264,
+   "h": 72,
+   "text": "**tw-shell-javafx**\nокно, навигация, вклады",
+   "color": "white"
+  },
+  "e53": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 512,
+   "y": 1920,
+   "w": 264,
+   "h": 72,
+   "text": "**tw-shell-web**\nто же для браузера",
+   "color": "white"
+  },
+  "e54": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 800,
+   "y": 1920,
+   "w": 264,
+   "h": 72,
+   "text": "**tw-rest**\nAPI для веба и планшетов",
+   "color": "white"
+  },
+  "e55": {
+   "type": "text",
+   "x": 24,
+   "y": 2040,
+   "text": "**Хранение**"
+  },
+  "e56": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 2016,
+   "w": 264,
+   "h": 72,
+   "text": "**tw-store-jpa**\nпорты на JPA: SQLite / Postgres",
+   "color": "white"
+  },
+  "e57": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 512,
+   "y": 2016,
+   "w": 264,
+   "h": 72,
+   "text": "**tw-store-remote**\nте же порты через REST",
+   "color": "white"
+  },
+  "e58": {
+   "type": "text",
+   "x": 24,
+   "y": 2136,
+   "text": "**Плагины**"
+  },
+  "e59": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 2112,
+   "w": 192,
+   "h": 72,
+   "text": "**telegram**\nуведомления",
+   "color": "white"
+  },
+  "e60": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 440,
+   "y": 2112,
+   "w": 192,
+   "h": 72,
+   "text": "**print**\nквитанция, бирка, счёт",
+   "color": "white"
+  },
+  "e61": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 656,
+   "y": 2112,
+   "w": 192,
+   "h": 72,
+   "text": "**excel**\nэкспорт, импорт",
+   "color": "white"
+  },
+  "e62": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 872,
+   "y": 2112,
+   "w": 192,
+   "h": 72,
+   "text": "**fiscal**\nкасса",
+   "color": "white"
+  },
+  "e63": {
+   "type": "text",
+   "x": 24,
+   "y": 2228,
+   "text": "**Ядро**"
+  },
+  "e64": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 2208,
+   "w": 840,
+   "h": 64,
+   "text": "**tw-kernel** · use cases, стейт-машины, реестр расширений, шина событий",
+   "color": "white"
+  },
+  "e65": {
+   "type": "text",
+   "x": 24,
+   "y": 2316,
+   "text": "**API**"
+  },
+  "e66": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 224,
+   "y": 2296,
+   "w": 840,
+   "h": 64,
+   "text": "**tw-api** · домен, порты, события, точки расширения · чистая Java",
+   "color": "white"
+  },
+  "e67": {
+   "type": "text",
+   "x": 224,
+   "y": 2384,
+   "text": "Всё зависит только от слоёв ниже. Плагины видят только tw-api: проверяют Gradle и ArchUnit. Десктоп и веб отличаются только набором адаптеров.",
+   "size": "small",
+   "wrap": 840
+  },
+  "e69": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1152,
+   "y": 1784,
+   "w": 392,
+   "h": 140,
+   "text": "**Поведение**\nДоменные события: статус сменился, работа готова, оплата пришла.\nTransitionGuard: плагин может запретить переход.",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e70": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1152,
+   "y": 1948,
+   "w": 392,
+   "h": 130,
+   "text": "**Интеграции**\nNotificationChannel, DocumentTemplate, ExportFormat, FiscalRegister, PriceRule",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e71": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1152,
+   "y": 2102,
+   "w": 392,
+   "h": 170,
+   "text": "**UI: декларативные вклады**\nnav.item, order.tab, toolbar.action, context.action, dashboard.block.\nОбе оболочки рисуют их сами; сложный экран — модуль под каждую оболочку.",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e72": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1152,
+   "y": 2296,
+   "w": 392,
+   "h": 100,
+   "text": "**Паспорт плагина**\nid, version, requires, настройки, свои миграции",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e74": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 2544,
+   "w": 240,
+   "h": 110,
+   "text": "**Планшет или телефон мастера**\nбраузер, без установки",
+   "color": "white"
+  },
+  "e75": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 408,
+   "y": 2544,
+   "w": 300,
+   "h": 110,
+   "text": "**ПК в мастерской**\napp-desktop-standalone: JavaFX на стойке + встроенный сервер",
+   "color": "white"
+  },
+  "e76": {
+   "type": "shape",
+   "kind": "database",
+   "x": 772,
+   "y": 2544,
+   "w": 200,
+   "h": 110,
+   "text": "SQLite на ПК",
+   "color": "white"
+  },
+  "e77": {
+   "type": "arrow",
+   "from": "e74",
+   "to": "e75",
+   "fromSide": "right",
+   "toSide": "left",
+   "label": "Wi-Fi: REST + WebSocket",
+   "head": "both"
+  },
+  "e78": {
+   "type": "arrow",
+   "from": "e75",
+   "to": "e76",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e79": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 24,
+   "y": 2718,
+   "w": 240,
+   "h": 96,
+   "text": "**Подключение**\nQR на экране ПК: адрес + токен устройства",
+   "color": "white"
+  },
+  "e80": {
+   "type": "arrow",
+   "from": "e79",
+   "to": "e74",
+   "fromSide": "top",
+   "toSide": "bottom"
+  },
+  "e81": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 408,
+   "y": 2718,
+   "w": 564,
+   "h": 96,
+   "text": "**Что делает планшет**\nмои работы · начал / готово · добавить запчасть · фото при приёме · ПК видит всё сразу",
+   "color": "white"
+  },
+  "e82": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1036,
+   "y": 2544,
+   "w": 508,
+   "h": 270,
+   "text": "**Что учесть**\n- Адрес: mDNS (twister.local) или QR с IP\n- Брандмауэр Windows: правило добавляет инсталлятор\n- Гостевой Wi-Fi часто изолирует устройства друг от друга\n- Фото с камеры работает и по http; установка как приложения (PWA) и офлайн требуют https\n- ПК выключен: планшет не работает",
+   "color": "white",
+   "textAlign": "left"
+  },
+  "e83": {
+   "type": "text",
+   "x": 0,
+   "y": 2920,
+   "text": "C4-модель Twister",
+   "size": "title"
+  },
+  "e84": {
+   "type": "text",
+   "x": 0,
+   "y": 2996,
+   "text": "Цель: ПК в мастерской и планшеты по Wi-Fi",
+   "size": "large"
+  },
+  "e85": {
+   "type": "text",
+   "x": 1000,
+   "y": 2940,
+   "text": "Синий: наше на этом уровне (система, контейнеры, компоненты)\nБелый: то, что вокруг · Овал: люди\nКонтур без заливки: позже\nУровень 4 (код) не рисуем: его даёт IDE",
+   "size": "small",
+   "wrap": 540
+  },
+  "e87": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 3124,
+   "w": 200,
+   "h": 150,
+   "text": "**Приёмщик**\nприём, выдача, оплата",
+   "color": "white"
+  },
+  "e88": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 3298,
+   "w": 200,
+   "h": 150,
+   "text": "**Мастер**\nдиагностика и ремонт",
+   "color": "white"
+  },
+  "e89": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 3472,
+   "w": 200,
+   "h": 150,
+   "text": "**Владелец**\nденьги, отчёты, настройки",
+   "color": "white"
+  },
+  "e90": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 368,
+   "y": 3124,
+   "w": 360,
+   "h": 498,
+   "text": "**Twister**\nучёт велосипедной мастерской: приём, ремонт, склад, счета",
+   "color": "blue",
+   "size": "large"
+  },
+  "e91": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 872,
+   "y": 3124,
+   "w": 240,
+   "h": 150,
+   "text": "**Telegram**\nBot API",
+   "color": "white"
+  },
+  "e92": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 872,
+   "y": 3298,
+   "w": 240,
+   "h": 150,
+   "text": "**Онлайн-касса и ОФД**\nфискализация",
+   "color": "white"
+  },
+  "e93": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 872,
+   "y": 3472,
+   "w": 240,
+   "h": 150,
+   "text": "**Принтеры**\nквитанции, бирки, счета",
+   "color": "white"
+  },
+  "e94": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 1256,
+   "y": 3124,
+   "w": 220,
+   "h": 150,
+   "text": "**Клиент мастерской**",
+   "color": "white"
+  },
+  "e95": {
+   "type": "text",
+   "x": 1256,
+   "y": 3310,
+   "text": "Позже: статус по QR и согласование сметы по ссылке. Для этого нужен доступ из интернета, то есть облачный сервер.",
+   "size": "small",
+   "wrap": 280
+  },
+  "e96": {
+   "type": "arrow",
+   "from": "e87",
+   "to": [
+    368,
+    3199
+   ],
+   "fromSide": "right",
+   "label": "за стойкой"
+  },
+  "e97": {
+   "type": "arrow",
+   "from": "e88",
+   "to": [
+    368,
+    3373
+   ],
+   "fromSide": "right",
+   "label": "у стенда"
+  },
+  "e98": {
+   "type": "arrow",
+   "from": "e89",
+   "to": [
+    368,
+    3547
+   ],
+   "fromSide": "right",
+   "label": "отчёты"
+  },
+  "e99": {
+   "type": "arrow",
+   "from": [
+    728,
+    3199
+   ],
+   "to": "e91",
+   "toSide": "left",
+   "label": "уведомления"
+  },
+  "e100": {
+   "type": "arrow",
+   "from": [
+    728,
+    3373
+   ],
+   "to": "e92",
+   "toSide": "left",
+   "label": "чеки"
+  },
+  "e101": {
+   "type": "arrow",
+   "from": [
+    728,
+    3547
+   ],
+   "to": "e93",
+   "toSide": "left",
+   "label": "печать"
+  },
+  "e102": {
+   "type": "arrow",
+   "from": "e91",
+   "to": "e94",
+   "fromSide": "right",
+   "toSide": "left",
+   "label": "«готово»"
+  },
+  "e105": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 98,
+   "y": 3750,
+   "w": 220,
+   "h": 110,
+   "text": "**Мастер**",
+   "color": "white"
+  },
+  "e106": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 618,
+   "y": 3750,
+   "w": 220,
+   "h": 110,
+   "text": "**Приёмщик**",
+   "color": "white"
+  },
+  "e107": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 48,
+   "y": 4044,
+   "w": 320,
+   "h": 150,
+   "text": "**Мобильный веб-клиент**\n[HTML + htmx · браузер планшета]\nработы мастера, фото",
+   "color": "blue"
+  },
+  "e108": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 568,
+   "y": 4044,
+   "w": 320,
+   "h": 348,
+   "text": "**Desktop-приложение**\n[Java 21 · JavaFX · Spring Boot]\n\nоболочка стойки, ядро, встроенный HTTP-сервер, плагины\n\nодин процесс на ПК",
+   "color": "blue"
+  },
+  "e109": {
+   "type": "shape",
+   "kind": "database",
+   "x": 568,
+   "y": 4456,
+   "w": 320,
+   "h": 140,
+   "text": "**База данных**\n[SQLite · Flyway]\nфайл на ПК, бэкап",
+   "color": "blue"
+  },
+  "e110": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 48,
+   "y": 4456,
+   "w": 320,
+   "h": 140,
+   "text": "**Облачный сервер** · позже\n[Spring Boot · Postgres]\nстатус для клиента, удалённый доступ",
+   "hollow": true,
+   "stroke": "blue"
+  },
+  "e111": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1056,
+   "y": 4044,
+   "w": 260,
+   "h": 100,
+   "text": "**Telegram**\nBot API",
+   "color": "white"
+  },
+  "e112": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1056,
+   "y": 4168,
+   "w": 260,
+   "h": 100,
+   "text": "**Касса и ОФД**",
+   "color": "white"
+  },
+  "e113": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1056,
+   "y": 4292,
+   "w": 260,
+   "h": 100,
+   "text": "**Принтеры**\nчековая лента, A4, этикетки",
+   "color": "white"
+  },
+  "e114": {
+   "type": "text",
+   "x": 1056,
+   "y": 4456,
+   "text": "Контур без заливки: вариант роста. С облачным сервером десктоп становится тонким клиентом (store-remote), а клиент мастерской видит статус по QR.",
+   "size": "small",
+   "wrap": 480
+  },
+  "e115": {
+   "type": "arrow",
+   "from": "e105",
+   "to": "e107",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "у стенда"
+  },
+  "e116": {
+   "type": "arrow",
+   "from": "e106",
+   "to": "e108",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "за стойкой"
+  },
+  "e117": {
+   "type": "arrow",
+   "from": [
+    368,
+    4119
+   ],
+   "to": [
+    568,
+    4119
+   ],
+   "label": "REST + WebSocket, Wi-Fi"
+  },
+  "e118": {
+   "type": "arrow",
+   "from": "e108",
+   "to": "e109",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "JPA"
+  },
+  "e119": {
+   "type": "arrow",
+   "from": [
+    888,
+    4094
+   ],
+   "to": "e111",
+   "toSide": "left",
+   "label": "HTTPS"
+  },
+  "e120": {
+   "type": "arrow",
+   "from": [
+    888,
+    4218
+   ],
+   "to": "e112",
+   "toSide": "left",
+   "label": "чек"
+  },
+  "e121": {
+   "type": "arrow",
+   "from": [
+    888,
+    4342
+   ],
+   "to": "e113",
+   "toSide": "left",
+   "label": "печать"
+  },
+  "e124": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 402,
+   "y": 4748,
+   "w": 220,
+   "h": 110,
+   "text": "**Приёмщик**",
+   "color": "white"
+  },
+  "e125": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 696,
+   "y": 4748,
+   "w": 240,
+   "h": 110,
+   "text": "**Мобильный веб-клиент**\nбраузер планшета",
+   "color": "white"
+  },
+  "e126": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 392,
+   "y": 5022,
+   "w": 240,
+   "h": 100,
+   "text": "**JavaFX-оболочка**\ntw-shell-javafx · экраны стойки",
+   "color": "blue"
+  },
+  "e127": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 696,
+   "y": 5022,
+   "w": 240,
+   "h": 100,
+   "text": "**API и страницы для планшета**\ntw-rest + tw-shell-web",
+   "color": "blue"
+  },
+  "e128": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 392,
+   "y": 5266,
+   "w": 544,
+   "h": 100,
+   "text": "**Ядро** · tw-kernel\nприём, заказы, склад, счета, оплата",
+   "color": "blue"
+  },
+  "e129": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1000,
+   "y": 5266,
+   "w": 240,
+   "h": 100,
+   "text": "**Реестр расширений и шина событий**\nвклады UI, подписки",
+   "color": "blue"
+  },
+  "e130": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 392,
+   "y": 5510,
+   "w": 240,
+   "h": 100,
+   "text": "**Движок статусов**\nстейт-машины + история",
+   "color": "blue"
+  },
+  "e131": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 696,
+   "y": 5510,
+   "w": 240,
+   "h": 100,
+   "text": "**Адаптеры хранения**\ntw-store-jpa",
+   "color": "blue"
+  },
+  "e132": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1000,
+   "y": 5510,
+   "w": 240,
+   "h": 100,
+   "text": "**Плагины**\ntelegram · print · fiscal · excel",
+   "color": "blue"
+  },
+  "e133": {
+   "type": "shape",
+   "kind": "database",
+   "x": 696,
+   "y": 5778,
+   "w": 240,
+   "h": 120,
+   "text": "**SQLite**\nфайл на ПК",
+   "color": "white"
+  },
+  "e134": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1000,
+   "y": 5778,
+   "w": 240,
+   "h": 120,
+   "text": "**Telegram · касса · принтеры**",
+   "color": "white"
+  },
+  "e135": {
+   "type": "text",
+   "x": 24,
+   "y": 5022,
+   "text": "tw-api (порты, события, точки расширения) общий для всех компонентов и плагинов, поэтому на схеме не показан.\n\nЯдро публикует события после коммита; плагины не трогают ядро напрямую.",
+   "size": "small",
+   "wrap": 240
+  },
+  "e136": {
+   "type": "arrow",
+   "from": "e124",
+   "to": "e126",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "работает"
+  },
+  "e137": {
+   "type": "arrow",
+   "from": "e125",
+   "to": "e127",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "REST + WebSocket"
+  },
+  "e138": {
+   "type": "arrow",
+   "from": "e126",
+   "to": [
+    512,
+    5266
+   ],
+   "fromSide": "bottom",
+   "label": "use cases"
+  },
+  "e139": {
+   "type": "arrow",
+   "from": "e127",
+   "to": [
+    816,
+    5266
+   ],
+   "fromSide": "bottom",
+   "label": "use cases"
+  },
+  "e140": {
+   "type": "arrow",
+   "from": [
+    512,
+    5366
+   ],
+   "to": "e130",
+   "toSide": "top",
+   "label": "переходы"
+  },
+  "e141": {
+   "type": "arrow",
+   "from": [
+    816,
+    5366
+   ],
+   "to": "e131",
+   "toSide": "top",
+   "label": "порты"
+  },
+  "e142": {
+   "type": "arrow",
+   "from": "e128",
+   "to": "e129",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  "e143": {
+   "type": "arrow",
+   "from": "e129",
+   "to": "e132",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "подписки"
+  },
+  "e144": {
+   "type": "arrow",
+   "from": "e131",
+   "to": "e133",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "JPA"
+  },
+  "e145": {
+   "type": "arrow",
+   "from": "e132",
+   "to": "e134",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "label": "HTTPS, драйверы"
+  },
+  "e146": {
+   "type": "text",
+   "x": 0,
+   "y": 6000,
+   "text": "Сценарии: sequence-диаграммы",
+   "size": "title"
+  },
+  "e147": {
+   "type": "text",
+   "x": 0,
+   "y": 6076,
+   "text": "Пять ключевых сценариев на одной сетке участников",
+   "size": "large"
+  },
+  "e148": {
+   "type": "text",
+   "x": 1000,
+   "y": 6010,
+   "wrap": 540,
+   "size": "small",
+   "text": "Сплошная стрелка: вызов · пунктир: ответ\nКолонки участников одинаковые во всех диаграммах\nСиний: наши компоненты · белый: люди и внешние системы"
+  },
+  "e150": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Приёмщик**"
+  },
+  "e151": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 364,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**JavaFX-оболочка**"
+  },
+  "e152": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 704,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Ядро**"
+  },
+  "e153": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 874,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Хранилище**"
+  },
+  "e154": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1044,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Шина событий**"
+  },
+  "e155": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1214,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Плагин print**"
+  },
+  "e156": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1384,
+   "y": 6204,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Принтер**"
+  },
+  "e157": {
+   "type": "stroke",
+   "x": 102,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e158": {
+   "type": "stroke",
+   "x": 442,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e159": {
+   "type": "stroke",
+   "x": 782,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e160": {
+   "type": "stroke",
+   "x": 952,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e161": {
+   "type": "stroke",
+   "x": 1122,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e162": {
+   "type": "stroke",
+   "x": 1292,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e163": {
+   "type": "stroke",
+   "x": 1462,
+   "y": 6260,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e164": {
+   "type": "arrow",
+   "from": [
+    102,
+    6300
+   ],
+   "to": [
+    442,
+    6300
+   ],
+   "label": "телефон клиента"
+  },
+  "e165": {
+   "type": "arrow",
+   "from": [
+    442,
+    6352
+   ],
+   "to": [
+    782,
+    6352
+   ],
+   "label": "найти клиента"
+  },
+  "e166": {
+   "type": "arrow",
+   "from": [
+    782,
+    6404
+   ],
+   "to": [
+    952,
+    6404
+   ],
+   "label": "поиск по телефону"
+  },
+  "e167": {
+   "type": "arrow",
+   "from": [
+    952,
+    6456
+   ],
+   "to": [
+    782,
+    6456
+   ],
+   "label": "клиент и велосипеды",
+   "dash": true
+  },
+  "e168": {
+   "type": "arrow",
+   "from": [
+    442,
+    6508
+   ],
+   "to": [
+    782,
+    6508
+   ],
+   "label": "создать заказ (жалоба, фото, срок)"
+  },
+  "e169": {
+   "type": "arrow",
+   "from": [
+    782,
+    6560
+   ],
+   "to": [
+    952,
+    6560
+   ],
+   "label": "сохранить, «Принят»"
+  },
+  "e170": {
+   "type": "arrow",
+   "from": [
+    782,
+    6612
+   ],
+   "to": [
+    442,
+    6612
+   ],
+   "label": "№ заказа",
+   "dash": true
+  },
+  "e171": {
+   "type": "arrow",
+   "from": [
+    782,
+    6664
+   ],
+   "to": [
+    1122,
+    6664
+   ],
+   "label": "OrderAccepted, после коммита"
+  },
+  "e172": {
+   "type": "arrow",
+   "from": [
+    1122,
+    6716
+   ],
+   "to": [
+    1292,
+    6716
+   ],
+   "label": "событие"
+  },
+  "e173": {
+   "type": "arrow",
+   "from": [
+    1292,
+    6768
+   ],
+   "to": [
+    1462,
+    6768
+   ],
+   "label": "квитанция, бирка"
+  },
+  "e174": {
+   "type": "arrow",
+   "from": [
+    442,
+    6820
+   ],
+   "to": [
+    102,
+    6820
+   ],
+   "label": "№ заказа, печать",
+   "dash": true
+  },
+  "e176": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Мастер**"
+  },
+  "e177": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 194,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Планшет**"
+  },
+  "e178": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 364,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**JavaFX-оболочка**"
+  },
+  "e179": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 534,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**API**"
+  },
+  "e180": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 704,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Ядро**"
+  },
+  "e181": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 874,
+   "y": 6976,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Хранилище**"
+  },
+  "e182": {
+   "type": "stroke",
+   "x": 102,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e183": {
+   "type": "stroke",
+   "x": 272,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e184": {
+   "type": "stroke",
+   "x": 442,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e185": {
+   "type": "stroke",
+   "x": 612,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e186": {
+   "type": "stroke",
+   "x": 782,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e187": {
+   "type": "stroke",
+   "x": 952,
+   "y": 7032,
+   "points": [
+    0,
+    0,
+    0,
+    536
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e188": {
+   "type": "arrow",
+   "from": [
+    102,
+    7072
+   ],
+   "to": [
+    442,
+    7072
+   ],
+   "label": "добавить устройство"
+  },
+  "e189": {
+   "type": "arrow",
+   "from": [
+    442,
+    7124
+   ],
+   "to": [
+    782,
+    7124
+   ],
+   "label": "выпустить токен"
+  },
+  "e190": {
+   "type": "arrow",
+   "from": [
+    782,
+    7176
+   ],
+   "to": [
+    952,
+    7176
+   ],
+   "label": "сохранить устройство"
+  },
+  "e191": {
+   "type": "arrow",
+   "from": [
+    782,
+    7228
+   ],
+   "to": [
+    442,
+    7228
+   ],
+   "label": "токен",
+   "dash": true
+  },
+  "e192": {
+   "type": "arrow",
+   "from": [
+    442,
+    7280
+   ],
+   "to": [
+    102,
+    7280
+   ],
+   "label": "QR: адрес + токен",
+   "dash": true
+  },
+  "e193": {
+   "type": "arrow",
+   "from": [
+    102,
+    7332
+   ],
+   "to": [
+    272,
+    7332
+   ],
+   "label": "сканирует QR"
+  },
+  "e194": {
+   "type": "arrow",
+   "from": [
+    272,
+    7384
+   ],
+   "to": [
+    612,
+    7384
+   ],
+   "label": "POST /pair"
+  },
+  "e195": {
+   "type": "arrow",
+   "from": [
+    612,
+    7436
+   ],
+   "to": [
+    782,
+    7436
+   ],
+   "label": "проверить токен"
+  },
+  "e196": {
+   "type": "arrow",
+   "from": [
+    782,
+    7488
+   ],
+   "to": [
+    612,
+    7488
+   ],
+   "label": "привязано к мастеру",
+   "dash": true
+  },
+  "e197": {
+   "type": "arrow",
+   "from": [
+    612,
+    7540
+   ],
+   "to": [
+    272,
+    7540
+   ],
+   "label": "сессия, WebSocket",
+   "dash": true
+  },
+  "e199": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Мастер**"
+  },
+  "e200": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 194,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Планшет**"
+  },
+  "e201": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 364,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**JavaFX-оболочка**"
+  },
+  "e202": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 534,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**API**"
+  },
+  "e203": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 704,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Ядро**"
+  },
+  "e204": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 874,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Хранилище**"
+  },
+  "e205": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1044,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Шина событий**"
+  },
+  "e206": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1214,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Плагин telegram**"
+  },
+  "e207": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1384,
+   "y": 7696,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Telegram**"
+  },
+  "e208": {
+   "type": "stroke",
+   "x": 102,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e209": {
+   "type": "stroke",
+   "x": 272,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e210": {
+   "type": "stroke",
+   "x": 442,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e211": {
+   "type": "stroke",
+   "x": 612,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e212": {
+   "type": "stroke",
+   "x": 782,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e213": {
+   "type": "stroke",
+   "x": 952,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e214": {
+   "type": "stroke",
+   "x": 1122,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e215": {
+   "type": "stroke",
+   "x": 1292,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e216": {
+   "type": "stroke",
+   "x": 1462,
+   "y": 7752,
+   "points": [
+    0,
+    0,
+    0,
+    588
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e217": {
+   "type": "arrow",
+   "from": [
+    102,
+    7792
+   ],
+   "to": [
+    272,
+    7792
+   ],
+   "label": "«Готово» по пункту"
+  },
+  "e218": {
+   "type": "arrow",
+   "from": [
+    272,
+    7844
+   ],
+   "to": [
+    612,
+    7844
+   ],
+   "label": "POST /items/{id}/finish"
+  },
+  "e219": {
+   "type": "arrow",
+   "from": [
+    612,
+    7896
+   ],
+   "to": [
+    782,
+    7896
+   ],
+   "label": "finishWorkItem"
+  },
+  "e220": {
+   "type": "arrow",
+   "from": [
+    782,
+    7948
+   ],
+   "to": [
+    952,
+    7948
+   ],
+   "label": "пункт → «Готов»"
+  },
+  "e221": {
+   "type": "arrow",
+   "from": [
+    782,
+    8000
+   ],
+   "to": [
+    952,
+    8000
+   ],
+   "label": "заказ → «Готов»"
+  },
+  "e222": {
+   "type": "arrow",
+   "from": [
+    782,
+    8052
+   ],
+   "to": [
+    1122,
+    8052
+   ],
+   "label": "WorkItemFinished, OrderReady"
+  },
+  "e223": {
+   "type": "arrow",
+   "from": [
+    1122,
+    8104
+   ],
+   "to": [
+    442,
+    8104
+   ],
+   "label": "обновить доску"
+  },
+  "e224": {
+   "type": "arrow",
+   "from": [
+    1122,
+    8156
+   ],
+   "to": [
+    612,
+    8156
+   ],
+   "label": "рассылка"
+  },
+  "e225": {
+   "type": "arrow",
+   "from": [
+    612,
+    8208
+   ],
+   "to": [
+    272,
+    8208
+   ],
+   "label": "WebSocket: обновление",
+   "dash": true
+  },
+  "e226": {
+   "type": "arrow",
+   "from": [
+    1122,
+    8260
+   ],
+   "to": [
+    1292,
+    8260
+   ],
+   "label": "OrderReady"
+  },
+  "e227": {
+   "type": "arrow",
+   "from": [
+    1292,
+    8312
+   ],
+   "to": [
+    1462,
+    8312
+   ],
+   "label": "«Велосипед готов»"
+  },
+  "e228": {
+   "type": "text",
+   "x": 24,
+   "y": 8356,
+   "wrap": 1200,
+   "size": "small",
+   "text": "Заказ переходит в «Готов», только когда готовы все пункты. Шаги ядра идут в одной транзакции, события уходят после коммита."
+  },
+  "e230": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Приёмщик**"
+  },
+  "e231": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 194,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Планшет мастера**"
+  },
+  "e232": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 364,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**JavaFX-оболочка**"
+  },
+  "e233": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 534,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**API**"
+  },
+  "e234": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 704,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Ядро**"
+  },
+  "e235": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 874,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Хранилище**"
+  },
+  "e236": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1044,
+   "y": 8532,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Шина событий**"
+  },
+  "e237": {
+   "type": "stroke",
+   "x": 102,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e238": {
+   "type": "stroke",
+   "x": 272,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e239": {
+   "type": "stroke",
+   "x": 442,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e240": {
+   "type": "stroke",
+   "x": 612,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e241": {
+   "type": "stroke",
+   "x": 782,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e242": {
+   "type": "stroke",
+   "x": 952,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e243": {
+   "type": "stroke",
+   "x": 1122,
+   "y": 8588,
+   "points": [
+    0,
+    0,
+    0,
+    640
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e244": {
+   "type": "arrow",
+   "from": [
+    272,
+    8628
+   ],
+   "to": [
+    612,
+    8628
+   ],
+   "label": "работы и запчасти после диагностики"
+  },
+  "e245": {
+   "type": "arrow",
+   "from": [
+    612,
+    8680
+   ],
+   "to": [
+    782,
+    8680
+   ],
+   "label": "добавить пункты"
+  },
+  "e246": {
+   "type": "arrow",
+   "from": [
+    782,
+    8732
+   ],
+   "to": [
+    952,
+    8732
+   ],
+   "label": "«Согласование»"
+  },
+  "e247": {
+   "type": "arrow",
+   "from": [
+    782,
+    8784
+   ],
+   "to": [
+    1122,
+    8784
+   ],
+   "label": "EstimateReady"
+  },
+  "e248": {
+   "type": "arrow",
+   "from": [
+    1122,
+    8836
+   ],
+   "to": [
+    442,
+    8836
+   ],
+   "label": "уведомить приёмщика"
+  },
+  "e249": {
+   "type": "arrow",
+   "from": [
+    442,
+    8888
+   ],
+   "to": [
+    102,
+    8888
+   ],
+   "label": "смета 4 300 ₽"
+  },
+  "e250": {
+   "type": "arrow",
+   "from": [
+    102,
+    8940
+   ],
+   "to": [
+    442,
+    8940
+   ],
+   "label": "клиент согласовал по телефону"
+  },
+  "e251": {
+   "type": "arrow",
+   "from": [
+    442,
+    8992
+   ],
+   "to": [
+    782,
+    8992
+   ],
+   "label": "согласовать: кто и как"
+  },
+  "e252": {
+   "type": "arrow",
+   "from": [
+    782,
+    9044
+   ],
+   "to": [
+    952,
+    9044
+   ],
+   "label": "заказ → «В работе»"
+  },
+  "e253": {
+   "type": "arrow",
+   "from": [
+    782,
+    9096
+   ],
+   "to": [
+    1122,
+    9096
+   ],
+   "label": "EstimateApproved"
+  },
+  "e254": {
+   "type": "arrow",
+   "from": [
+    1122,
+    9148
+   ],
+   "to": [
+    612,
+    9148
+   ],
+   "label": "рассылка"
+  },
+  "e255": {
+   "type": "arrow",
+   "from": [
+    612,
+    9200
+   ],
+   "to": [
+    272,
+    9200
+   ],
+   "label": "можно начинать",
+   "dash": true
+  },
+  "e256": {
+   "type": "text",
+   "x": 24,
+   "y": 9244,
+   "wrap": 1200,
+   "size": "small",
+   "text": "Если сумма ниже порога «без звонка», ядро согласует само. Позже: клиент согласует по ссылке из Telegram."
+  },
+  "e258": {
+   "type": "shape",
+   "kind": "pill",
+   "x": 24,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Приёмщик**"
+  },
+  "e259": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 364,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**JavaFX-оболочка**"
+  },
+  "e260": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 704,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Ядро**"
+  },
+  "e261": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 874,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Хранилище**"
+  },
+  "e262": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1214,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "blue",
+   "size": "small",
+   "text": "**Плагин fiscal**"
+  },
+  "e263": {
+   "type": "shape",
+   "kind": "rounded",
+   "x": 1384,
+   "y": 9420,
+   "w": 156,
+   "h": 56,
+   "color": "white",
+   "size": "small",
+   "text": "**Касса**"
+  },
+  "e264": {
+   "type": "stroke",
+   "x": 102,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e265": {
+   "type": "stroke",
+   "x": 442,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e266": {
+   "type": "stroke",
+   "x": 782,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e267": {
+   "type": "stroke",
+   "x": 952,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e268": {
+   "type": "stroke",
+   "x": 1292,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e269": {
+   "type": "stroke",
+   "x": 1462,
+   "y": 9476,
+   "points": [
+    0,
+    0,
+    0,
+    484
+   ],
+   "color": "#9aa3ad",
+   "width": 2
+  },
+  "e270": {
+   "type": "arrow",
+   "from": [
+    102,
+    9516
+   ],
+   "to": [
+    442,
+    9516
+   ],
+   "label": "выдать, оплата картой"
+  },
+  "e271": {
+   "type": "arrow",
+   "from": [
+    442,
+    9568
+   ],
+   "to": [
+    782,
+    9568
+   ],
+   "label": "выдать заказ"
+  },
+  "e272": {
+   "type": "arrow",
+   "from": [
+    782,
+    9620
+   ],
+   "to": [
+    1292,
+    9620
+   ],
+   "label": "TransitionGuard: можно «Выдан»?"
+  },
+  "e273": {
+   "type": "arrow",
+   "from": [
+    1292,
+    9672
+   ],
+   "to": [
+    1462,
+    9672
+   ],
+   "label": "пробить чек"
+  },
+  "e274": {
+   "type": "arrow",
+   "from": [
+    1462,
+    9724
+   ],
+   "to": [
+    1292,
+    9724
+   ],
+   "label": "фискальный признак",
+   "dash": true
+  },
+  "e275": {
+   "type": "arrow",
+   "from": [
+    1292,
+    9776
+   ],
+   "to": [
+    782,
+    9776
+   ],
+   "label": "разрешено",
+   "dash": true
+  },
+  "e276": {
+   "type": "arrow",
+   "from": [
+    782,
+    9828
+   ],
+   "to": [
+    952,
+    9828
+   ],
+   "label": "оплата, «Выдан»"
+  },
+  "e277": {
+   "type": "arrow",
+   "from": [
+    782,
+    9880
+   ],
+   "to": [
+    442,
+    9880
+   ],
+   "label": "готово",
+   "dash": true
+  },
+  "e278": {
+   "type": "arrow",
+   "from": [
+    442,
+    9932
+   ],
+   "to": [
+    102,
+    9932
+   ],
+   "label": "чек, гарантия",
+   "dash": true
+  },
+  "e279": {
+   "type": "text",
+   "x": 24,
+   "y": 9976,
+   "wrap": 1200,
+   "size": "small",
+   "text": "Касса не ответила: guard запрещает переход, заказ остаётся «Готов», приёмщик видит понятную ошибку."
+  }
+ }
+}

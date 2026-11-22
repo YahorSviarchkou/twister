@@ -1,0 +1,18 @@
+%% Proposed order state machine (ADR 0005). Replaces RepairOrder + RepairTask.
+stateDiagram-v2
+  [*] --> Accepted: intake
+  Accepted --> Diagnosis: start diagnosis
+  Diagnosis --> Approval: estimate ready
+  Diagnosis --> Ready: no repair needed (diagnosis-only invoice)
+  Approval --> InProgress: customer approved / below threshold
+  InProgress --> WaitingForParts: part missing
+  WaitingForParts --> InProgress: parts arrived
+  InProgress --> Ready: all work items done
+  Ready --> HandedOver: paid and handed over
+  Accepted --> Cancelled
+  Diagnosis --> Cancelled
+  Approval --> Cancelled: customer declined
+  InProgress --> Cancelled
+  WaitingForParts --> Cancelled
+  HandedOver --> [*]
+  Cancelled --> [*]

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — склад запчастей</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="stock" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content">
+      <div class="pagehead">
+        <h1 class="t-display" style="margin: 0">Склад запчастей</h1>
+        <span class="t-sm muted">186 позиций · <span class="warn-text strong">4 мало</span> · <span class="danger-text strong">2 нет в наличии</span></span>
+        <div class="grow"></div>
+        <button class="btn"><i class="ic ic-minus"></i>Списание</button>
+        <button class="btn btn-primary"><i class="ic ic-upload"></i>Приход<span class="kbd">Ctrl+I</span></button>
+      </div>
+      <div class="toolbar">
+        <div class="input" style="width: 300px; height: 30px"><i class="ic ic-search"></i><input placeholder="Название или артикул" aria-label="Поиск запчастей"></div>
+        <button class="btn btn-sm"><span class="muted">Тип:</span>Все<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><span class="muted">Бренд:</span>Все<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><span class="muted">Материал:</span>Все<i class="ic ic-chev-d s14"></i></button>
+        <button class="btn btn-sm"><span class="muted">Транспорт:</span>Велосипед, универсальные<i class="ic ic-chev-d s14"></i></button>
+        <label class="check t-sm" style="margin-left: 8px"><input type="checkbox">Только низкий остаток</label>
+        <div class="grow"></div>
+        <button class="btn btn-sm slot" data-slot="toolbar.action"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+      </div>
+      <div style="padding: 0 24px 16px; flex: 1 1 auto; min-height: 0">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th class="sorted">Наименование <i class="ic ic-arr-up"></i></th><th>Тип</th><th>Бренд</th><th>Материал</th><th>Транспорт</th><th class="r">Цена</th><th class="r">Остаток</th><th class="r">Резерв</th><th class="r" style="width: 210px">Доступно <i class="ic ic-sort"></i></th><th style="width: 44px"></th></tr></thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="r" hint-placeholder-count="14">
+                <tr class="{{r.cls}}">
+                  <td class="strong">{{r.n}}</td><td class="sub">{{r.t}}</td><td>{{r.b}}</td><td class="sub">{{r.m}}</td><td class="sub">{{r.v}}</td>
+                  <td class="r money" style="font-weight: 400">{{r.p}}</td><td class="r num">{{r.q}}</td><td class="r num sub">{{r.rs}}</td>
+                  <td class="{{r.avCls}}"><span class="row g6 end"><sc-if value="{{r.flag}}" hint-placeholder-val="{{ false }}"><span class="t-sm" style="font-size: 12px">{{r.flag}}</span><i class="{{r.flagIc}}"></i></sc-if><span class="num strong">{{r.a}}</span></span></td>
+                  <td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Действия"><i class="ic ic-more"></i></button></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div class="pager"><span>1–14 из <span class="num">186</span> · остаток на сумму <span class="money" style="color: var(--text)">412 830 ₽</span></span><div class="grow"></div><span class="t-sm muted">Порог «мало»: доступно ≤ 2 — меняется в настройках</span><button class="pg" aria-label="Назад"><i class="ic ic-chev-l s14"></i></button><button class="pg on">1</button><button class="pg">2</button><span class="muted">…</span><button class="pg">14</button><button class="pg" aria-label="Вперёд"><i class="ic ic-chev-r s14"></i></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scrim">
+    <div class="dialog" role="dialog" aria-label="Приход запчастей" style="width: 720px">
+      <div class="dlg-h"><i class="ic ic-upload s20 sub"></i><span class="t-h1">Приход запчастей</span><div class="grow"></div><button class="btn btn-ghost btn-sm btn-icon" aria-label="Закрыть" title="Закрыть · Esc"><i class="ic ic-x"></i></button></div>
+      <div class="dlg-b">
+        <div class="row g12">
+          <div class="field" style="width: 200px"><label>Накладная №</label><input class="input num" value="318" aria-label="Накладная"></div>
+          <div class="field" style="width: 180px"><label class="req">Дата</label><div class="input"><i class="ic ic-calendar"></i><input class="num" value="17.11.2026" aria-label="Дата"></div></div>
+          <div class="field grow"><label>Поставщик</label><input class="input" value="ВелоОпт, Москва" aria-label="Поставщик"></div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl compact">
+            <thead><tr><th>Запчасть</th><th class="r" style="width: 90px">Кол-во</th><th class="r" style="width: 110px">Цена, шт.</th><th class="r" style="width: 100px">Сумма</th><th style="width: 36px"></th></tr></thead>
+            <tbody>
+              <tr><td><div class="col"><span class="strong">Подшипник 6000-2RS 10×26×8</span><span class="t-sm warn-text">Остаток 0 · ждёт заказ № 1047 (2 шт.)</span></div></td><td class="r"><input class="input num" value="4" style="width: 64px; height: 28px; text-align: right" aria-label="Количество"></td><td class="r"><input class="input num" value="180" style="width: 90px; height: 28px; text-align: right" aria-label="Цена"></td><td class="r money">720 ₽</td><td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Удалить строку"><i class="ic ic-trash s14"></i></button></td></tr>
+              <tr><td><div class="col"><span class="strong">Цепь KMC X9, 116 зв.</span><span class="t-sm muted">Остаток 3</span></div></td><td class="r"><div class="input num err" style="width: 64px; height: 28px; margin-left: auto"><input class="num" value="0" style="text-align: right" aria-invalid="true" aria-label="Количество"></div></td><td class="r"><input class="input num" value="1 750" style="width: 90px; height: 28px; text-align: right" aria-label="Цена"></td><td class="r money muted">—</td><td><button class="btn btn-ghost btn-sm btn-icon" aria-label="Удалить строку"><i class="ic ic-trash s14"></i></button></td></tr>
+              <tr><td colspan="5"><div class="input" style="height: 30px; border-style: dashed"><i class="ic ic-plus"></i><input placeholder="Добавить позицию: начните вводить название" aria-label="Добавить позицию"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="errmsg"><i class="ic ic-alert s14"></i>Строка 2: количество должно быть больше нуля</span>
+        <div class="banner info"><i class="ic ic-info"></i><span>После проведения 2 подшипника уйдут в резерв заказа № 1047, пункт «Переборка задней втулки» можно будет перевести «В работу». Мастер получит уведомление.</span></div>
+      </div>
+      <div class="dlg-f"><span class="t-sm muted" style="margin-right: auto">Итого по накладной <span class="money" style="color: var(--text)">720 ₽</span></span><button class="btn btn-ghost">Отмена<span class="kbd">Esc</span></button><button class="btn btn-primary"><i class="ic ic-check"></i>Провести приход<span class="kbd">Ctrl+Enter</span></button></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const raw = [
+      ['Камера CST 29×1,9–2,35 AV','Камера','CST','Бутил','Велосипед',390,12,1],
+      ['Камера Kenda 10×2,5','Камера','Kenda','Бутил','Электросамокат',450,5,0],
+      ['Каретка Shimano BB-UN300 68/122,5','Каретка','Shimano','Сталь','Велосипед',1650,2,0],
+      ['Кассета Shimano CS-HG200, 9 ск.','Кассета','Shimano','Сталь','Велосипед',1890,2,1],
+      ['Колодки Shimano B01S','Тормозные колодки','Shimano','Органика','Велосипед',690,8,0],
+      ['Педали VP-536','Педали','VP','Алюминий','Велосипед',1290,1,1],
+      ['Подшипник 6000-2RS 10×26×8','Подшипник','NTN','Сталь','Универсальный',180,0,0],
+      ['Покрышка Kenda K1153 29×2,10','Покрышка','Kenda','Резина','Велосипед',1450,4,0],
+      ['Рубашка Jagwire 4 мм, 1 м','Рубашка троса','Jagwire','Пластик','Велосипед',120,30,0],
+      ['Смазка Shimano Premium, 100 г','Смазка','Shimano','—','Универсальный',890,3,1],
+      ['Трос Jagwire Basics 2300 мм','Трос','Jagwire','Нерж. сталь','Велосипед',190,15,1],
+      ['Цепь KMC X9, 116 зв.','Цепь','KMC','Сталь','Велосипед',1750,3,0],
+      ['Цепь Shimano CN-HG54, 116 зв.','Цепь','Shimano','Сталь','Велосипед',2190,6,1],
+      ['Шина Kenda K1029 10×2,5','Покрышка','Kenda','Резина','Электросамокат',990,2,0],
+    ];
+    const rows = raw.map(r => { const a = r[6] - r[7]; const zero = a <= 0, low = !zero && a <= 2;
+      return { n: r[0], t: r[1], b: r[2], m: r[3], v: r[4], p: m(r[5]), q: r[6], rs: r[7] || '—', a,
+        avCls: 'r ' + (zero ? 'zero danger-text' : low ? 'low warn-text' : ''), flag: zero ? (r[6] > 0 ? 'всё в резерве' : 'нет · ждём 17.11') : low ? 'мало' : '',
+        flagIc: zero ? 'ic ic-st-cancel s14' : 'ic ic-alert s14', cls: '' }; });
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { rows, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

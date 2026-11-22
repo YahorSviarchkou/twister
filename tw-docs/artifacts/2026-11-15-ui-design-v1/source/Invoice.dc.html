@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — счёт и оплата</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="orders" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <dc-import name="OrderHeader" v="invoice" hint-size="100%,236px"></dc-import>
+    <div class="content" style="flex-direction: row; gap: 20px; padding: 16px 24px 20px">
+      <section class="panel col grow" aria-label="Счёт" style="min-height: 0">
+        <div class="row g12" style="padding: 14px 16px; border-bottom: 1px solid var(--border)">
+          <div class="col">
+            <span class="t-h2">Счёт <span class="num">СЧ-2026-0412</span></span>
+            <span class="t-sm muted">от <span class="num">17.11.2026</span> · выставил А. Котов · заказ № 1047</span>
+          </div>
+          <span class="chip lg s-amb"><i class="ic ic-st-pay"></i>Частично оплачен</span>
+          <div class="grow"></div>
+          <a href="Print.dc.html" class="btn btn-sm"><i class="ic ic-eye"></i>Предпросмотр печати</a>
+          <button class="btn btn-sm slot" data-slot="toolbar.action"><i class="ic ic-sheet"></i>Экспорт в Excel</button>
+        </div>
+        <div style="flex: 1 1 auto; overflow: hidden">
+          <table class="tbl compact">
+            <thead><tr><th>Наименование</th><th class="r" style="width: 90px">Кол-во</th><th class="r" style="width: 130px">Цена</th><th class="r" style="width: 140px">Сумма</th></tr></thead>
+            <tbody>
+              <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+                <tr><td colspan="4" style="background: var(--surface-2); height: 30px"><span class="row g8"><i class="{{g.ic}}" style="color: var(--text-3)"></i><span class="strong">{{g.t}}</span><span class="muted t-sm">{{g.n}}</span><span class="grow"></span><span class="money">{{g.sum}}</span></span></td></tr>
+                <sc-for list="{{g.rows}}" as="r">
+                  <tr><td style="padding-left: 34px">{{r.t}}</td><td class="r num">{{r.q}}</td><td class="r money" style="font-weight: 400">{{r.p}}</td><td class="r money">{{r.s}}</td></tr>
+                </sc-for>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div class="row start" style="border-top: 1px solid var(--border); padding: 14px 16px; gap: 32px">
+          <div class="col g4 t-sm muted" style="flex: 1 1 auto"><span>Отменённый пункт «Замена покрышки» в счёт не включён.</span><span>Валюта счёта: российский рубль (₽) — меняется в настройках.</span></div>
+          <dl class="kv" style="grid-template-columns: 160px 140px; font-size: 14px; margin: 0">
+            <dt>Диагностика</dt><dd class="money" style="text-align: right; font-weight: 400">800 ₽</dd>
+            <dt>Работы</dt><dd class="money" style="text-align: right; font-weight: 400">3 300 ₽</dd>
+            <dt>Запчасти</dt><dd class="money" style="text-align: right; font-weight: 400">4 390 ₽</dd>
+            <dt class="strong" style="color: var(--text)">Итого</dt><dd class="money" style="text-align: right; font-weight: 600">8 490 ₽</dd>
+            <dt>Оплачено</dt><dd class="money ok-text" style="text-align: right">− 2 000 ₽</dd>
+            <dt class="strong" style="color: var(--text); font-size: 16px; padding-top: 6px; border-top: 1px solid var(--border)">К оплате</dt><dd class="money" style="text-align: right; font-size: 22px; line-height: 28px; font-weight: 600; padding-top: 6px; border-top: 1px solid var(--border)">6 490 ₽</dd>
+          </dl>
+        </div>
+      </section>
+      <aside class="col g16" style="width: 440px; flex: none">
+        <section class="panel col" aria-label="Приём оплаты">
+          <div class="ph-head"><i class="ic ic-cash sub"></i><span class="t-h3">Приём оплаты</span></div>
+          <div class="col g16" style="padding: 16px">
+            <div class="field"><label class="req" for="amt">Сумма</label>
+              <div class="row g8"><div class="input input-lg grow is-focus"><input id="amt" class="num" value="6 490" style="font-size: 18px; font-weight: 500"><span class="sfx">₽</span></div><button class="btn btn-sm" type="button">Весь остаток</button></div>
+              <span class="hint">Можно принять часть: заказ останется в «Ждёт оплаты».</span></div>
+            <div class="field"><span class="flabel">Способ</span>
+              <div class="seg" role="radiogroup" aria-label="Способ оплаты" style="width: 100%">
+                <button class="on" role="radio" aria-checked="true" style="flex: 1; justify-content: center; height: 34px"><i class="ic ic-cash"></i>Наличные<span class="kbd">F2</span></button>
+                <button role="radio" aria-checked="false" style="flex: 1; justify-content: center; height: 34px"><i class="ic ic-card"></i>Карта<span class="kbd">F3</span></button>
+                <button role="radio" aria-checked="false" style="flex: 1; justify-content: center; height: 34px"><i class="ic ic-transfer"></i>Перевод<span class="kbd">F4</span></button>
+              </div></div>
+            <div class="row g12 start">
+              <div class="field grow"><label for="got">Получено от клиента</label><div class="input"><input id="got" class="num" value="7 000"><span class="sfx">₽</span></div></div>
+              <div class="col" style="align-items: flex-end; padding-top: 18px"><span class="t-label">Сдача</span><span class="money" style="font-size: 22px; line-height: 28px; font-weight: 600">510 ₽</span></div>
+            </div>
+            <div class="field"><label for="pd">Дата оплаты</label><div class="input"><i class="ic ic-calendar"></i><input id="pd" class="num" value="17.11.2026 17:05"></div></div>
+            <label class="check t-sm"><input type="checkbox" checked>Напечатать квитанцию об оплате (лента 80 мм)</label>
+            <button class="btn btn-primary btn-lg" style="width: 100%"><i class="ic ic-check"></i>Принять <span class="money">6 490 ₽</span><span class="kbd">Ctrl+Enter</span></button>
+            <div class="banner ok"><i class="ic ic-st-closed"></i><span>Это полная оплата: заказ перейдёт в статус «Закрыт», задача и пункты будут заблокированы для изменений.</span></div>
+          </div>
+        </section>
+        <section class="panel col" aria-label="Оплаты по счёту">
+          <div class="ph-head"><span class="t-h3">Оплаты по счёту</span><span class="badge" style="margin-left: 4px">1</span></div>
+          <div class="row g12" style="padding: 12px 16px">
+            <span class="chip s-grn" style="width: 28px; height: 28px; padding: 0; justify-content: center"><i class="ic ic-cash"></i></span>
+            <div class="col grow"><span class="strong t-sm">Аванс · наличные</span><span class="t-sm muted"><span class="num">12.11.2026 16:40</span> · А. Котов</span></div>
+            <span class="money">2 000 ₽</span>
+            <button class="btn btn-ghost btn-sm btn-icon" aria-label="Печать квитанции" title="Печать квитанции"><i class="ic ic-print"></i></button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const g = (t, ic, rows) => ({ t, ic: 'ic ic-' + ic, n: rows.length + ' поз.', sum: m(rows.reduce((s, r) => s + r[1] * r[2], 0)),
+      rows: rows.map(r => ({ t: r[0], q: r[1] + ' ' + (r[3] || 'шт.'), p: m(r[2]), s: m(r[1] * r[2]) })) });
+    const groups = [
+      g('Диагностика', 'st-diag', [['Диагностика велосипеда (отчёт от 12.11.2026)', 1, 800, 'усл.']]),
+      g('Работы', 'wrench', [['Замена цепи', 1, 450, 'усл.'], ['Замена троса переключателя', 1, 250, 'усл.'], ['Настройка переключателей', 1, 500, 'усл.'], ['Переборка задней втулки', 1, 1200, 'усл.'], ['Замена каретки', 1, 900, 'усл.']]),
+      g('Запчасти', 'box', [['Цепь Shimano CN-HG54, 116 зв.', 1, 2190], ['Трос Jagwire Basics 2300 мм', 1, 190], ['Подшипник 6000-2RS 10×26×8', 2, 180], ['Каретка Shimano BB-UN300 68/122,5', 1, 1650]]),
+    ];
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { groups, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>

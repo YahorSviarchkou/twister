@@ -1,0 +1,25 @@
+%% C4 level 1: system context. Target architecture: workshop PC plus tablets over Wi-Fi.
+flowchart LR
+  desk(["Front desk<br/>intake, handover, payment"])
+  mech(["Mechanic<br/>diagnosis and repair"])
+  owner(["Owner<br/>money, reports, settings"])
+  sys["Twister<br/>bicycle workshop management:<br/>intake, repair, stock, invoices"]
+  tg["Telegram<br/>Bot API"]
+  fiscal["Online cash register<br/>and fiscal data operator"]
+  printers["Printers<br/>receipts, tags, invoices"]
+  customer(["Workshop customer"])
+
+  desk -- "works at the desk" --> sys
+  mech -- "works at the stand" --> sys
+  owner -- "reports" --> sys
+  sys -- "notifications" --> tg
+  sys -- "receipts" --> fiscal
+  sys -- "printing" --> printers
+  tg -- "bike is ready" --> customer
+
+  classDef person fill:#ffffff,stroke:#5c6470
+  classDef system fill:#d4e4fb,stroke:#3a6fc4,stroke-width:2px
+  classDef external fill:#f4f5f7,stroke:#9aa3ad
+  class desk,mech,owner,customer person
+  class sys system
+  class tg,fiscal,printers external

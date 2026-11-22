@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Twister — клиенты</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/7781dc5b53071c5e07df3477f7872d87">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="{{rootCls}}" style="width: 1920px; height: 1080px">
+  <dc-import name="Sidebar" active="clients" hint-size="232px,1080px"></dc-import>
+  <div class="main">
+    <dc-import name="Topbar" hint-size="100%,52px"></dc-import>
+    <div class="content" style="flex-direction: row">
+      <section class="col" aria-label="Список клиентов" style="width: 620px; flex: none; border-right: 1px solid var(--border); background: var(--surface)">
+        <div class="col g12" style="padding: 16px 20px 12px">
+          <div class="row g8"><h1 class="t-display" style="margin: 0">Клиенты</h1><span class="badge">412</span><div class="grow"></div><button class="btn btn-sm"><i class="ic ic-plus"></i>Клиент</button><button class="btn btn-sm btn-icon slot" data-slot="toolbar.action" aria-label="Экспорт в Excel" title="Экспорт в Excel · Ctrl+E"><i class="ic ic-sheet"></i></button></div>
+          <div class="input"><i class="ic ic-search"></i><input placeholder="ФИО, телефон или email" aria-label="Поиск клиентов"><span class="kbd">Ctrl+F</span></div>
+        </div>
+        <table class="tbl compact" style="border-top: 1px solid var(--border)">
+          <thead><tr><th class="sorted">ФИО <i class="ic ic-arr-up"></i></th><th style="width: 150px">Телефон</th><th class="c" style="width: 50px">Вел.</th><th class="c" style="width: 64px">Заказов</th><th class="r" style="width: 100px">Сумма <i class="ic ic-sort"></i></th></tr></thead>
+          <tbody>
+            <sc-for list="{{list}}" as="c" hint-placeholder-count="16">
+              <tr class="{{c.cls}}"><td class="ell" style="max-width: 230px">{{c.n}}</td><td class="num sub">{{c.p}}</td><td class="c num">{{c.b}}</td><td class="c num">{{c.o}}</td><td class="r money" style="font-weight: 400">{{c.s}}</td></tr>
+            </sc-for>
+          </tbody>
+        </table>
+        <div class="grow"></div>
+        <div class="pager"><span>1–16 из <span class="num">412</span></span><div class="grow"></div><button class="pg" aria-label="Назад"><i class="ic ic-chev-l s14"></i></button><button class="pg on">1</button><button class="pg">2</button><button class="pg">3</button><span class="muted">…</span><button class="pg">26</button><button class="pg" aria-label="Вперёд"><i class="ic ic-chev-r s14"></i></button></div>
+      </section>
+      <section class="col grow g16" aria-label="Карточка клиента" style="padding: 20px 24px; min-width: 0; overflow: hidden">
+        <div class="row g16">
+          <span class="av a4" style="width: 48px; height: 48px; font-size: 16px">АС</span>
+          <div class="col"><h2 class="t-display" style="margin: 0">Смирнов Андрей Викторович</h2><span class="t-sm muted">Клиент с <span class="num">22.03.2025</span> · создал А. Котов</span></div>
+          <div class="grow"></div>
+          <button class="btn"><i class="ic ic-edit"></i>Изменить</button>
+          <a href="Intake.dc.html" class="btn btn-primary"><i class="ic ic-plus"></i>Новый заказ для клиента</a>
+          <button class="btn btn-icon" aria-label="Ещё"><i class="ic ic-more"></i></button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.2fr repeat(4, minmax(0, 1fr)); gap: 12px">
+          <div class="panel col g8" style="padding: 12px 16px">
+            <span class="t-label">Контакты</span>
+            <span class="row g8"><i class="ic ic-phone muted"></i><span class="num">+7 916 204-55-17</span><button class="btn btn-ghost btn-sm btn-icon" aria-label="Копировать телефон" title="Копировать"><i class="ic ic-copy s14"></i></button></span>
+            <span class="row g8"><i class="ic ic-mail muted"></i><span>a.smirnov@mail.ru</span></span>
+          </div>
+          <div class="kpi"><span class="t-label">Заказов</span><span class="v">4</span><span class="t-sm muted">1 активный</span></div>
+          <div class="kpi"><span class="t-label">Общая сумма</span><span class="v">18 750 ₽</span><span class="t-sm muted">оплачено 12 260 ₽</span></div>
+          <div class="kpi"><span class="t-label">Средний чек</span><span class="v">4 688 ₽</span><span class="t-sm muted">по 4 заказам</span></div>
+          <div class="kpi"><span class="t-label">Последний визит</span><span class="v" style="font-size: 22px">12.11.2026</span><span class="t-sm muted">3 дня назад</span></div>
+        </div>
+        <div class="col g8">
+          <div class="row g8"><h3 class="t-h2" style="margin: 0">Велосипеды</h3><span class="badge">2</span><div class="grow"></div><button class="btn btn-sm"><i class="ic ic-plus"></i>Добавить велосипед</button></div>
+          <div class="tbl-wrap"><table class="tbl">
+            <thead><tr><th>Тип</th><th>Бренд</th><th>Модель</th><th style="width: 70px">Год</th><th>Страна</th><th class="c" style="width: 80px">Заказов</th><th>Сейчас</th></tr></thead>
+            <tbody>
+              <tr><td>Горный (МТБ)</td><td>Merida</td><td class="strong">Big.Nine 300</td><td class="num">2021</td><td>Германия</td><td class="c num">3</td><td><a class="link t-sm row g6" href="OrderWorks.dc.html"><span class="chip s-blu"><i class="ic ic-st-work"></i>В работе</span>заказ № 1047</a></td></tr>
+              <tr><td>Городской</td><td>Stels</td><td class="strong">Navigator 500</td><td class="num">2019</td><td>Россия</td><td class="c num">1</td><td class="muted t-sm">—</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+        <div class="col g8">
+          <div class="row g8"><h3 class="t-h2" style="margin: 0">История заказов</h3><span class="badge">4</span></div>
+          <div class="tbl-wrap"><table class="tbl">
+            <thead><tr><th style="width: 80px">№</th><th style="width: 110px" class="sorted">Принят <i class="ic ic-arr-down"></i></th><th style="width: 220px">Велосипед</th><th>Работы</th><th style="width: 150px">Статус</th><th class="r" style="width: 120px">Сумма</th></tr></thead>
+            <tbody>
+              <sc-for list="{{orders}}" as="o" hint-placeholder-count="4">
+                <tr><td class="num strong">{{o.n}}</td><td class="num sub">{{o.d}}</td><td>{{o.b}}</td><td class="sub ell" style="max-width: 360px">{{o.w}}</td><td><span class="{{o.st.cls}}"><i class="{{o.st.ic}}"></i>{{o.st.t}}</span></td><td class="r money">{{o.s}}</td></tr>
+              </sc-for>
+              <tr><td colspan="5" class="r strong" style="background: var(--surface-2)">Итого по клиенту</td><td class="r money" style="background: var(--surface-2); font-weight: 600">18 750 ₽</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"slots":{"editor":"boolean","default":true},"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const m = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const list = [['Белова Мария','+7 977 402-11-35',1,1,0],['Волков Игорь Петрович','+7 903 615-27-90',1,2,3150],['Григорьев Павел','+7 926 771-40-12',2,5,21400],['Егорова Наталья','+7 926 145-09-71',1,3,6870],['Зайцев Роман','+7 905 233-61-18',1,2,4300],['Ковалёва Ирина','+7 965 712-40-53',2,2,2600],['Кравцов Денис Олегович','+7 921 555-02-14',0,0,0],['Кузнецова Ольга Игоревна','+7 912 345-18-07',1,1,0],['Морозова Елена','+7 925 318-44-02',1,4,13900],['Никитина Анна','+7 915 064-88-29',1,1,0],['Орлов Дмитрий Сергеевич','+7 926 557-02-93',1,3,9450],['Павлов Артём','+7 985 390-17-62',1,1,0],['Смирнов Андрей Викторович','+7 916 204-55-17',2,4,18750,1],['Соколов Михаил','+7 916 870-33-14',1,2,5200],['Тихонова Вера','+7 909 118-25-64',1,3,7800],['Фёдоров Кирилл','+7 999 821-34-06',1,1,0]]
+      .map(c => ({ n: c[0], p: c[1], b: c[2], o: c[3], s: c[4] ? m(c[4]) : '—', cls: c[5] ? 'sel' : '' }));
+    const ST = { a: { t: 'Принят', cls: 'chip s-blu', ic: 'ic ic-st-accept' }, c: { t: 'Закрыт', cls: 'chip s-cls', ic: 'ic ic-st-closed' } };
+    const orders = [['1047','12.11.2026','Merida Big.Nine 300','Цепь, трос, переключатели, задняя втулка, каретка','a',8490],['0981','02.08.2026','Stels Navigator 500','Замена тормозных колодок','c',1950],['0874','14.05.2026','Merida Big.Nine 300','Сезонное ТО','c',4300],['0702','22.03.2025','Merida Big.Nine 300','Настройка переключателей, прокачка тормозов','c',4010]]
+      .map(o => ({ n: o[0], d: o[1], b: o[2], w: o[3], st: ST[o[4]], s: m(o[5]) }));
+    const dark = (this.props.theme ?? 'light') === 'dark';
+    const slots = this.props.slots ?? true;
+    return { list, orders, rootCls: 'tw app' + (dark ? ' dark' : '') + (slots ? ' slots' : '') };
+  }
+}
+</script>
+</body>
+</html>
