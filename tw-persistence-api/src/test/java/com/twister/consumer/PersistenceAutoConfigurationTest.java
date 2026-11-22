@@ -30,7 +30,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  */
 @SpringBootTest(
         classes = PersistenceAutoConfigurationTest.ConsumerApplication.class,
-        properties = "spring.jpa.hibernate.ddl-auto=create")
+        // No Flyway: the schema comes from the entities, and the migrations are for SQLite, not PostgreSQL.
+        properties = {"spring.jpa.hibernate.ddl-auto=create", "spring.flyway.enabled=false"})
 class PersistenceAutoConfigurationTest {
 
     private static final String PERSISTENCE_PACKAGE = "com.twister.persistence";
