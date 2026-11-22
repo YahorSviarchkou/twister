@@ -1,0 +1,2 @@
+# The store is compared line by line on every machine: keep LF on Windows checkouts too.
+archunit_store/** text eol=lf

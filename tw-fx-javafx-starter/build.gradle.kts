@@ -1,107 +1,51 @@
 plugins {
-    id("java")
-    id("java-library")
-    id("jacoco")
+    id("twister.spring-conventions")
     alias(libs.plugins.javafx.plugin)
-    alias(libs.plugins.spotless.plugin)
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
 }
 
-group = "com.twister"
-version = "1.0-SNAPSHOT"
+// An application that sees only the starter: compiles against its API and runs in a child JVM of the tests.
+val consumer: SourceSet = sourceSets.create("consumer")
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
-    }
-    withSourcesJar()
+dependencies {
+    api(libs.spring.boot.starter)
+    implementation(libs.atlantafx.base)
+    implementation(libs.caffeine)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+
+    "consumerImplementation"(project(path))
+
+    testImplementation(libs.bundles.testing)
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
+// Consumers apply the JavaFX plugin too: it selects the jars of the platform.
+javafx {
+    version = libs.versions.javafx.asProvider().get()
+    modules("javafx.controls", "javafx.fxml", "javafx.base", "javafx.graphics")
+    configurations = arrayOf("api")
+}
+
+// A real jar, as a language pack is: a second resources folder would hide classpath scanning problems.
+val languagePackJar = tasks.register<Jar>("languagePackJar") {
+    archiveClassifier = "test-language-pack"
+    destinationDirectory = layout.buildDirectory.dir("test-libs")
+    from("src/languagePack/resources")
 }
 
 dependencies {
-    implementation(libs.spring.boot.starter)
-    implementation(libs.bundles.cache)
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
-}
-
-tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.WARN
-}
-
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.jar {
-    enabled = true
-}
-
-javafx {
-    version = libs.versions.java.get()
-    modules("javafx.controls", "javafx.fxml", "javafx.base", "javafx.graphics")
-    configurations = arrayOf("compileOnly", "implementation")
-}
-
-jacoco {
-    toolVersion = libs.versions.jacoco.get()
+    testRuntimeOnly(files(languagePackJar))
 }
 
 tasks.test {
-    useJUnitPlatform()
+    val consumerClasspath = consumer.runtimeClasspath + files(languagePackJar)
+    inputs.files(consumerClasspath).withNormalizer(ClasspathNormalizer::class)
+    jvmArgumentProviders.add { listOf("-Dconsumer.classpath=${consumerClasspath.asPath}") }
 
-    testLogging {
-        events("passed", "skipped", "failed")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
-    }
-
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        xml.required = false
-        csv.required = false
-        html.required = true
-    }
-}
-
-tasks.jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            element = "CLASS"
-            excludes = listOf(
-                "**Mock**"
-            )
-            limit {
-                minimum = "0.8".toBigDecimal()
-            }
-        }
-    }
-}
-
-spotless {
-    java {
-        target("src/*/java/**/*.java")
-        targetExclude("**/build/generated/**")
-        palantirJavaFormat()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-}
-
-tasks.named("spotlessApply") {
-    group = "verification"
-    description = "Formats code and moves the task to the Verification group."
-}
-
-tasks.check{
-    dependsOn(tasks.spotlessCheck, tasks.jacocoTestCoverageVerification)
+    // No windows on the screen and no writes to the profile of whoever runs the tests.
+    val home = layout.buildDirectory.dir("test-home").get().asFile.absolutePath
+    systemProperty("user.home", home)
+    environment("LOCALAPPDATA", home)
+    systemProperty("glass.platform", "Headless")
+    systemProperty("prism.order", "sw")
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

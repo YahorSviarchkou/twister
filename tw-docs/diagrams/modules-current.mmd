@@ -1,28 +1,25 @@
-%% Current Gradle module graph on branch exp (2026-11-15). Dashed: dependency present but commented out.
+%% Current Gradle module graph (2026-11-22). Dashed arrows: not implemented. Dashed boxes: parked, not in the build.
 flowchart TB
-  desktop["tw-app-desktop<br/>does not start"]
-  web["tw-app-web<br/>empty"]
-  starter["tw-fx-javafx-starter<br/>FXML, i18n, screen cache"]
-  papi["tw-fx-plugin-api<br/>empty"]
-  pexcel["tw-fx-plugin-excel<br/>empty"]
-  psync["tw-fx-plugin-web-sync<br/>empty"]
+  desktop["tw-app-desktop<br/>shell window, SQLite in the data folder"]
+  starter["tw-fx-javafx-starter<br/>lifecycle, FXML, i18n, tasks, dialogs, theme"]
   wf["tw-workflow<br/>state machines, services, DAO ports"]
-  per["tw-persistence-api<br/>JPA entities, repositories, mappers"]
+  per["tw-persistence-api<br/>JPA entities, repositories, mappers, migrations"]
   core["tw-core<br/>domain model"]
-  legacy["root src/ (legacy)<br/>JavaFX 17, SQLite, Flyway"]
+  legacy["legacy/ (own build)<br/>JavaFX 17, SQLite, Flyway"]
   ci["release.yml<br/>JDK 17"]
 
   desktop --> wf
-  desktop --> per
-  desktop --> core
-  desktop -.-> starter
-  desktop -.-> papi
+  desktop -- "runtimeOnly" --> per
+  desktop --> starter
   wf --> core
   per --> core
   per -. "DAO adapters: 0 of 11" .-> wf
   ci --> legacy
 
-  classDef empty stroke-dasharray: 5 4,fill:transparent
-  classDef broken stroke:#c2302a,stroke-width:2px
-  class web,papi,pexcel,psync empty
-  class desktop broken
+  web["tw-app-web<br/>parked, not in the build"]
+  papi["tw-fx-plugin-api<br/>parked, not in the build"]
+  pexcel["tw-fx-plugin-excel<br/>parked, not in the build"]
+  psync["tw-fx-plugin-web-sync<br/>parked, not in the build"]
+
+  classDef parked stroke-dasharray: 5 4,fill:transparent
+  class web,papi,pexcel,psync parked

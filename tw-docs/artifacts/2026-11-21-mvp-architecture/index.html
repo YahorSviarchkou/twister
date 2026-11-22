@@ -134,7 +134,7 @@ footer{font-size:14px;color:var(--mute)}
 <p>Фаза 1 из продуктового переосмысления: принять, отремонтировать, выдать. Один ПК, одна база, несколько пользователей по очереди. Скоуп M3 на доске пока открытый вопрос, поэтому список предварительный.</p>
 <div class="cols3" style="margin-top:18px">
 <div><h3>Входит</h3><ul class="clean">
-<li class="yes">Клиенты и велосипеды, поиск по телефону и номеру рамы</li>
+<li class="yes">Клиенты и их транспорт (велосипеды, самокаты, электросамокаты), поиск по телефону, номеру рамы или серийному номеру</li>
 <li class="yes">Приём: жалоба, чек-лист, фото из файлов, квитанция и бирка с QR</li>
 <li class="yes">Диагностика, смета, согласование (кто, как, порог «без звонка»)</li>
 <li class="yes">Пункты работ: услуга и запчасти с количеством, мастер</li>
@@ -150,7 +150,7 @@ footer{font-size:14px;color:var(--mute)}
 <li class="later">Уведомления клиенту: Telegram, SMS (фаза 2)</li>
 <li class="later">Статус по QR и согласование по ссылке (фаза 2)</li>
 <li class="later">Поставщики, заказ запчастей, точки дозаказа (фаза 3)</li>
-<li class="later">Касса по 54-ФЗ, сдельная оплата мастеров (фаза 3)</li>
+<li class="later">Фискальная касса там, где её требует закон; сдельная оплата мастеров (фаза 3)</li>
 <li class="later">Отчёты по марже и загрузке (фаза 3)</li>
 <li class="later">Сезонные напоминания, гарантия (фаза 4)</li>
 </ul></div>
@@ -173,7 +173,7 @@ footer{font-size:14px;color:var(--mute)}
 <div class="tw" style="margin-top:16px"><table class="stack">
 <thead><tr><th>Модуль</th><th>Отвечает за</th><th>Зависит от</th><th>Сейчас → что сделать</th></tr></thead>
 <tbody>
-<tr><td><span class="chip c-dm">tw-core</span></td><td>Агрегаты, value objects, движок стейт-машины и таблицы переходов, доменные события, исключения. Пакеты <code>order</code>, <code>customer</code>, <code>bike</code>, <code>stock</code>, <code>billing</code>, <code>access</code>, <code>shared</code>. Без Spring, JPA и JavaFX.</td><td>JDK</td><td>Анемичные модели на Lombok → поведение в агрегатах, движок переезжает сюда из <code>tw-workflow</code>, <code>Transport</code> уходит в <code>bike</code></td></tr>
+<tr><td><span class="chip c-dm">tw-core</span></td><td>Агрегаты, value objects, движок стейт-машины и таблицы переходов, доменные события, исключения. Пакеты <code>order</code>, <code>customer</code>, <code>vehicle</code>, <code>stock</code>, <code>billing</code>, <code>access</code>, <code>shared</code>. Без Spring, JPA и JavaFX.</td><td>JDK</td><td>Анемичные модели на Lombok → поведение в агрегатах, движок переезжает сюда из <code>tw-workflow</code>, <code>Transport</code> становится <code>Vehicle</code> в пакете <code>vehicle</code></td></tr>
 <tr><td><span class="chip c-or">tw-workflow</span></td><td>Use cases (команда + обработчик), запросы на чтение, порты: репозитории, <code>CurrentActor</code>, печать, бэкап. Транзакции и права проверяются здесь.</td><td>tw-core, spring-context, spring-tx</td><td>Сервисы на каждую сущность и оркестратор каскадов → обработчики сценариев; DAO-порты без типов Spring Data</td></tr>
 <tr><td><span class="chip c-bl">tw-persistence-api</span></td><td>JPA-сущности, Spring Data, адаптеры портов, мапперы MapStruct, миграции Flyway, бэкап, автоконфигурация.</td><td>tw-workflow, tw-core</td><td>Сущности есть, адаптеров нет, imports не в той папке (#6) → адаптеры, SQLite, миграции, тесты на файле</td></tr>
 <tr><td><span class="chip c-tl">tw-fx-javafx-starter</span></td><td>Инфраструктура JavaFX + Spring без знаний о Twister: запуск, загрузка FXML, i18n, фоновые задачи, навигация, диалоги, тема, кэш экранов.</td><td>spring-boot, JavaFX</td><td>Загрузка FXML и кэш есть, не зарегистрирован (#8) → починить, дописать бутстрап и потоки (раздел «JavaFX-стартер»)</td></tr>
@@ -183,7 +183,7 @@ footer{font-size:14px;color:var(--mute)}
 <div>
 <h3>Правило зависимостей</h3>
 <p>Стрелки только к домену. Домен не импортирует ничего, кроме JDK. Use cases не знают про JPA и JavaFX. Экраны вызывают use cases и запросы, но не репозитории. Хранилище подключено к приложению как <code>runtimeOnly</code>: класс JPA в контроллере просто не скомпилируется.</p>
-<p>Gradle закрывает границы между модулями, ArchUnit закрывает границы внутри модуля: домен без фреймворков и граница пакета <code>bike</code> (ADR 0005).</p>
+<p>Gradle закрывает границы между модулями, ArchUnit закрывает границы внутри модуля: домен без фреймворков и граница пакета <code>vehicle</code> (ADR 0005).</p>
 </div>
 <div>
 <h3>Что выпадает из ADR 0004 на время MVP</h3>
@@ -400,7 +400,7 @@ final class OrderTransitions {
     private OrderTransitions() {}
 }</script></div>
 
-<div class="snip" data-file="tw-core · domain/order/RepairOrder.java" data-lang="java"><p class="why">Агрегат без сеттеров. Изменение статуса всегда идёт через машину, пишет историю и копит событие. Велосипед известен только как <code>SubjectId</code>: граница вертикали.</p><script type="text/plain">package com.twister.domain.order;
+<div class="snip" data-file="tw-core · domain/order/RepairOrder.java" data-lang="java"><p class="why">Агрегат без сеттеров. Изменение статуса всегда идёт через машину, пишет историю и копит событие. Транспорт (велосипед, самокат) известен заказу только как <code>SubjectId</code>: граница вертикали.</p><script type="text/plain">package com.twister.domain.order;
 
 /** Repair order aggregate: work items, estimate, payments and the status history. */
 public final class RepairOrder {
@@ -408,7 +408,7 @@ public final class RepairOrder {
     private final OrderId id;
     private final OrderNumber number;
     private final CustomerId customerId;
-    private final SubjectId subjectId; // the bike; resolved by the bike package
+    private final SubjectId subjectId; // the vehicle; resolved by the vehicle package
     private final String complaint;
     private OrderStatus status;
     private final List<WorkItem> items;
@@ -470,7 +470,7 @@ public final class RepairOrder {
     public static RepairOrder restore(Snapshot snapshot) { /* ... */ }
 }</script></div>
 
-<div class="snip" data-file="tw-core · domain/shared/Money.java, domain/bike/FrameNumber.java, domain/order/ApprovalPolicy.java" data-lang="java"><p class="why">Value objects проверяют себя в конструкторе. Деньги хранятся в копейках: в SQLite нет точного DECIMAL. Порог «без звонка» — доменная политика, а не <code>if</code> в контроллере.</p><script type="text/plain">package com.twister.domain.shared;
+<div class="snip" data-file="tw-core · domain/shared/Money.java, domain/vehicle/SerialNumber.java, domain/order/ApprovalPolicy.java" data-lang="java"><p class="why">Value objects проверяют себя в конструкторе. Деньги хранятся в копейках: в SQLite нет точного DECIMAL. Порог «без звонка» — доменная политика, а не <code>if</code> в контроллере.</p><script type="text/plain">package com.twister.domain.shared;
 
 /** Amount in minor units (kopecks). One currency per installation. */
 public record Money(long minor) implements Comparable<Money> {
@@ -490,13 +490,13 @@ public record Money(long minor) implements Comparable<Money> {
     @Override public int compareTo(Money other) { return Long.compare(minor, other.minor); }
 }
 
-package com.twister.domain.bike;
+package com.twister.domain.vehicle;
 
-/** Frame serial as stamped on the bike, normalised for search. */
-public record FrameNumber(String value) {
-    public FrameNumber {
+/** Frame or serial number as stamped on the vehicle, normalised for search. */
+public record SerialNumber(String value) {
+    public SerialNumber {
         value = value.strip().toUpperCase(Locale.ROOT).replaceAll("\\s+", "");
-        if (value.isEmpty()) throw new DomainException("bike.frame.empty");
+        if (value.isEmpty()) throw new DomainException("vehicle.serial.empty");
     }
 }
 
@@ -578,7 +578,7 @@ public interface DomainEventPublisher {
     void publish(List<DomainEvent> events);
 }
 
-/** Printable documents: intake receipt, bike tag, estimate, invoice. */
+/** Printable documents: intake receipt, vehicle tag, estimate, invoice. */
 public interface DocumentRenderer {
     RenderedDocument render(DocumentRequest request);
 }</script></div>
@@ -690,7 +690,7 @@ CREATE TABLE repair_order (
     id              TEXT    PRIMARY KEY,
     number          TEXT    NOT NULL UNIQUE,
     customer_id     TEXT    NOT NULL REFERENCES customer (id),
-    subject_id      TEXT    NOT NULL REFERENCES bike (id),
+    subject_id      TEXT    NOT NULL REFERENCES vehicle (id),
     status          TEXT    NOT NULL,
     complaint       TEXT,
     estimate_total  INTEGER,                -- kopecks
@@ -1251,8 +1251,8 @@ runtime {
     private final Workflow workflow = Workflow.wire(orders, session, clock); // handlers built by hand, no Spring
 
     @Test
-    void bikeGoesFromIntakeToHandOver() {
-        OrderId id = workflow.acceptBike(intakeOf("Ivan Petrov", "WTU123456")).orderId();
+    void vehicleGoesFromIntakeToHandOver() {
+        OrderId id = workflow.acceptVehicle(intakeOf("Ivan Petrov", "WTU123456")).orderId();
         workflow.startDiagnosis(id);
         workflow.addWorkItem(id, service("chain-replace"), part("KMC-X11", 1));
         workflow.submitEstimate(id);
@@ -1308,7 +1308,7 @@ class ArchitectureTest {
     @ArchTest
     static final ArchRule verticalBoundary = noClasses()   // ADR 0005
             .that().resideInAnyPackage("..order..", "..stock..", "..billing..", "..shared.fsm..")
-            .should().dependOnClassesThat().resideInAPackage("..bike..");
+            .should().dependOnClassesThat().resideInAPackage("..vehicle..");
 
     @ArchTest
     static final ArchRule screensUseUseCases = noClasses()
@@ -1375,7 +1375,7 @@ class EstimateViewSmokeTest {
 <tr><td><b>Ports and Adapters</b></td><td><span class="chip c-or">tw-workflow</span> порты, <span class="chip c-bl">persistence</span> и <span class="chip c-tl">UI</span> адаптеры</td><td>Смена SQLite на PostgreSQL или десктопа на REST не трогает домен. Сейчас 11 DAO-портов без единой реализации и с типами Spring Data в сигнатурах.</td></tr>
 <tr><td><b>Aggregate</b></td><td><span class="chip c-dm">tw-core</span> <code>RepairOrder</code> + <code>WorkItem</code></td><td>Инварианты в одном месте: «готов, когда все активные пункты выполнены». Заменяет каскады оркестратора, три из пяти которых сломаны.</td></tr>
 <tr><td><b>State Machine (табличная) + Guard</b></td><td><span class="chip c-dm">tw-core</span> <code>OrderTransitions</code></td><td>Схема статусов читается как таблица и сверяется с диаграммой. Guard-ы дают и проверку, и список доступных кнопок.</td></tr>
-<tr><td><b>Value Object</b></td><td><span class="chip c-dm">tw-core</span> <code>Money</code>, <code>FrameNumber</code>, <code>Phone</code>, <code>OrderNumber</code>, типизированные id</td><td>Нормализация и проверка один раз. Нельзя перепутать id клиента и заказа.</td></tr>
+<tr><td><b>Value Object</b></td><td><span class="chip c-dm">tw-core</span> <code>Money</code>, <code>SerialNumber</code>, <code>Phone</code>, <code>OrderNumber</code>, типизированные id</td><td>Нормализация и проверка один раз. Нельзя перепутать id клиента и заказа.</td></tr>
 <tr><td><b>Factory Method</b></td><td><span class="chip c-dm">tw-core</span> <code>RepairOrder.accept()</code>, <code>WorkItem.create()</code></td><td>Новый агрегат всегда в корректном начальном состоянии и с первой записью истории.</td></tr>
 <tr><td><b>Domain Events + Observer</b></td><td><span class="chip c-dm">tw-core</span> <code>pullEvents()</code> → Spring events → слушатели <code>AFTER_COMMIT</code></td><td>Доска, печать квитанции, а в фазе 2 уведомления и планшеты подписываются на события, а не встраиваются в use case.</td></tr>
 <tr><td><b>Command + Handler</b></td><td><span class="chip c-or">tw-workflow</span> <code>ApproveEstimate</code> / <code>…Handler</code></td><td>Маленький класс на сценарий вместо сервисов на сущность. Тот же обработчик потом вызовет REST-контроллер планшета.</td></tr>
@@ -1402,10 +1402,10 @@ class EstimateViewSmokeTest {
 <div class="tw" style="margin-top:16px"><table class="matrix">
 <thead><tr><th>Право</th><th>Владелец</th><th>Приёмка</th><th>Механик</th></tr></thead>
 <tbody>
-<tr><td>Принять велосипед, создать заказ</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
+<tr><td>Принять транспорт в ремонт, создать заказ</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
 <tr><td>Согласовать смету, отменить заказ</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
 <tr><td>Работы: начать, выполнить, добавить запчасть</td><td class="y">да</td><td class="y">да</td><td class="y">да</td></tr>
-<tr><td>Принять оплату, выдать велосипед</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
+<tr><td>Принять оплату, выдать транспорт</td><td class="y">да</td><td class="y">да</td><td class="o">—</td></tr>
 <tr><td>Возврат денег, скидка</td><td class="y">да</td><td class="o">—</td><td class="o">—</td></tr>
 <tr><td>Приход запчастей на склад</td><td class="y">да</td><td class="y">да</td><td class="y">да</td></tr>
 <tr><td>Корректировка остатков, цены и прайс</td><td class="y">да</td><td class="o">—</td><td class="o">—</td></tr>
@@ -1433,7 +1433,7 @@ class EstimateViewSmokeTest {
 </ul></div>
 <div class="phase p3"><h3 style="margin-top:0">Фазы 3–5</h3><ul class="clean">
 <li class="later">Лимит скидки по роли, возврат только с подтверждением владельца</li>
-<li class="later">Кассовая смена на пользователя (вместе с 54-ФЗ)</li>
+<li class="later">Кассовая смена на пользователя (вместе с фискальной кассой)</li>
 <li class="later">Сдельная оплата механика по закрытым работам</li>
 <li class="later">Редактор ролей и прав (фаза 5)</li>
 <li class="later">Несколько мастерских, облачные аккаунты (фаза 5)</li>
@@ -1453,7 +1453,7 @@ class EstimateViewSmokeTest {
 <div class="issue"><b>new</b><span>Стартер: бутстрап, <code>@FxView</code>, <code>FxTasks</code>, навигация; окно-заглушка стартует</span></div>
 </div>
 <div class="phase p2"><h3 style="margin-top:0">M2 · 11.01–31.01</h3><p class="small mute">Домен и хранилище</p>
-<div class="issue"><b>#9 #10</b><span>Две стейт-машины, агрегат заказа, граница <code>bike</code></span></div>
+<div class="issue"><b>#9 #10</b><span>Две стейт-машины, агрегат заказа, граница <code>vehicle</code></span></div>
 <div class="issue"><b>new</b><span>ADR: SQLite как встроенная база; миграции V1, адаптеры портов, бэкап</span></div>
 <div class="issue"><b>new</b><span>Пользователи, роли, PIN, <code>AccessPolicy</code></span></div>
 <div class="issue"><b>new</b><span>Сценарный тест «приём → выдача» на фейках и на SQLite</span></div>
@@ -1578,7 +1578,7 @@ const left = [
 ];
 const right = [
   ['OrderRepository', '→ JPA, SQLite'],
-  ['Customer, Bike, Stock', '→ JPA, SQLite'],
+  ['Customer, Vehicle, Stock', '→ JPA, SQLite'],
   ['OrderQueries', '→ проекции JPA'],
   ['BackupStore', '→ VACUUM INTO']
 ];

@@ -129,7 +129,7 @@
       "section": "adr",
       "path": "adr/0004-build-time-plugin-composition.md",
       "date": "2026-11-21",
-      "status": "Proposed",
+      "status": "Accepted",
       "tags": [
         "plugins"
       ]
@@ -141,7 +141,7 @@
       "section": "adr",
       "path": "adr/0005-merge-task-into-order.md",
       "date": "2026-11-21",
-      "status": "Proposed",
+      "status": "Accepted",
       "tags": [
         "domain",
         "workflow"
@@ -186,6 +186,19 @@
       ]
     },
     {
+      "id": "adr-0009",
+      "title": "0009 SQLite as the embedded database",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0009-sqlite-as-embedded-database.md",
+      "date": "2026-11-22",
+      "status": "Accepted",
+      "tags": [
+        "database",
+        "persistence"
+      ]
+    },
+    {
       "id": "adr-template",
       "title": "ADR template",
       "type": "md",
@@ -198,8 +211,8 @@
       "type": "mermaid",
       "section": "diagrams",
       "path": "diagrams/modules-current.mmd",
-      "date": "2026-11-15",
-      "description": "Gradle module graph on branch exp",
+      "date": "2026-11-22",
+      "description": "Gradle module graph",
       "tags": [
         "modules"
       ]

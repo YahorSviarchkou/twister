@@ -6,21 +6,29 @@
     "sessionUrl": false
   },
   "permissions": {
-    "ask": [
+    "allow": [
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git pull:*)",
-      "Bash(git checkout:*)",
       "Bash(git switch:*)",
+      "Bash(git branch:*)",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git pull:*)"
+    ],
+    "ask": [
+      "Bash(git commit --amend:*)",
+      "Bash(git switch --discard-changes:*)",
+      "Bash(git switch -f:*)",
+      "Bash(git switch --force:*)",
       "Bash(git branch -d:*)",
       "Bash(git branch -D:*)",
       "Bash(git branch -m:*)",
-      "Bash(git merge:*)",
-      "Bash(git rebase:*)",
+      "Bash(git branch -M:*)",
+      "Bash(git push:*)",
       "Bash(git reset:*)",
       "Bash(git restore:*)",
-      "Bash(git stash:*)",
       "Bash(git tag:*)",
       "Bash(git cherry-pick:*)",
       "Bash(git revert:*)",
