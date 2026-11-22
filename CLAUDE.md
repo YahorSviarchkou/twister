@@ -1,6 +1,6 @@
 # Twister
 
-Bicycle repair workshop management app: Java 21, Spring Boot 3, JavaFX, Gradle multi-module. It is being restructured from a monolithic Windows desktop app (legacy root `src/`) into modules that are assembled into desktop and web apps with build-time plugins.
+Management app for repair workshops of personal light vehicles (bikes, kick scooters, e-scooters), built as a product for CIS and English-speaking markets; the first goal is one real workshop running a season on it. Java, Spring Boot, JavaFX, Gradle multi-module. It is being restructured from a monolithic Windows desktop app (legacy root `src/`) into modules; the MVP is a full desktop app without plugins (ADR 0004 MVP scope, `.claude/rules/architecture.md`).
 
 ## Language
 
