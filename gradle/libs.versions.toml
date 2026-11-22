@@ -1,5 +1,6 @@
 [versions]
 java = "25"
+# TODO(discuss): 27.0.1.1 was published on 2026-11-17, after 27.0.1. Move to it?
 javafx = "27.0.1"
 javafx-plugin = "0.1.0"
 spring-boot = "4.2.0"
