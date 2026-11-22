@@ -1,4 +1,3 @@
-// TODO(discuss): the conventions turn on spotlessJavaCheck here and both source files fail it. Format them?
 plugins {
     id("twister.spring-conventions")
     alias(libs.plugins.spring.boot)

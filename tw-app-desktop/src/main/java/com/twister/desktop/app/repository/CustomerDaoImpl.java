@@ -4,13 +4,12 @@ import com.twister.domain.Customer;
 import com.twister.payload.CustomerFilter;
 import com.twister.persistence.repository.CustomerRepository;
 import com.twister.workflow.dao.CustomerDao;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -40,7 +39,5 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void deleteById(Long customerId) {
-
-    }
+    public void deleteById(Long customerId) {}
 }
