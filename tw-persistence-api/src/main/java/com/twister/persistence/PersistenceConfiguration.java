@@ -16,8 +16,8 @@ import com.twister.persistence.repository.CustomerRepository;
 import java.util.Optional;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
@@ -26,7 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 // Must precede Boot's repository scan, which would register the same repositories again for an app above this package.
 // TODO(discuss): apps now need their own @EntityScan and @EnableJpaRepositories; decide if plugins may add JPA types
-@AutoConfiguration(before = JpaRepositoriesAutoConfiguration.class)
+@AutoConfiguration(before = DataJpaRepositoriesAutoConfiguration.class)
 @EnableJpaRepositories(basePackageClasses = CustomerRepository.class)
 @EntityScan(basePackageClasses = AuditableEntity.class)
 @EnableJpaAuditing

@@ -49,8 +49,8 @@ public class WorkflowOrchestrator {
         switch (event) {
             case RepairOrderEvent ignored -> handleCascadeForOrder((RepairOrderStatus) resultingStatus, workflowItemId);
             case RepairTaskEvent ignored -> handleCascadeForTask((RepairTaskStatus) resultingStatus, workflowItemId);
-            case RepairTaskItemEvent ignored -> handleCascadeForTaskItem(
-                    (RepairTaskItemStatus) resultingStatus, workflowItemId);
+            case RepairTaskItemEvent ignored ->
+                handleCascadeForTaskItem((RepairTaskItemStatus) resultingStatus, workflowItemId);
             default -> throw new UnsupportedOperationException("Unsupported event: " + event);
         }
     }

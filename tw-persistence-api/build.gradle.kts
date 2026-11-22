@@ -1,116 +1,29 @@
 plugins {
-    id("java")
-    id("java-library")
-    id("jacoco")
-    alias(libs.plugins.spotless.plugin)
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
+    id("twister.spring-conventions")
 }
-
-group = "com.twister"
-version = "1.0-SNAPSHOT"
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
-    }
-    withSourcesJar()
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-// Boot's BOM would otherwise downgrade Testcontainers core below the catalog version.
-extra["testcontainers.version"] = libs.versions.testcontainers.get()
 
 dependencies {
     implementation(project(":tw-core"))
     implementation(libs.bundles.spring.jpa)
     implementation(libs.mapstruct)
+    runtimeOnly(libs.spring.boot.flyway)
+    runtimeOnly(libs.sqlite.jdbc)
+    runtimeOnly(libs.hibernate.community.dialects)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
     annotationProcessor(libs.mapstruct.processor)
 
     testRuntimeOnly(libs.postgresql)
+    testImplementation(libs.spring.boot.flyway)
     testCompileOnly(libs.lombok)
     testAnnotationProcessor(libs.lombok)
     testAnnotationProcessor(libs.mapstruct.processor)
     testImplementation(libs.bundles.testing)
+    testImplementation(libs.spring.boot.data.jpa.test)
     testImplementation(libs.bundles.testcontainers)
 }
 
-tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.WARN
-}
-
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.jar {
-    enabled = true
-}
-
-jacoco {
-    toolVersion = libs.versions.jacoco.get()
-}
-
+// The migration test loads the native library of SQLite.
 tasks.test {
-    useJUnitPlatform()
-
-    testLogging {
-        events("passed", "skipped", "failed")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
-    }
-
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        xml.required = false
-        csv.required = false
-        html.required = true
-    }
-}
-
-tasks.jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            element = "CLASS"
-            excludes = listOf(
-                "**Mock**"
-            )
-            limit {
-                minimum = "0.8".toBigDecimal()
-            }
-        }
-    }
-}
-
-spotless {
-    java {
-        target("src/*/java/**/*.java")
-        targetExclude("**/build/generated/**")
-        palantirJavaFormat()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-}
-
-tasks.named("spotlessApply") {
-    group = "verification"
-    description = "Formats code and moves the task to the Verification group."
-}
-
-tasks.check{
-    dependsOn(tasks.spotlessCheck, tasks.jacocoTestCoverageVerification)
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

@@ -1,1 +1,1 @@
-// Shared settings only. The legacy app lives in legacy/ with its own settings.
+// Intentionally empty. Shared settings live in build-logic/, the legacy app in legacy/ with its own settings.

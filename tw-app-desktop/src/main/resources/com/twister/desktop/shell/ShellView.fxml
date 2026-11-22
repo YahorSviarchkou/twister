@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:id="shell"
+            fx:controller="com.twister.desktop.shell.ShellView">
+    <left>
+        <HBox>
+            <VBox fx:id="menu" spacing="4">
+                <padding>
+                    <Insets topRightBottomLeft="8"/>
+                </padding>
+            </VBox>
+            <Separator orientation="VERTICAL"/>
+        </HBox>
+    </left>
+</BorderPane>
