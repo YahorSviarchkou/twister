@@ -22,6 +22,11 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    // Gradle 9 does not bundle the launcher, and it must match the JUnit version.
+    testRuntimeOnly(catalog.findLibrary("junit-platform-launcher").get())
+}
+
 // Not withType<Jar>(): bootJar must not downgrade duplicate entries to warnings.
 listOf("jar", "sourcesJar").forEach { name ->
     tasks.named<Jar>(name) {

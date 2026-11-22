@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.util.ClassUtils;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 /**
  * Uses the module as an application does. Cannot extend {@code BaseIntegrationTest}: its {@code @DataJpaTest} slice
@@ -36,7 +36,7 @@ class PersistenceAutoConfigurationTest {
     private static final String PERSISTENCE_PACKAGE = "com.twister.persistence";
 
     @ServiceConnection
-    static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+    static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:17-alpine");
 
     // Not stopped per class: cached contexts outlive it.
     static {
