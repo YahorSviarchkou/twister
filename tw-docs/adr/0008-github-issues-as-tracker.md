@@ -14,7 +14,7 @@ ADR 0007 set branch and commit conventions without a task tracker. The owner doe
 We will track tasks in **GitHub Issues** with a **GitHub Projects** board. Everything from ADR 0007 stays, with these changes:
 
 - **Branches:** `feature/tw-<issue>-<short-name>`, `bugfix/tw-<issue>-<short-name>`, created from `dev`. Long-lived `dev` → `sit` → `prod`; `main` becomes `prod`, `exp` is merged into `dev`, `dev` becomes the default branch so that `Closes #N` closes issues on merge.
-- **Commits:** `<type>(<scope>): <description>`, body references the issue: `Refs #12`; the completing commit or PR says `Closes #12`. Types `feat`, `fix`, `refactor`, `test`, `docs`, `chore`; scope is the Gradle module, or `tw-docs`, `claude`, `build`, `ci`. No attribution trailers.
+- **Commits:** `<type>(<scope>): <description> TW-12`: the header ends with the issue key, and the whole header is at most 72 characters. The body is optional and explains why. The PR that completes an issue says `Closes #12` in its description. Types `feat`, `fix`, `refactor`, `test`, `docs`, `chore`; scope is the Gradle module, or `tw-docs`, `claude`, `build`, `ci`. No attribution trailers.
 - **TODOs:** `// TODO(tw-<issue>): …` inside an existing issue's scope, `// TODO(discuss): …` for new doubts; agents list both in the task summary.
 - **Issue type:** the built-in Type field: `Feature`, `Bug`, `Task` (refactoring, tests, docs, build, CI). The finer commit types stay in commit messages only.
 - **Labels:**
