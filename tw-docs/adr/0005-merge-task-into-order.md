@@ -1,8 +1,8 @@
 # 0005. Merge repair task into the order: two state machines
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-11-21
-- **Deciders:** project owner (pending)
+- **Deciders:** project owner (accepted 2026-11-22)
 
 ## Context
 
@@ -19,12 +19,12 @@ The order becomes Ready when all non-cancelled work items are Done. See the [ord
 
 ## Vertical boundary
 
-Twister may later serve other kinds of repair shops (cars, electronics). We do not build for that now; we only keep one boundary so that it stays possible:
+The current vertical is personal light vehicles: workshops repair bikes, kick scooters and e-scooters. Twister may later serve other kinds of repair shops (cars, electronics). We do not build for that now; we only keep one boundary so that it stays possible:
 
-- Bike-specific concepts (the bike and its attributes, the intake checklist, seasonal reminders) live in one package, `...domain.bike`.
-- Order, work item, state machine, stock and billing code, including their use cases, must not import that package. Bike use cases (register a bike, service book) live in their own `bike` packages, which may depend on the order. One ArchUnit test enforces this.
-- The order refers to the repaired item only by id (`SubjectId`), never by type.
-- No new modules, no generic `Asset` abstraction, no custom fields or vertical-specific statuses until a second vertical is actually needed. When it is, the `bike` package is extracted into a module and the extension points are designed from the real requirements.
+- Vehicle-specific concepts (the vehicle and its attributes, the intake checklist, seasonal reminders) live in one package, `...domain.vehicle`. The vehicle type (bike, kick scooter, e-scooter) is reference data, like `TransportType` today: a new type is a record, not new code.
+- Order, work item, state machine, stock and billing code, including their use cases, must not import that package. Vehicle use cases (register a vehicle, service book) live in their own `vehicle` packages, which may depend on the order. One ArchUnit test enforces this.
+- The order refers to the repaired vehicle only by id (`SubjectId`), never by type.
+- No new modules, no generic `Asset` abstraction, no custom fields or vertical-specific statuses until a different vertical is actually needed. When it is, the `vehicle` package is extracted into a module and the extension points are designed from the real requirements.
 
 ## Consequences
 
