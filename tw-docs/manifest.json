@@ -129,7 +129,7 @@
       "section": "adr",
       "path": "adr/0004-build-time-plugin-composition.md",
       "date": "2026-11-21",
-      "status": "Proposed",
+      "status": "Accepted",
       "tags": [
         "plugins"
       ]
@@ -141,7 +141,7 @@
       "section": "adr",
       "path": "adr/0005-merge-task-into-order.md",
       "date": "2026-11-21",
-      "status": "Proposed",
+      "status": "Accepted",
       "tags": [
         "domain",
         "workflow"
@@ -183,6 +183,19 @@
       "tags": [
         "git",
         "issues"
+      ]
+    },
+    {
+      "id": "adr-0009",
+      "title": "0009 SQLite as the embedded database",
+      "type": "md",
+      "section": "adr",
+      "path": "adr/0009-sqlite-as-embedded-database.md",
+      "date": "2026-11-22",
+      "status": "Accepted",
+      "tags": [
+        "database",
+        "persistence"
       ]
     },
     {
