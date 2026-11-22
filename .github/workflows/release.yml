@@ -1,3 +1,6 @@
+# TODO(discuss): the steps use root paths (gradlew bootJar, installer.iss, build/)
+# and only work for branches with the old layout (prod). Since TW-14 the legacy app
+# lives in legacy/ on dev. Adapt this workflow when releases move off prod.
 name: Build Windows Installer
 
 on:

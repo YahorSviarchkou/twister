@@ -5,7 +5,7 @@ paths:
 
 # Java (draft)
 
-- Java 21. Prefer records for immutable data and `switch` pattern matching where it reads better.
+- Java 25. Prefer records for immutable data and `switch` pattern matching where it reads better.
 - `tw-core` (future `tw-api`) stays free of Spring, JPA and JavaFX imports.
 - Constructor injection only; no field `@Autowired` in new code.
 - Lombok is allowed for boilerplate; do not put `@Data`, `@EqualsAndHashCode` or `@ToString` with lazy collections on JPA entities.

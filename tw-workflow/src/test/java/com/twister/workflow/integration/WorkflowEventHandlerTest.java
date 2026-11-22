@@ -16,7 +16,6 @@ import com.twister.workflow.service.workflow.event.RepairOrderEvent;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WorkflowEventHandlerTest extends BaseIntegrationTest {
@@ -33,8 +32,8 @@ public class WorkflowEventHandlerTest extends BaseIntegrationTest {
     @Autowired
     private StatusHistoryDao<RepairOrderStatusHistory> repairOrderStatusHistoryDaoMock;
 
-    @Captor
-    private ArgumentCaptor<RepairOrderStatusHistory> historyCaptor;
+    private final ArgumentCaptor<RepairOrderStatusHistory> historyCaptor =
+            ArgumentCaptor.forClass(RepairOrderStatusHistory.class);
 
     @Test
     void testApplyEventWhenAllDataExists() {

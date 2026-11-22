@@ -1,20 +1,41 @@
 package com.twister.fx.javafx;
 
+import com.twister.fx.javafx.theme.ThemeMode;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.Locale;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
-import java.util.Locale;
-
-@ConfigurationProperties(prefix = "twister.javafx")
+/**
+ * Settings of the starter. All of them have defaults.
+ *
+ * @param locale language of the texts and format of numbers and dates
+ */
+// @DefaultValue on the nested records too: without it they are null when no property is set.
+@ConfigurationProperties("twister.javafx")
 public record JavaFxProperties(
-        Bundle bundle, @DefaultValue("en_US") Locale locale, ScreenCacheProperties cache) {
+        @DefaultValue("en_US") Locale locale,
+        @DefaultValue("light") ThemeMode theme,
+        @DefaultValue Cache cache,
+        @DefaultValue Tasks tasks,
+        @DefaultValue Notifications notifications,
+        @DefaultValue Window window) {
 
-    public record Bundle(
-            @DefaultValue("classpath:i18n/messages") String baseName,
-            @DefaultValue("UTF-8") String encoding,
-            @DefaultValue("3600") Integer cacheSeconds) {}
+    /**
+     * @param enabled switches caching of the screens marked {@code @FxView(cached = true)}
+     * @param ttl how long a screen is kept unless {@code @FxView} sets its own time
+     */
+    public record Cache(
+            @DefaultValue("false") boolean enabled,
+            @DefaultValue("1h") Duration ttl) {}
 
-    public record ScreenCacheProperties(
-            @DefaultValue("false") boolean globalEnabled,
-            @DefaultValue("3600") Integer defaultTtl) {}
+    /** @param shutdownTimeout how long closing waits for running tasks before interrupting them */
+    public record Tasks(@DefaultValue("5s") Duration shutdownTimeout) {}
+
+    /** @param duration how long a notification stays visible */
+    public record Notifications(@DefaultValue("4s") Duration duration) {}
+
+    /** @param stateFile by default {@code window-state.properties} in the user's folder of the application */
+    public record Window(Path stateFile) {}
 }

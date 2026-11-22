@@ -32,6 +32,8 @@ public class RepairInvoiceEntity extends AuditableEntity {
 
     private String description;
 
+    // TODO(discuss): Hibernate renamed the implicit unique constraints here and in RepairTaskEntity (UK_x to UKx).
+    //  Name them explicitly before the first migration?
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
     private RepairOrderEntity order;
