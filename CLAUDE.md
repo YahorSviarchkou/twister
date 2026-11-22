@@ -17,7 +17,7 @@ English for everything in the repository: code, identifiers, comments, commit me
 | `tw-app-desktop` | Desktop assembly (does not start yet) |
 | `tw-app-web`, `tw-fx-plugin-*` | Parked empty folders, not in the build |
 | `build-logic/` | Gradle convention plugins shared by the modules |
-| `legacy/` | Legacy monolith (own `settings.gradle.kts`, builds with `gradlew -p legacy build`), frozen: read for reference, do not extend |
+| `legacy/` | Legacy monolith (own `settings.gradle.kts` and Gradle 8 wrapper, builds with `legacy/gradlew -p legacy build` on JDK 17 or 21), frozen: read for reference, do not extend |
 | `tw-docs/` | Documentation: notes, ADRs, Mermaid diagrams, exported artifacts, viewer |
 | `.claude/` | Agent rules (`rules/`) and reference context (`context/`) |
 
