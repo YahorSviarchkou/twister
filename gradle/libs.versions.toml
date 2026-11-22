@@ -18,6 +18,7 @@ atlantafx = "3.0.0"
 # SPRING
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
 spring-boot-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
 spring-boot-cache = { module = "org.springframework.boot:spring-boot-starter-cache" }
 
 # UI
@@ -29,6 +30,8 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 postgresql = { module = "org.postgresql:postgresql" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc" }
+hibernate-community-dialects = { module = "org.hibernate.orm:hibernate-community-dialects" }
 
 # TESTING
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
