@@ -2,6 +2,7 @@
 java = "21"
 javafx = "0.1.0"
 spring-boot = "3.2.5"
+spring-dependency-management = "1.1.4"
 lombok = "1.18.32"
 mapstruct = "1.6.3"
 caffeine = "3.2.3"
@@ -33,7 +34,7 @@ testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.re
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-spring-dependency-management = { id = "io.spring.dependency-management" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 
 spotless-plugin = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
