@@ -22,6 +22,9 @@ repositories {
     mavenCentral()
 }
 
+// Boot's BOM would otherwise downgrade Testcontainers core below the catalog version.
+extra["testcontainers.version"] = libs.versions.testcontainers.get()
+
 dependencies {
     implementation(project(":tw-core"))
     implementation(libs.bundles.spring.jpa)

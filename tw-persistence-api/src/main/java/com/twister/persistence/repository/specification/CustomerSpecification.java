@@ -22,6 +22,7 @@ public final class CustomerSpecification {
                     .ifPresent(name ->
                             predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%")));
 
+            // TODO(discuss): the patronymic column is not lowercased, so this search is case-sensitive
             Optional.ofNullable(filter.patronymic())
                     .ifPresent(patronymic ->
                             predicates.add(cb.like(root.get("patronymic"), "%" + patronymic.toLowerCase() + "%")));
